@@ -281,6 +281,9 @@ html.oq .fsq.blq>span:nth-child(even){margin-bottom:9px}
 .jnurl{font:700 19px Consolas,monospace;color:var(--blue);word-break:break-all;margin-top:8px}
 .nmg{display:flex;flex-wrap:wrap;gap:9px;align-content:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;flex:1;min-height:0;overflow:auto}
 .nmc{color:#fff;font:700 21px "Segoe UI";padding:7px 15px;border-radius:20px;cursor:pointer;animation:fadein .3s}
+#slJoin.many .jntx{display:none}
+#slJoin.many .nmg{gap:5px;padding:8px}
+#slJoin.many .nmc{font-size:15px;padding:3px 10px;animation:none}
 .phov{position:absolute;inset:0;z-index:30;background:rgba(29,36,48,.82);align-items:center;justify-content:center}
 .phbox{background:var(--card);border-radius:12px;width:1500px;height:810px;padding:18px 22px;display:grid;grid-template-columns:640px minmax(0,1fr);gap:22px}
 .phbox .qrb{width:640px;height:640px;background:#fff;padding:10px;border:1px solid var(--line);border-radius:10px}
@@ -374,7 +377,7 @@ html.oq #ptPhoneNote{display:block}
     <div style="display:flex;flex-direction:column;gap:10px;min-height:0">
       <div><h2>Телефоныңды ал – QR-ды сканерле!</h2>
       <div id="phWifi" style="display:none;background:#fff4d9;border:1px solid #e6cf8f;border-radius:8px;padding:7px 13px;font-size:21px;margin-bottom:8px"></div>
-      <div style="font-size:21px;line-height:1.45">Атың мен тегіңді жаз, ол осы экранда шығады. Мұғалім тапсырма бетінде QR-ды үлкейткенде, <b>слайдтың сол беті телефоныңа шығады</b>: таразымен өзің өлшеп, жауабыңды өзің тексересің.</div></div>
+      <div class="jntx" style="font-size:21px;line-height:1.45">Атың мен тегіңді жаз, ол осы экранда шығады. Мұғалім тапсырма бетінде QR-ды үлкейткенде, <b>слайдтың сол беті телефоныңа шығады</b>: таразымен өзің өлшеп, жауабыңды өзің тексересің.</div></div>
       <div id="phFile" class="warn" style="display:none;font-size:17px"><b>QR жасау үшін сайт сілтемесі керек.</b> Слайд компьютерден тікелей ашылған. Екі жол бар: 1) GitHub Pages сілтемесін осында жазу; 2) папкадағы <b>start.bat</b> арқылы ашу (телефондар компьютермен бір Wi-Fi-да болсын):
         <div style="display:flex;gap:6px;margin-top:6px"><input id="phPub" placeholder="https://.../massa-7-synyp/" style="flex:1;font:inherit;padding:5px 8px"><button class="btn main" id="phPubOk">Сақтау</button></div></div>
       <div style="display:flex;align-items:center;gap:12px;font-size:22px"><span>Қосылғандар: <b id="phCount" style="font:800 34px Georgia,serif">0</b></span><span style="font-size:15px;color:var(--muted)">Топ автоматты бөлінеді. Қате атты алып тастау үшін үстінен бас.</span><button class="btn" id="phReset" style="margin-left:auto">↺ Жаңа сабақ (жаңа QR)</button></div>

@@ -32,7 +32,9 @@ const PH=(()=>{
   function ensureRoster(name){ if(ROSTER.includes(name)) return; const i=ROSTER.findIndex(n=>/^\d+-оқушы$/.test(n)&&!RES[n]); if(i>=0) ROSTER[i]=name; else ROSTER.push(name); store.set('ms_roster',ROSTER); $('roster').value=ROSTER.join('\n'); tkFill(); grBuild(); }
   /* Атау кестелерге HTML болып түседі, сондықтан белгілерді алып тастаймыз */
   function cleanName(v){ return String(v||'').replace(/[<>&"'`]/g,'').slice(0,24).trim()||'Оқушы'; }
-  function reg(pid,raw){ const name=cleanName(raw); let s=D.st[pid]; if(!s){ s=D.st[pid]={n:name,g:groupFor(name),prog:{}}; ensureRoster(name); save(); SND.clink(); paintList(); } else if(s.n!==name){ s.n=name; save(); paintList(); } return s; }
+  /* Аттары бірдей оқушылардың бағасы бірігіп кетпеуі үшін: Арнат, Арнат 2 */
+  function uniq(name,pid){ let n=name,k=2; while(ids().some(p=>p!==pid&&D.st[p].n===n)) n=name+' '+k++; return n; }
+  function reg(pid,raw){ const name=cleanName(raw); let s=D.st[pid]; if(!s){ const n=uniq(name,pid); s=D.st[pid]={n,raw:name,g:groupFor(n),prog:{}}; ensureRoster(n); save(); SND.clink(); paintList(); } else if((s.raw||s.n)!==name){ s.raw=name; s.n=uniq(name,pid); save(); paintList(); } return s; }
 
   /* Топтық бет: топтың алғашқы дұрыс жауабы топ ұпайына түседі. Практикалық жұмыстың жауабы қорғауда тақтада ғана енгізіледі. */
   function mergeGt(v){ if(!v||!v.ok||!GR[v.g]||GTP[v.g]) return; const s=GTS[v.g]=GTS[v.g]||{t:0,done:false,ok:false}; s.done=true; s.ok=true; s.t=s.t||1; gtPay(v.g); gtShow(v.g); }
@@ -66,7 +68,7 @@ const PH=(()=>{
     else if(D.started&&D.act){ const dn=ids().filter(p=>{ const v=D.st[p].prog[D.act]; return v&&(v.g||v.b||v.sc); }).length; t+=` · ${titleOf(D.act)}: ${dn}/${n}`; }
     else if(!D.started&&n) t+=' · «Бастау» күтілуде';
     c.textContent=t; c.classList.toggle('hot',hot); }
-  function paintList(){ paintChip(); const g=$('phNames'); if(g){ $('phCount').textContent=ids().length; g.innerHTML=ids().map(p=>{ const s=D.st[p]; return `<span class="nmc" style="background:${GR[s.g].c}" data-k="${p}" title="Алып тастау">${esc(s.n)}</span>`; }).join('')||'<span style="color:var(--muted);font-size:20px">Әзірге ешкім қосылған жоқ…</span>'; } paintStart(); paintMon(); }
+  function paintList(){ paintChip(); const g=$('phNames'); if(g){ $('phCount').textContent=ids().length; $('slJoin').classList.toggle('many',ids().length>12); g.innerHTML=ids().map(p=>{ const s=D.st[p]; return `<span class="nmc" style="background:${GR[s.g].c}" data-k="${p}" title="Алып тастау">${esc(s.n)}</span>`; }).join('')||'<span style="color:var(--muted);font-size:20px">Әзірге ешкім қосылған жоқ…</span>'; } paintStart(); paintMon(); }
   function cell(v){ if(!v) return '<td>–</td>'; if(v.sc!=null) return `<td class="${v.sc>0?'ok':''}"><b>${nf(v.sc,1)}</b> / ${MAXP}</td>`; return `<td class="${v.g&&!v.b?'ok':''}">${v.g?'✔ '+v.g:''}${v.g&&v.b?' · ':''}${v.b?'✘ '+v.b:''}${!v.g&&!v.b?'…':''}</td>`; }
   function paintMon(){ const b=$('phMonT'); if(!b||!overlayOn()) return; const now=$('phNow'), k=keyHere();
     now.innerHTML=D.started&&D.act?`Телефондарда ашық: <b>${esc(titleOf(D.act))}</b>${k&&k!==D.act?'':''}`:(k?'':'Әзірге телефонға бет ашылған жоқ. <b>Тапсырма бетінде</b> QR-ды үлкейткенде, сол бет ашылады.');

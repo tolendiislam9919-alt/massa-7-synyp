@@ -186,7 +186,8 @@
         return;
       }
       /* интернет: серверлерді кезекпен байқаймыз */
-      let cur = null, idx = -1, alive = false;
+      /* Бүкіл сынып бір серверге жиналмасын: телефон кездейсоқ серверден бастайды (shiftr, emqx, hivemq) */
+      let cur = null, idx = [-1, 0, 2][Math.floor(Math.random() * 3)], alive = false;
       send = m => { if (cur && cur.connected) cur.publish(base + 'up', JSON.stringify(m)); };
       next = function tryNext() {
         if (cur) { try { cur.end(true); } catch (e) {} }

@@ -42,9 +42,9 @@ const OQ=(()=>{
     if(m.t==='st'){ joined=true; const was=ST.started, gWas=ST.g; ST=Object.assign(ST,m); if(m.pt){ PTM.left=[m.pt.left,m.pt.left,m.pt.left]; PTM.run=m.pt.run; PTM.last=performance.now(); ptTm(); } if(ST.started&&!was) buzz(120); if(gWas!==ST.g&&shown) setup(shown); render(); } }
 
   function start(){ top.hidden=false; setTop(); vWait(); if(net){ net.send({t:'hello',name:NAME}); return; }
-    net=NET.openPad({room:OQROOM,pid:PID,onMsg,onStatus:s=>{ top.querySelector('.oqdot').className='oqdot '+(s==='on'?'on':s==='off'?'off':''); if(s==='on'&&net) net.send({t:'hello',name:NAME}); }});
+    net=NET.openPad({room:OQROOM,pid:PID,onMsg,onStatus:s=>{ top.querySelector('.oqdot').className='oqdot '+(s==='on'?'on':s==='off'?'off':''); if(s==='on'){ lastSeen=Date.now(); if(net) net.send({t:'hello',name:NAME}); } }});
     setTimeout(()=>net.send({t:'hello',name:NAME}),700);
-    setInterval(()=>{ if(!net||!net.online) return; if(!joined) net.send({t:'hello',name:NAME}); else net.send({t:'ping',n:NAME,p:PROG}); if(lastSeen&&Date.now()-lastSeen>14000&&!document.hidden){ lastSeen=Date.now(); net.next(); } },2500);
+    setInterval(()=>{ if(!net||!net.online) return; if(!joined) net.send({t:'hello',name:NAME}); else net.send({t:'ping',n:NAME,p:PROG}); /* мұғалім бұл серверде естімесе, келесі серверге өтеміз: әлі кірмеген телефон ұзақ күтпейді */ if(lastSeen&&Date.now()-lastSeen>(joined?14000:8000)&&!document.hidden){ lastSeen=Date.now(); net.next(); } },2500);
     document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&net&&net.online) net.send({t:'ping',n:NAME,p:PROG}); }); }
 
   function init(){ document.title='Физика: сабаққа қосылу';
