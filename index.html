@@ -502,7 +502,6 @@ html.oq #ptPhoneNote{display:block}
   <div class="row" style="align-items:center;flex-wrap:wrap">
     <button class="btn" id="elGlass">🥛 Стақан қою</button>
     <div class="ctl grow" style="min-width:230px"><div class="lab"><span>Су құю</span><span class="val" id="elWv"></span></div><input type="range" id="elW" min="0" max="250" step="5" value="0" disabled></div>
-    <div class="ctl" style="width:180px"><div class="lab"><span>Тиындар</span><span class="val" id="elCv"></span></div><input type="range" id="elC" min="0" max="10" step="1" value="0"></div>
     <button class="btn main" id="elTare">TARE → 0</button>
   </div>
   <div class="status card" id="elSt"></div>
@@ -819,7 +818,6 @@ const OBJ={
   pencase(ctx,x,yb,s){ const w=84*s,h=26*s; rr(ctx,x-w/2,yb-h,w,h,10*s); ctx.fillStyle='#3e8a5e'; ctx.fill(); ctx.strokeStyle='#d8d8d8'; ctx.setLineDash([4*s,3*s]); ctx.beginPath(); ctx.moveTo(x-w/2+8*s,yb-h/2); ctx.lineTo(x+w/2-8*s,yb-h/2); ctx.stroke(); ctx.setLineDash([]); },
   bottle(ctx,x,yb,s){ const w=34*s,h=84*s; rr(ctx,x-w/2,yb-h,w,h,8*s); ctx.fillStyle='rgba(120,180,230,.55)'; ctx.fill(); ctx.strokeStyle='#5a8bb5'; ctx.stroke(); ctx.fillStyle='#2a5fa8'; ctx.fillRect(x-8*s,yb-h-10*s,16*s,12*s); ctx.fillStyle='#fff'; ctx.fillRect(x-w/2,yb-h*.6,w,16*s); },
   flour(ctx,x,yb,s){ ctx.fillStyle='#e9dcb8'; ctx.beginPath(); ctx.moveTo(x-34*s,yb); ctx.lineTo(x-30*s,yb-62*s); ctx.lineTo(x-20*s,yb-74*s); ctx.lineTo(x+20*s,yb-74*s); ctx.lineTo(x+30*s,yb-62*s); ctx.lineTo(x+34*s,yb); ctx.closePath(); ctx.fill(); ctx.strokeStyle='#b9a77a'; ctx.stroke(); label(ctx,'ҰН',x,yb-30*s,'#8a6d2c',16*s,'center',true); },
-  coins(ctx,x,yb,s,n=10){ for(let i=0;i<n;i++){ const y=yb-i*3*s; ctx.fillStyle='#c9a64a'; ctx.beginPath(); ctx.ellipse(x,y-2*s,13*s,4.5*s,0,0,7); ctx.fill(); ctx.strokeStyle='#8f7224'; ctx.lineWidth=1; ctx.stroke(); } },
   glass(ctx,x,yb,s,water=0){ const wt=50*s,wb=40*s,h=72*s;
     if(water>0){ const f=Math.min(1,water/250)*0.86, hy=yb-h*f, k=(wt-wb)/2*f; ctx.fillStyle='rgba(90,160,225,.6)'; ctx.beginPath(); ctx.moveTo(x-wb/2,yb); ctx.lineTo(x-wb/2-k,hy); ctx.lineTo(x+wb/2+k,hy); ctx.lineTo(x+wb/2,yb); ctx.closePath(); ctx.fill(); }
     ctx.strokeStyle='rgba(60,90,110,.85)'; ctx.lineWidth=2.5*s; ctx.beginPath(); ctx.moveTo(x-wt/2,yb-h); ctx.lineTo(x-wb/2,yb); ctx.lineTo(x+wb/2,yb); ctx.lineTo(x+wt/2,yb-h); ctx.stroke();
@@ -1098,23 +1096,21 @@ $('spChk').onclick=()=>{ const c=parseNum($('spC').value), v=parseNum($('spR').v
   if(okc&&okv) SND.ok(); else SND.bad(); };
 
 /* 9. Электронды таразы */
-const EL={glass:false,water:0,ws:0,coins:0,tare:0};
-const GLASS=112.4, COIN=2.2;
-const elTot=()=>(EL.glass?GLASS+EL.ws:0)+EL.coins*COIN;
+const EL={glass:false,water:0,ws:0,tare:0};
+const GLASS=112.4;
+const elTot=()=>EL.glass?GLASS+EL.ws:0;
 $('elGlass').onclick=()=>{ EL.glass=!EL.glass; if(!EL.glass){ EL.water=0; EL.ws=0; $('elW').value=0; } $('elW').disabled=!EL.glass; $('elGlass').textContent=EL.glass?'🥛 Стақанды алу':'🥛 Стақан қою'; elUpd(); };
 $('elW').oninput=()=>{ EL.water=+$('elW').value; elUpd(); };
-$('elC').oninput=()=>{ EL.coins=+$('elC').value; elUpd(); };
 $('elTare').onclick=()=>{ EL.tare=Math.round(elTot()*10)/10; SND.beep(); elUpd(); };
-function elUpd(){ $('elWv').textContent=EL.water+' мл'; $('elCv').textContent=EL.coins+' дана';
-  const parts=[]; if(EL.glass) parts.push('стақан'); if(EL.water) parts.push('су'); if(EL.coins) parts.push(EL.coins+' тиын');
+function elUpd(){ $('elWv').textContent=EL.water+' мл';
+  const parts=[]; if(EL.glass) parts.push('стақан'); if(EL.water) parts.push('су');
   let m='Табақшада: '+(parts.join(', ')||'ештеңе жоқ')+'. ';
   if(EL.tare) m+=`TARE басылған: <b>${g1(EL.tare)} г</b> алынып тасталады. `;
-  if(EL.coins===10) m+='<br>10 тиын → бір тиын: m₁ = m₁₀ : 10 (қатарлау әдісі).';
   $('elSt').innerHTML=m; }
 LABS.cEl={frame(ctx,w,h,dt){ const pouring=EL.ws<EL.water-.5; EL.ws+=(EL.water-EL.ws)*Math.min(1,dt*2.5); if(Math.abs(EL.water-EL.ws)<.3) EL.ws=EL.water;
   ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); table_(ctx,w,h,290);
   const val=Math.round((elTot()-EL.tare)*10)/10;
-  drawEScale(ctx,w/2,290,1.7,g1(val)+' г',(x,y)=>{ if(EL.glass) OBJ.glass(ctx,x-30,y,1.6,EL.ws); if(EL.coins) OBJ.coins(ctx,x+(EL.glass?95:0),y,1.6,EL.coins); });
+  drawEScale(ctx,w/2,290,1.7,g1(val)+' г',(x,y)=>{ if(EL.glass) OBJ.glass(ctx,x-30,y,1.6,EL.ws); });
   if(pouring&&EL.glass){ const x=w/2-30, y0=20; ctx.fillStyle='#5aa0e1'; ctx.save(); ctx.translate(x+70,y0); ctx.rotate(.9); rr(ctx,-20,-30,40,60,6); ctx.fill(); ctx.restore();
     ctx.strokeStyle='rgba(90,160,225,.8)'; ctx.lineWidth=5; ctx.beginPath(); ctx.moveTo(x+48,y0+22); ctx.quadraticCurveTo(x+20,y0+60,x+10,290-100); ctx.stroke(); } }};
 elUpd();
@@ -1125,8 +1121,8 @@ const GT=[
    q:[['m =','г',275.5],['m =','кг',.2755]]},
   {t:'Серіппелі таразы',tx:'Шкаланың «0» мен «100 г» белгілерінің арасында <b>4 бөлік</b> бар. Көрсеткіш «0»-ден бастап <b>7-бөлікте</b> тұр. Бөлік құны мен дененің массасын тап.',
    q:[['c =','г',25],['m =','г',175]]},
-  {t:'Электронды таразы',tx:'Бос стақан <b>120 г</b>, сумен бірге <b>370 г</b> көрсетті. Судың массасын тап. TARE басылғаннан кейін 10 бірдей тиын <b>22 г</b> көрсетті – бір тиынның массасы?',
-   q:[['m су =','кг',.25],['m₁ =','г',2.2]]},
+  {t:'Электронды таразы',tx:'Бос стақан <b>120 г</b>, сумен бірге <b>370 г</b> көрсетті. Судың массасын тап. Килограммға айналдыр.',
+   q:[['m су =','г',250],['m су =','кг',.25]]},
 ];
 /* Жауап күйі бет жаңартылғанда тазарады. Топ ұпайы (GTP) сақталады: бір топқа +2 бір рет қана қосылады */
 let GTS={}; const GTP=store.get('ms_gt_paid',{});
@@ -1155,14 +1151,13 @@ const PTG=[
   {dev:'spring',t:'Серіппелі таразы',acc:50,
    task:'1) Шкаладағы «0» мен «100» арасындағы бөлік санын санап, <b>бөлік құнын</b> тап: c = (100 − 0) : n.<br>2) Денені іліп, көрсеткішті оқы (үлкейтілген шкаладан).<br>3) Массаны <b>г</b> және <b>кг</b> бойынша кестеге жаз.',
    bodies:[['apple','🍎 Алма',152.7],['pencase','Пенал',250],['book','📘 Кітап',400]]},
-  {dev:'el',t:'Электронды таразы',acc:.1,
-   task:'1) Алманы қойып, массасын жаз.<br>2) Бос стақанды қой → <b>TARE</b> бас → 200 мл су құй. Судың массасы?<br>3) 10 тиынды қой. Бір тиынның массасы: m₁ = m₁₀ : 10.<br>4) Таразының дәлдігі (соңғы цифр) қанша?',
-   bodies:[['apple','🍎 Алма',152.7],['water','🥛 Стақандағы су',200],['coin','1 тиын (10 тиын : 10)',2.2]]},
+  {dev:'el',t:'Электронды таразы',acc:.1,last:{l:'Алма + батарейка, г',a:175.7},
+   task:'1) Денені таңда – ол таразыға өзі қойылады.<br>2) Таблодағы санды оқы.<br>3) Массаны <b>г</b> және <b>кг</b> бойынша кестеге жаз.<br>4) Алма мен батарейканы таразыға бірге қойсақ, табло қанша көрсетеді? Екеуін <b>қосып</b> тап.',
+   bodies:[['apple','🍎 Алма',152.7],['battery','🔋 Батарейка',23.0],['eraser','Өшіргіш',18.4]]},
 ];
 let PTD=store.get('ms_pt',[{},{},{}]), PTP=store.get('ms_ptp',[{},{},{}]), ptG=0;
-const PL={o:0,used:[],ang:0,av:0}, PS={o:0,x:0,v:0}, PE={apple:false,glass:false,water:0,ws:0,coins:0,tare:0};
+const PL={o:0,used:[],ang:0,av:0}, PS={o:0,x:0,v:0}, PE={o:0};
 const PTM={left:[180,180,180],run:false,last:0};
-const peTot=()=>(PE.apple?152.7:0)+(PE.glass?GLASS+PE.ws:0)+PE.coins*COIN;
 const plSum=()=>Math.round(PL.used.reduce((a,i)=>a+LVSET[i],0)*10)/10;
 function ptTabs(){ $('ptTabs').innerHTML=PTG.map((g,i)=>{ const n=Object.keys(PTP[i]).length;
   return `<button class="ptab${i===ptG?' on':''}" data-g="${i}" style="border-color:${GR[i].c};${i===ptG?'background:'+GR[i].c:'color:'+GR[i].c}">${GR[i].n} топ<small>${g.t}${PUPIL?'':` · ${n}/4 ұпай${n===4?' ✔':''}`}</small></button>`; }).join(''); }
@@ -1179,17 +1174,12 @@ function ptBuild(){ const G=PTG[ptG], c=GR[ptG].c; ptTabs();
     C.innerHTML='<div class="objs" id="psO"></div>';
     G.bodies.forEach((o,i)=>{ const b=document.createElement('button'); b.className='btn'+(i===PS.o?' on':''); b.textContent=o[1]; b.onclick=()=>{ PS.o=i; [...$('psO').children].forEach((x,j)=>x.classList.toggle('on',j===i)); ptUpd(); }; $('psO').appendChild(b); }); }
   else {
-    C.innerHTML=`<div class="row" style="align-items:center;flex-wrap:wrap"><button class="btn" id="peA">🍎 Алма</button><button class="btn" id="peG">🥛 Стақан</button>
-      <div class="ctl grow" style="min-width:200px"><div class="lab"><span>Су құю</span><span class="val" id="peWv"></span></div><input type="range" id="peW" min="0" max="250" step="10" value="${PE.water}"></div>
-      <div class="ctl" style="width:170px"><div class="lab"><span>Тиындар</span><span class="val" id="peCv"></span></div><input type="range" id="peC" min="0" max="10" step="1" value="${PE.coins}"></div>
-      <button class="btn main" id="peT">TARE → 0</button></div>`;
-    $('peA').onclick=()=>{ PE.apple=!PE.apple; ptUpd(); }; $('peG').onclick=()=>{ PE.glass=!PE.glass; if(!PE.glass){ PE.water=0; PE.ws=0; $('peW').value=0; } ptUpd(); };
-    $('peW').oninput=()=>{ PE.water=+$('peW').value; ptUpd(); }; $('peC').oninput=()=>{ PE.coins=+$('peC').value; ptUpd(); };
-    $('peT').onclick=()=>{ PE.tare=Math.round(peTot()*10)/10; SND.beep(); ptUpd(); }; }
+    C.innerHTML='<div class="objs" id="peO"></div>';
+    G.bodies.forEach((o,i)=>{ const b=document.createElement('button'); b.className='btn'; b.textContent=o[1]; b.onclick=()=>{ PE.o=i; ptUpd(); }; $('peO').appendChild(b); }); }
   const d=PTD[ptG], P=PTP[ptG];
   let h='<tr><th>Дене</th><th>m, г</th><th>m, кг</th></tr>';
   G.bodies.forEach((o,i)=>{ h+=`<tr><td class="l">${o[1]}</td><td class="${P['b'+i]?'ok':''}"><input data-k="${i}_g" value="${d[i+'_g']??''}"></td><td class="${P['b'+i]?'ok':''}"><input data-k="${i}_k" value="${d[i+'_k']??''}"></td></tr>`; });
-  h+=`<tr><td class="l">${G.dev==='spring'?'Бөлік құны':'Дәлдігі'}, г</td><td colspan="2" class="${P.acc?'ok':''}"><input data-k="acc" value="${d.acc??''}"></td></tr>`;
+  h+=`<tr><td class="l">${G.last?G.last.l:(G.dev==='spring'?'Бөлік құны':'Дәлдігі')+', г'}</td><td colspan="2" class="${P.acc?'ok':''}"><input data-k="acc" value="${d.acc??''}"></td></tr>`;
   $('ptTab').innerHTML=h;
   $('ptTab').querySelectorAll('input').forEach(inp=>inp.oninput=()=>{ PTD[ptG][inp.dataset.k]=inp.value; store.set('ms_pt',PTD); rsBuild(); });
   $('ptRes').innerHTML=''; ptUpd(); ptTm(); }
@@ -1201,15 +1191,13 @@ function ptUpd(){ const G=PTG[ptG], S=$('ptSt');
     else msg+= s<m?'<span class="bad">Сол жақ ауыр</span> → кір тас қос.':'<span class="bad">Оң жақ ауыр</span> → соңғы кір тасты кішісімен алмастыр.';
     S.innerHTML=msg; }
   else if(G.dev==='spring'){ S.innerHTML=`Ілінген дене: <b>${G.bodies[PS.o][1]}</b>. Көрсеткішті үлкейтілген шкаладан оқы. Көрсеткіш екі сызықтың арасында тұрса – жақынырақ сызықты ал.`; }
-  else { $('peWv').textContent=PE.water+' мл'; $('peCv').textContent=PE.coins+' дана'; $('peW').disabled=!PE.glass;
-    $('peA').classList.toggle('on',PE.apple); $('peG').classList.toggle('on',PE.glass);
-    const parts=[]; if(PE.apple) parts.push('алма'); if(PE.glass) parts.push('стақан'); if(PE.water) parts.push(PE.water+' мл су'); if(PE.coins) parts.push(PE.coins+' тиын');
-    S.innerHTML='Табақшада: '+(parts.join(', ')||'ештеңе жоқ')+'. '+(PE.tare?`TARE: <b>${g1(PE.tare)} г</b> алынып тасталды.`:''); } }
+  else { [...$('peO').children].forEach((x,j)=>x.classList.toggle('on',j===PE.o));
+    S.innerHTML=`Таразыда: <b>${G.bodies[PE.o][1]}</b>. Таблодағы санды кестеге жаз.`; } }
 $('ptChk').onclick=()=>{ const G=PTG[ptG], d=PTD[ptG], P=PTP[ptG]; let got=0, bad=0;
   G.bodies.forEach((o,i)=>{ const vg=parseNum(d[i+'_g']??''), vk=parseNum(d[i+'_k']??''); if(!isFinite(vg)&&!isFinite(vk)) return;
     const tol=G.dev==='spring'?5:.05, ok=isFinite(vg)&&Math.abs(vg-o[2])<=tol&&isFinite(vk)&&Math.abs(vk*1000-vg)<.011;
     if(ok){ if(!P['b'+i]){ P['b'+i]=1; got++; } } else bad++; });
-  const va=parseNum(d.acc??''); if(isFinite(va)){ if(near(va,G.acc)){ if(!P.acc){ P.acc=1; got++; } } else bad++; }
+  const va=parseNum(d.acc??''); if(isFinite(va)){ if(near(va,G.last?G.last.a:G.acc)){ if(!P.acc){ P.acc=1; got++; } } else bad++; }
   store.set('ms_ptp',PTP); if(got){ addGS(ptG,got); SND.ok(); } else if(bad) SND.bad();
   const n=Object.keys(P).length; ptBuild(); rsBuild();
   $('ptRes').innerHTML=(got?`<span class="good">✔ +${got} ұпай</span> `:'')+(bad?`<span class="bad">✘ ${bad} жауап қате – тексеріп, түзет</span> `:'')+`<b>${n}/4</b>`+(n===4?' <span class="good">Станция орындалды! Келесі топ шықсын.</span>':''); };
@@ -1228,11 +1216,8 @@ LABS.cPt={frame(ctx,w,h,dt){ const G=PTG[ptG]; ctx.fillStyle='#efe9da'; ctx.fill
     ctx.restore(); ctx.strokeStyle='#8d939a'; ctx.lineWidth=2; rr(ctx,zx,zy,zw,zh,10); ctx.stroke();
     label(ctx,'🔍 үлкейтілген шкала',zx+zw/2,zy+zh+26,'#6a6658',15,'center',true);
     ctx.strokeStyle='rgba(141,147,154,.6)'; ctx.setLineDash([5,5]); ctx.beginPath(); ctx.moveTo(270,r.py); ctx.lineTo(zx,zy+zh/2); ctx.stroke(); ctx.setLineDash([]); }
-  else { const pouring=PE.ws<PE.water-.5; PE.ws+=(PE.water-PE.ws)*Math.min(1,dt*2.5); if(Math.abs(PE.water-PE.ws)<.3) PE.ws=PE.water;
-    table_(ctx,w,h,320); const val=Math.round((peTot()-PE.tare)*10)/10;
-    drawEScale(ctx,w/2,320,1.7,g1(val)+' г',(x,y)=>{ if(PE.apple) OBJ.apple(ctx,x-115,y,1.5); if(PE.glass) OBJ.glass(ctx,x,y,1.6,PE.ws); if(PE.coins) OBJ.coins(ctx,x+(PE.glass?105:20),y,1.6,PE.coins); });
-    if(pouring&&PE.glass){ const x=w/2, y0=30; ctx.fillStyle='#5aa0e1'; ctx.save(); ctx.translate(x+70,y0); ctx.rotate(.9); rr(ctx,-20,-30,40,60,6); ctx.fill(); ctx.restore();
-      ctx.strokeStyle='rgba(90,160,225,.8)'; ctx.lineWidth=5; ctx.beginPath(); ctx.moveTo(x+48,y0+22); ctx.quadraticCurveTo(x+20,y0+60,x+10,320-110); ctx.stroke(); } } }};
+  else { const B=G.bodies[PE.o]; table_(ctx,w,h,320);
+    drawEScale(ctx,w/2,320,1.7,g1(B[2])+' г',(x,y)=>OBJ[B[0]](ctx,x,y,1.5)); } }};
 function ptTm(){ const sec=Math.ceil(PTM.left[ptG]); $('ptTm').textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
   $('ptTm').classList.toggle('low',sec<=30); $('ptGo').textContent=PTM.run?'⏸':'▶'; }
 $('ptGo').onclick=()=>{ if(PTM.left[ptG]<=0) return; PTM.run=!PTM.run; PTM.last=performance.now(); ptTm(); };
@@ -1245,7 +1230,7 @@ setInterval(()=>{ if(!PTM.run) return; const now=performance.now(), prev=Math.ce
 function rsBuild(){ const v=(g,k)=>{ const x=parseNum(PTD[g][k]??''); return isFinite(x)?nf(x,4):'—'; };
   let h='<tr><th></th>'+PTG.map((g,i)=>`<th style="color:${GR[i].c}">${GR[i].n} топ · ${g.t}</th>`).join('')+'</tr>';
   h+='<tr><td class="l"><b>🍎 Алма</b>, г</td>'+PTG.map((g,i)=>`<td style="font-size:22px"><b>${v(i,'0_g')}</b></td>`).join('')+'</tr>';
-  h+='<tr><td class="l">Дәлдігі (бөлік құны), г</td>'+PTG.map((g,i)=>`<td>${v(i,'acc')}</td>`).join('')+'</tr>';
+  h+='<tr><td class="l">Дәлдігі (бөлік құны), г</td>'+PTG.map((g,i)=>`<td>${g.last?(PTP[i].acc?nf(g.acc,4):'—'):v(i,'acc')}</td>`).join('')+'</tr>';
   h+='<tr><td class="l">Станция ұпайы</td>'+PTG.map((g,i)=>`<td>${Object.keys(PTP[i]).length} / 4</td>`).join('')+'</tr>';
   $('rsTab').innerHTML=h;
   $('rsMore').innerHTML=PTG.map((g,i)=>`<b style="color:${GR[i].c}">${GR[i].n}:</b> `+g.bodies.slice(1).map((o,j)=>`${o[1]} – ${v(i,(j+1)+'_g')} г`).join(' · ')).join('<br>'); }
