@@ -8,7 +8,7 @@ const OQ=(()=>{
   let PID=store.get('pid',null); if(!PID){ PID=Math.random().toString(36).slice(2,10); store.set('pid',PID); }
   let NAME=''; try{ NAME=localStorage.getItem(NKEY)||''; }catch(e){}
   let net=null, joined=false, kicked=false, lastSeen=0, ST={act:null,g:null,started:false}, shown=null, screen='', waitSig='';
-  const PROG=store.get('prog',{}), VALS=store.get('vals',{});
+  const PROG=store.get('prog',{}), VALS=store.get('vals',{}); delete PROG.gt;   // топтық жауап бет жаңартылғанда тазарады
   let top,app;
 
   function setTop(){ top.querySelector('.nm').textContent=(NAME||'Сабаққа қосылу')+(shown?' · '+pageOf(shown).dataset.title:''); const e=top.querySelector('.oqgp'), g=GN[ST.g]; if(g&&joined){ e.hidden=false; e.textContent=g[0]; e.style.background=g[1]; } else e.hidden=true; }
@@ -25,7 +25,7 @@ const OQ=(()=>{
     if(key==='gt') [...$('gtRow').children].forEach((c,i)=>{ c.style.display=i===g?'':'none'; });
     if(key==='pt'&&(ptG!==g||!$('ptTab').children.length)){ ptG=g; ptBuild(); }
     if(key==='jk'){ ROSTER=[NAME]; who=0; tkFill(); }
-    document.querySelectorAll(`.slide[data-phone="${key}"] input[id],.slide[data-phone="${key}"] input[data-gt]`).forEach(i=>{ const id=i.id||i.dataset.gt; if(VALS[id]!=null&&i.value===''&&i.type!=='range') i.value=VALS[id]; }); }
+    document.querySelectorAll(`.slide[data-phone="${key}"] input[id]`).forEach(i=>{ if(VALS[i.id]!=null&&i.value===''&&i.type!=='range') i.value=VALS[i.id]; }); }
   function showPage(key){ if(shown===key&&screen==='page') return; const i=slides.indexOf(pageOf(key)); if(i<0) return; screen='page'; go(i); cover(false); shown=key; setup(key); setTop(); scrollTo(0,0); buzz(120); report(); }
 
   /* ---------- нәтижені мұғалімге жіберу ---------- */
@@ -52,7 +52,7 @@ const OQ=(()=>{
     app=document.createElement('div'); app.className='oqapp'; document.body.appendChild(app);
     const box=$('slides');
     new MutationObserver(later).observe(box,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class']});
-    box.addEventListener('input',e=>{ const i=e.target; if(i.tagName==='INPUT'&&i.type!=='range'&&(i.id||i.dataset.gt)){ VALS[i.id||i.dataset.gt]=i.value; store.set('vals',VALS); } });
+    box.addEventListener('input',e=>{ const i=e.target; if(i.tagName==='INPUT'&&i.type!=='range'&&i.id){ VALS[i.id]=i.value; store.set('vals',VALS); } });
     box.addEventListener('focusin',e=>{ const i=e.target; if(i.tagName==='INPUT'&&i.type!=='range') i.inputMode=i.dataset.q?'text':'decimal'; });
     if(store.get('in',false)&&NAME) start(); else vName(); }
   return {init,get ST(){return ST;},get PROG(){return PROG;},PID,get shown(){return shown;}};

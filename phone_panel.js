@@ -35,7 +35,7 @@ const PH=(()=>{
   function reg(pid,raw){ const name=cleanName(raw); let s=D.st[pid]; if(!s){ s=D.st[pid]={n:name,g:groupFor(name),prog:{}}; ensureRoster(name); save(); SND.clink(); paintList(); } else if(s.n!==name){ s.n=name; save(); paintList(); } return s; }
 
   /* Топтық бет: топтың алғашқы дұрыс жауабы топ ұпайына түседі. Практикалық жұмыстың жауабы қорғауда тақтада ғана енгізіледі. */
-  function mergeGt(v){ if(!v||!v.ok||!GR[v.g]) return; const s=GTS[v.g]=GTS[v.g]||{t:0,done:false,ok:false}; if(s.ok) return; s.done=true; s.ok=true; s.t=s.t||1; addGS(v.g,2); store.set('ms_gt',GTS); gtShow(v.g); }
+  function mergeGt(v){ if(!v||!v.ok||!GR[v.g]||GTP[v.g]) return; const s=GTS[v.g]=GTS[v.g]||{t:0,done:false,ok:false}; s.done=true; s.ok=true; s.t=s.t||1; gtPay(v.g); gtShow(v.g); }
   function applyGrade(s,v){ if(!v||!v.it) return; const r=RES[s.n]=RES[s.n]||{}; let ch=false; Object.keys(v.it).forEach(q=>{ const a=v.it[q]; if(!TQ[q]||!a) return; if(!r[q]||r[q].t!==a.t||r[q].done!==a.done){ r[q]={t:a.t,p:a.p,v:a.v,done:a.done}; ch=true; } }); if(ch){ store.set('ms_res',RES); tkLoad(); grBuild(); } }
   function setProg(pid,key,v){ const s=D.st[pid]; if(!s||!v||!pageOf(key)) return; const brief={g:v.g||0,b:v.b||0}; if(v.sc!=null) brief.sc=v.sc;
     if(JSON.stringify(s.prog[key])!==JSON.stringify(brief)){ s.prog[key]=brief; save(); paintChip(); paintMon(); }
@@ -57,7 +57,7 @@ const PH=(()=>{
     if(m.t==='ping'){ if(m.n) reg(pid,m.n); if(m.p) Object.keys(m.p).forEach(k=>setProg(pid,k,m.p[k])); tell(pid); return; }
     if(m.t==='res'){ setProg(pid,m.pack,m.v); return; } }
   function kick(pid){ const s=D.st[pid]; if(!s) return; if(!confirm(s.n+' тізімнен алынсын ба?')) return; delete D.st[pid]; D.kick.push(pid); save(); if(net) net.send(pid,{t:'kicked',pid}); paintList(); }
-  function resetAll(){ if(!confirm('Жаңа сабақ: жаңа QR жасалады, топтар мен осы сыныптың нәтижелері тазарады. Жалғастырамыз ба?')) return; store.set('ms_ph',{date:today,room:newRoom(),st:{},kick:[],act:null}); store.set('ms_gd',null); store.set('ms_res',{}); store.set('ms_pt',[{},{},{}]); store.set('ms_ptp',[{},{},{}]); store.set('ms_gt',{}); store.set('ms_gs',[0,0,0]); store.set('ms_lt',[0,0,0]); store.set('ms_lt_log',[]); store.set('ms_less',null); location.reload(); }
+  function resetAll(){ if(!confirm('Жаңа сабақ: жаңа QR жасалады, топтар мен осы сыныптың нәтижелері тазарады. Жалғастырамыз ба?')) return; store.set('ms_ph',{date:today,room:newRoom(),st:{},kick:[],act:null}); store.set('ms_gd',null); store.set('ms_res',{}); store.set('ms_pt',[{},{},{}]); store.set('ms_ptp',[{},{},{}]); store.set('ms_gt_paid',{}); store.set('ms_gs',[0,0,0]); store.set('ms_lt',[0,0,0]); store.set('ms_lt_log',[]); store.set('ms_less',null); location.reload(); }
 
   /* ---------- экрандағы тізім ---------- */
   function paintChip(){ const c=$('phChip'); if(!c) return; const n=ids().length, k=keyHere(); let t='📱 QR · '+n, hot=false;

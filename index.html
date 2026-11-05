@@ -272,6 +272,7 @@ html.oq .fsq.blq>span:nth-child(even){margin-bottom:9px}
 .phchip.hot{animation:phhot 1.1s ease-in-out infinite}
 @keyframes phhot{50%{box-shadow:0 0 0 6px rgba(224,169,46,.45)}}
 .gchips{margin-left:8px}
+.fsbtn{flex:none;margin-left:2px;font:700 15px "Segoe UI";color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.45);border-radius:6px;padding:6px 11px;cursor:pointer;white-space:nowrap}
 .jn{position:absolute;inset:0;display:grid;grid-template-columns:600px 1fr;gap:26px;padding:20px 30px}
 .jn h2{font:700 36px Georgia,serif;margin:0 0 6px}
 .jn .qrb{width:540px;height:540px;background:#fff;border-radius:14px;padding:12px;border:1px solid var(--line)}
@@ -333,7 +334,7 @@ html.oq #ptPhoneNote{display:block}
 <body>
 <div class="stage" id="stage">
   <div class="top"><span class="sign">кг</span><span class="lesson">Физика · 7-сынып</span><span class="sep"></span><span class="stitle" id="stitle"></span>
-    <div class="lesst"><button id="lessT" title="Тоқтату / жалғастыру">45:00</button><button id="lessR" title="Сабақ уақытын басынан бастау">↺</button></div><button class="phchip" id="phChip">📱 QR</button><div class="gchips" id="gchips"></div></div>
+    <div class="lesst"><button id="lessT" title="Тоқтату / жалғастыру">45:00</button><button id="lessR" title="Сабақ уақытын басынан бастау">↺</button></div><button class="phchip" id="phChip">📱 QR</button><div class="gchips" id="gchips"></div><button class="fsbtn" id="fs" title="Толық экран (F)">⛶ Толық экран</button></div>
   <div class="mainw">
     <div class="leftw" id="slides">
 
@@ -739,7 +740,7 @@ html.oq #ptPhoneNote{display:block}
   <div class="btab" id="btab">✎ ТАҚТА</div>
   <div class="bottom">
     <button class="btn" id="prev">◀ Артқа</button><div class="dots" id="dots"></div><button class="btn main" id="next">Келесі ▶</button>
-    <span class="cnt" id="cnt"></span><button class="btn" id="snd">🔊</button><button class="btn" id="fs">⛶ Толық экран</button>
+    <span class="cnt" id="cnt"></span><button class="btn" id="snd">🔊</button>
   </div>
   <div class="phov" id="phOv" style="display:none"><div class="phbox">
     <div><div class="qrb" data-qr></div><div class="jnurl" data-url></div><div data-net style="font-size:14px"></div></div>
@@ -1127,7 +1128,9 @@ const GT=[
   {t:'Электронды таразы',tx:'Бос стақан <b>120 г</b>, сумен бірге <b>370 г</b> көрсетті. Судың массасын тап. TARE басылғаннан кейін 10 бірдей тиын <b>22 г</b> көрсетті – бір тиынның массасы?',
    q:[['m су =','кг',.25],['m₁ =','г',2.2]]},
 ];
-let GTS=store.get('ms_gt',{});
+/* Жауап күйі бет жаңартылғанда тазарады. Топ ұпайы (GTP) сақталады: бір топқа +2 бір рет қана қосылады */
+let GTS={}; const GTP=store.get('ms_gt_paid',{});
+function gtPay(i){ if(GTP[i]) return; GTP[i]=1; store.set('ms_gt_paid',GTP); addGS(i,2); }
 function gtBuild(){ $('gtRow').innerHTML=GT.map((g,i)=>`<div class="gtask grow" style="border-top-color:${GR[i].c}"><h4 style="color:${GR[i].c}">${GR[i].n} топ · ${g.t}</h4><div class="tx">${g.tx}</div>
   ${g.q.map((q,j)=>`<div class="ai">${q[0]} <input data-gt="${i}_${j}"> ${q[1]}</div>`).join('')}
   <div><button class="btn main" data-gtc="${i}">Тексеру</button></div><div class="r" id="gtr${i}"></div></div>`).join('');
@@ -1138,8 +1141,8 @@ function gtShow(i){ const s=GTS[i]; const r=$('gtr'+i); if(!s){ r.textContent=''
   else r.innerHTML='<span class="bad">✘ Тағы 1 мүмкіндік</span>'; }
 $('gtRow').addEventListener('click',e=>{ const b=e.target.closest('[data-gtc]'); if(!b) return; const i=+b.dataset.gtc; const s=GTS[i]=GTS[i]||{t:0,done:false,ok:false}; if(s.done) return;
   const ok=GT[i].q.every((q,j)=>near(parseNum(document.querySelector(`[data-gt="${i}_${j}"]`).value),q[2]));
-  s.t++; if(ok){ s.done=true; s.ok=true; addGS(i,2); SND.ok(); } else { SND.bad(); if(s.t>=2) s.done=true; }
-  store.set('ms_gt',GTS); gtShow(i); });
+  s.t++; if(ok){ s.done=true; s.ok=true; gtPay(i); SND.ok(); } else { SND.bad(); if(s.t>=2) s.done=true; }
+  gtShow(i); });
 gtBuild();
 
 
