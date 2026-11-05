@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Массаны өлшеу — 7-сынып</title>
+<style>
+:root{
+  --paper:#f3efe4; --card:#fbf9f3; --ink:#1d2430; --muted:#6a6658; --line:#d8d0bd;
+  --blue:#2d5f4f; --blue-d:#21483c; --yellow:#e0a92e; --red:#b8442f; --green:#2e7d4f; --brass:#c79a3a;
+  --frame:#6b4a2b; --board:#1d2a26;
+  --g0:#c8352b; --g1:#2e7d4f; --g2:#1f5fa8;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#2a2d31}
+body{color:var(--ink);font-family:"Segoe UI","Noto Sans",system-ui,sans-serif}
+.stage{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;background:var(--paper);overflow:hidden;
+  background-image:linear-gradient(rgba(45,95,79,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(45,95,79,.05) 1px,transparent 1px);background-size:24px 24px}
+.top{position:absolute;left:0;right:0;top:0;height:54px;display:flex;align-items:center;gap:14px;padding:0 16px 0 22px;background:var(--blue);color:#fff}
+.top .sign{min-width:34px;height:30px;border-radius:4px;background:var(--brass);display:grid;place-items:center;font:800 13px Georgia,serif;color:#2a1f0c;padding:0 6px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.2)}
+.top .lesson{font-size:13px;letter-spacing:2px;text-transform:uppercase;opacity:.85}
+.top .stitle{font-family:Georgia,"Times New Roman",serif;font-size:20px;font-weight:600;white-space:nowrap}
+.top .sep{width:1px;height:22px;background:rgba(255,255,255,.35)}
+.gchips{margin-left:auto;display:flex;gap:6px}
+.gchip{display:flex;align-items:center;gap:7px;border:none;border-radius:18px;padding:3px 4px 3px 12px;color:#fff;font:600 14px "Segoe UI";cursor:pointer;user-select:none}
+.gchip b{font:800 19px Georgia,serif;min-width:26px;text-align:center}
+.gchip .mn{width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.25);display:grid;place-items:center;font-size:15px}
+.mainw{position:absolute;left:0;right:0;top:54px;bottom:58px;display:flex}
+.leftw{position:relative;width:1040px;flex:none;transition:width .35s ease}
+.stage.wide .leftw,.stage.noboard .leftw{width:100%}
+.stage.wide .rightw,.stage.noboard .rightw{display:none}
+.slide{position:absolute;inset:0;display:none;overflow:hidden}
+.slide.on{display:block;animation:fadein .3s ease}
+.slide.nofit{padding:18px 26px 14px 30px;flex-direction:column;gap:12px}
+.slide.nofit.on{display:flex}
+.sc{position:absolute;top:13px;left:24px;width:900px;display:flex;flex-direction:column;gap:12px;transform-origin:0 0}
+.duo{display:flex;flex-direction:column;gap:12px}
+.duo>div{display:flex;flex-direction:column;gap:12px;min-width:0}
+.stage.noboard .duo{flex-direction:row;align-items:flex-start;gap:18px}
+.stage.noboard .duo>.pa{flex:1.12} .stage.noboard .duo>.pb{flex:1}
+.leftw.notrans{transition:none}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+h2.st{font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:32px;margin:0;color:var(--ink)}
+h2.st small{display:block;font:600 13px "Segoe UI",sans-serif;letter-spacing:2.2px;color:var(--blue);text-transform:uppercase;margin-bottom:3px}
+p.lead{font-size:19px;line-height:1.5;margin:0;color:#2c3340}
+.fbox{background:#fff;border:1px solid var(--line);border-left:6px solid var(--yellow);border-radius:4px;padding:10px 16px;font-family:"Cambria Math","Times New Roman",serif;font-size:20px;line-height:1.6}
+.fbox .big{font-size:28px;font-style:italic;font-weight:600}
+canvas.lab{display:block;max-width:100%;margin:0 auto;border:1px solid var(--line);border-radius:4px;background:#e9e3d3}
+.row{display:flex;gap:14px;align-items:stretch}
+.col{display:flex;flex-direction:column;gap:10px}
+.grow{flex:1;min-width:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:11px 14px}
+.card h3{margin:0 0 8px;font:700 15px "Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:.6px;color:var(--blue)}
+.ctl .lab{display:flex;justify-content:space-between;align-items:baseline;font-size:15px;color:var(--muted);margin-bottom:4px}
+.ctl .val{font:700 18px Georgia,serif;color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--blue);height:22px;margin:0}
+.btn{font:inherit;font-size:15px;padding:7px 14px;cursor:pointer;border-radius:4px;border:1px solid #c9c0aa;background:#fff;color:var(--ink)}
+.btn:hover{border-color:var(--blue)}
+.btn.main{background:var(--blue);border-color:var(--blue-d);color:#fff;font-weight:600}
+.btn.main:hover{background:var(--blue-d)}
+.btn.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.warn{border:1px dashed var(--red);background:#fff4f2;border-radius:4px;padding:8px 13px;font-size:16px;line-height:1.45}
+.warn b{color:var(--red)}
+.tip{border:1px dashed var(--blue);background:#eef5f1;border-radius:4px;padding:8px 13px;font-size:16px;line-height:1.45}
+ul.pl{margin:0;padding-left:22px;font-size:19px;line-height:1.6}
+table.t{border-collapse:collapse;width:100%;font-size:16px;background:#fff}
+table.t th,table.t td{border:1px solid var(--line);padding:5px 9px;text-align:center}
+table.t th{background:#e4ece7;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#2c3340}
+table.t td.l{text-align:left}
+table.t input{font:inherit;font-size:16px;width:84px;padding:3px 6px;border:1px solid #c9c0aa;border-radius:3px;text-align:center}
+sup,sub{font-size:.72em;line-height:0}
+.good{color:var(--green);font-weight:700} .bad{color:var(--red);font-weight:700}
+.chk{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:17px}
+.chk input{font:inherit;font-size:17px;width:90px;padding:5px 8px;border:1px solid #c9c0aa;border-radius:4px}
+
+/* таразы зертханасы */
+.wset{display:flex;flex-wrap:wrap;gap:6px}
+.wb{font:600 15px Georgia,serif;padding:7px 10px;min-width:60px;border-radius:5px;border:1px solid #a98538;background:linear-gradient(#f3dc9a,#d4ab4f);color:#3a2a08;cursor:pointer}
+.wb.mg{background:linear-gradient(#f2f2f2,#c9ccd0);border-color:#8d939a}
+.wb:disabled{opacity:.25;cursor:default}
+.objs{display:flex;flex-wrap:wrap;gap:6px}
+.status{font-size:17px;line-height:1.45;min-height:50px}
+.status b{color:var(--blue)}
+
+/* таймер */
+.timer{font:700 104px/1 Consolas,monospace;color:var(--ink);text-align:center;letter-spacing:2px}
+.timer.low{color:var(--red)}
+.rot td.cur{background:#fff3cf;font-weight:700}
+.stn{display:inline-block;padding:1px 8px;border-radius:10px;color:#fff;font-size:13px}
+
+/* топқа бөлу */
+.gdiv{display:grid;grid-template-columns:420px 1fr;gap:22px;align-items:start}
+.gcard{width:420px;height:420px;border-radius:22px;display:grid;place-items:center;text-align:center;cursor:pointer;user-select:none;touch-action:manipulation;
+  background:repeating-linear-gradient(45deg,#2d5f4f 0 22px,#346b5a 22px 44px);color:#fff;box-shadow:0 10px 24px rgba(0,0,0,.2),inset 0 0 0 8px rgba(255,255,255,.15);transition:transform .15s}
+.gcard:active{transform:scale(.98)}
+.gcard .q{font:800 120px/1 Georgia,serif}
+.gcard .tx{font:700 26px "Segoe UI";margin-top:8px}
+.gcard.res .q{font-size:46px} .gcard.res .tx{font-size:22px;opacity:.9}
+.gcols{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.gcol{background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden;min-height:330px}
+.gcol h4{margin:0;padding:8px 10px;color:#fff;font:700 18px "Segoe UI";display:flex;justify-content:space-between}
+.gcol ol{margin:6px 0;padding-left:30px;font-size:16px;line-height:1.55}
+
+/* миға шабуыл */
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.bq{min-height:150px;border-radius:10px;background:#fff;border:2px solid var(--line);padding:12px 14px;cursor:pointer;user-select:none;display:flex;flex-direction:column;justify-content:center;transition:.2s}
+.bq .n{font:800 54px Georgia,serif;color:var(--blue);text-align:center}
+.bq .qq{display:none;font-size:18.5px;line-height:1.4;font-weight:600}
+.bq .aa{display:none;font-size:16.5px;line-height:1.35;color:var(--green);margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+.bq.open{border-color:var(--brass);background:#fffaf0} .bq.open .n{display:none} .bq.open .qq{display:block}
+.bq.ans .aa{display:block}
+
+/* топтық тапсырма */
+.gtask{border-radius:8px;background:#fff;border:1px solid var(--line);border-top:8px solid;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.gtask h4{margin:0;font:700 19px "Segoe UI"}
+.gtask .tx{font-size:17px;line-height:1.45;flex:1}
+.gtask .ai{display:flex;gap:6px;align-items:center;font-size:16px;flex-wrap:wrap}
+.gtask input{font:inherit;font-size:17px;width:90px;padding:4px 7px;border:1px solid #c9c0aa;border-radius:4px}
+.gtask .r{font-size:15px;min-height:22px}
+
+/* тапсырмалар */
+.who{display:flex;align-items:center;gap:8px;font-size:17px;flex-wrap:wrap}
+.who select{font:inherit;font-size:17px;padding:5px 8px;border:1px solid #c9c0aa;border-radius:4px;min-width:260px}
+.tq{background:#fff;border:1px solid var(--line);border-radius:5px;padding:8px 12px;display:grid;grid-template-columns:46px 1fr;gap:4px 10px;align-items:start}
+.tq .lv{grid-row:span 2;font:800 22px Georgia,serif;color:#fff;border-radius:5px;text-align:center;padding:6px 0}
+.tq .qt{font-size:17px;line-height:1.4}
+.tq .ans{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.ai input{font:inherit;font-size:17px;width:110px;padding:4px 7px;border:1px solid #c9c0aa;border-radius:4px}
+.ai input.okk{border-color:var(--green);background:#e8f4ec} .ai input.nok{border-color:var(--red);background:#fdecea}
+.ai{display:flex;gap:6px;align-items:center;font-size:16.5px}
+.ai .r{font-size:14px;min-width:20px}
+.lvA{background:#4f8a6e} .lvB{background:#c79a3a} .lvC{background:#b8442f}
+.score{margin-left:auto;font:700 22px Georgia,serif}
+
+/* бағалау */
+.gwrap{display:grid;grid-template-columns:1fr 330px;gap:16px;flex:1;min-height:0}
+.gtab{overflow:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+.gtab table.t{font-size:15px} .gtab th{position:sticky;top:0}
+textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8px;border:1px solid #c9c0aa;border-radius:4px;resize:none}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sum div{background:#fff;border:1px solid var(--line);border-radius:5px;padding:8px;text-align:center}
+.sum b{display:block;font:700 28px Georgia,serif}
+
+/* дуэль */
+.duel{position:absolute;inset:0;display:grid;grid-template-columns:1fr 170px 1fr;touch-action:none;user-select:none;-webkit-user-select:none}
+.side{padding:18px 22px;display:flex;flex-direction:column;gap:14px}
+.side.A{background:linear-gradient(180deg,#f6dcd8,#efc6c0)} .side.B{background:linear-gradient(180deg,#d9e6f6,#c4d7f0)}
+.side .whoq{display:flex;align-items:center;gap:12px}
+.side .whoq input{font:700 24px Georgia,serif;border:none;border-bottom:2px dashed rgba(0,0,0,.25);background:transparent;width:280px;padding:2px 4px}
+.side .sc2{margin-left:auto;font:800 58px Georgia,serif;line-height:1}
+.side.A .sc2{color:#b8442f} .side.B .sc2{color:#1f5fa8}
+.side .qq2{background:#fff;border-radius:10px;padding:16px 18px;font:700 40px/1.3 "Segoe UI",sans-serif;min-height:170px;text-align:center;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.08)}
+.side .opts{display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;align-content:start}
+.side .o{font:700 34px Georgia,serif;padding:20px 10px;border-radius:12px;border:3px solid rgba(0,0,0,.12);background:#fff;cursor:pointer;touch-action:none;min-height:110px;-webkit-tap-highlight-color:transparent}
+.side .o.good{background:#2e7d4f;color:#fff;border-color:#1f5a38}
+.side .o.badc{background:#c8352b;color:#fff;border-color:#8e241d}
+.side .o.dim{opacity:.4}
+.side .stat{font:600 19px "Segoe UI";min-height:28px;display:flex;justify-content:space-between}
+.pbar{height:10px;background:rgba(255,255,255,.6);border-radius:5px;overflow:hidden}
+.pbar i{display:block;height:100%;width:0;transition:width .3s}
+.side.A .pbar i{background:#b8442f} .side.B .pbar i{background:#1f5fa8}
+.mid{background:var(--ink);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:10px;text-align:center}
+.mid .lbl{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;opacity:.7}
+.mid .clock{font:700 30px Consolas,monospace;color:var(--yellow)}
+.mid .btn{width:140px}
+.overlay{position:absolute;inset:0;background:rgba(29,36,48,.82);display:flex;align-items:center;justify-content:center;z-index:5}
+.overlay .box{background:#fff;border-radius:12px;padding:28px 36px;text-align:center;max-width:760px}
+.overlay h3{font:700 38px Georgia,serif;margin:0 0 10px}
+.overlay p{font-size:20px;color:#444;line-height:1.5}
+
+/* ФС 3D */
+#fs3d{display:block;width:470px;height:560px;border-radius:6px;border:1px solid var(--line);cursor:grab;touch-action:none;background:#dfe6ea}
+.fsq{display:grid;grid-template-columns:auto 1fr;gap:8px 10px;align-items:center;font-size:17px}
+.fsq input{font:inherit;font-size:17px;width:100px;padding:4px 7px;border:1px solid #c9c0aa;border-radius:4px}
+
+/* бағдаршам */
+.lights{display:flex;gap:26px;justify-content:center;align-items:flex-end}
+.lt{display:flex;flex-direction:column;align-items:center;gap:8px}
+.lt .c{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;font:800 54px Georgia,serif;color:#fff;cursor:pointer;box-shadow:inset 0 -10px 0 rgba(0,0,0,.15),0 6px 14px rgba(0,0,0,.15);user-select:none}
+.lt .tx{font-size:17px;text-align:center;max-width:190px;line-height:1.3}
+.lt .mn{font-size:13px;padding:2px 10px}
+.bar{display:flex;height:22px;border-radius:4px;overflow:hidden;border:1px solid var(--line);background:#fff}
+.bar i{display:block;height:100%;transition:width .3s}
+
+/* тақта */
+.rightw{flex:1;padding:14px 18px 14px 22px;display:flex;position:relative;transition:transform .3s}
+.rightw.drag{transition:none}
+.grip{position:absolute;left:0;top:50%;transform:translateY(-50%);width:26px;height:190px;border-radius:10px;background:#8a6a48;cursor:ew-resize;touch-action:none;
+  display:flex;align-items:center;justify-content:center;color:#f1e6d4;font-size:14px;font-weight:600;writing-mode:vertical-rl;letter-spacing:2px;box-shadow:0 3px 8px rgba(0,0,0,.25);z-index:3;user-select:none}
+.btab{position:absolute;right:0;top:50%;transform:translateY(-50%);width:34px;height:170px;border-radius:12px 0 0 12px;background:var(--frame);color:#f1e6d4;
+  display:none;align-items:center;justify-content:center;writing-mode:vertical-rl;font:600 15px "Segoe UI";letter-spacing:2px;cursor:pointer;z-index:6;touch-action:none;box-shadow:-3px 3px 10px rgba(0,0,0,.25)}
+.stage.noboard:not(.wide) .btab{display:flex}
+.board{flex:1;position:relative;border:10px solid var(--frame);border-radius:6px;display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:inset 0 0 40px rgba(0,0,0,.55),0 10px 24px rgba(0,0,0,.25);
+  background:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/100% 46px,radial-gradient(ellipse at 30% 20%,#25352f 0%,var(--board) 70%)}
+.board::after{content:"";position:absolute;left:0;right:0;bottom:0;height:12px;background:linear-gradient(#5a3e24,#3f2a17);pointer-events:none}
+.tools{display:flex;align-items:center;gap:6px;padding:7px 9px;background:rgba(0,0,0,.25);border-bottom:1px solid rgba(255,255,255,.06);z-index:2;flex-wrap:wrap}
+.sw{width:25px;height:25px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;flex:none}
+.sw.on{border-color:#fff;box-shadow:0 0 0 2px rgba(0,0,0,.6)}
+.tb{white-space:nowrap;font:inherit;font-size:13px;background:rgba(255,255,255,.06);color:#dfe7e2;border:1px solid rgba(255,255,255,.12);border-radius:3px;padding:4px 8px;cursor:pointer;flex:none}
+.tb:hover{background:rgba(255,255,255,.14)} .tb.on{background:#e8e3cf;color:#1d2a26}
+.gapx{flex:1}
+.bhint{position:absolute;left:16px;bottom:22px;right:16px;font-family:Georgia,serif;font-style:italic;font-size:15px;color:rgba(230,240,232,.28);pointer-events:none;z-index:1}
+#ink{display:block;flex:1;min-height:0;width:100%;margin-bottom:12px;touch-action:none;cursor:crosshair;position:relative;z-index:1}
+
+.bottom{position:absolute;left:0;right:0;bottom:0;height:58px;display:flex;align-items:center;gap:8px;padding:0 20px;background:var(--ink)}
+.bottom .btn{background:transparent;color:#e8e8e8;border-color:#4b5262}
+.bottom .btn.main{background:var(--yellow);color:#1d2430;border-color:var(--yellow)}
+.dots{display:flex;gap:3px;margin:0 6px}
+.dot{width:30px;height:30px;border-radius:4px;border:1px solid #4b5262;background:transparent;color:#aab;font-size:12.5px;cursor:pointer;padding:0}
+.dot.on{background:var(--yellow);color:#1d2430;border-color:var(--yellow);font-weight:700}
+.dot.gm{border-color:var(--red)}
+.cnt{margin-left:auto;color:#cfd3dc;font:15px Georgia,serif}
+.toast{position:absolute;left:50%;top:66px;transform:translate(-50%,-10px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:5px;opacity:0;transition:.25s;pointer-events:none;z-index:20;font-size:18px}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.aop{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.aop button{font:inherit;font-size:17px;line-height:1.3;text-align:left;padding:10px 12px;border-radius:5px;border:2px solid var(--line);background:#fff;cursor:pointer;color:var(--ink)}
+.aop button b{display:inline-block;min-width:26px;font-family:Georgia,serif;color:var(--blue)}
+.aop button:disabled{opacity:.45;cursor:default}
+.aop button.ok,.aop button.no{opacity:1!important} .aop button.ok{border-color:var(--green);background:#e6f3ea} .aop button.no{border-color:var(--red);background:#f8e8e4}
+.stage.noboard .duo.astro>.pa{flex:1.6} .stage.noboard .duo.astro .sit{display:none} .stage.noboard .duo.astro .aop{grid-template-columns:1fr}
+#asMsg{font-size:18px;line-height:1.45;min-height:54px}
+
+.ptabs{display:flex;gap:8px;align-items:stretch}
+.ptab{flex:1;font:700 19px "Segoe UI";padding:8px 12px;border-radius:6px;border:3px solid;background:#fff;cursor:pointer;text-align:left;line-height:1.2}
+.ptab small{display:block;font-size:14px;font-weight:500;opacity:.9}
+.ptab.on{color:#fff!important}
+.pttmw{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:4px 8px}
+.pttm{font:700 40px/1 Consolas,monospace;min-width:118px;text-align:center}
+.pttm.low{color:var(--red)}
+#ptTab td.ok{background:#e6f3ea} #ptTab td.no{background:#f8e8e4}
+#ptTab input{width:96px}
+#ptCtl{display:flex;flex-direction:column;gap:8px}
+.wb,canvas.lab{touch-action:none}
+.duo.ptd{flex-direction:row;align-items:flex-start;gap:18px} .duo.ptd>.pa{flex:1.15} .duo.ptd>.pb{flex:1}
+
+.c3d{display:block;width:640px;height:430px;border-radius:6px;border:1px solid var(--line);cursor:grab;touch-action:none;background:#1d2a26}
+.hud{display:grid;grid-template-columns:auto auto auto auto;gap:4px 14px;font-size:17px;align-items:center;background:#1e2a22;color:#e9f3ec;border-radius:6px;padding:8px 12px;font-family:"Segoe UI"}
+.hud b{font:700 20px Consolas,monospace;color:#8ff0a4} .hud .q{color:#f6d77a}
+.hud .h{font-size:12px;letter-spacing:1px;text-transform:uppercase;opacity:.7}
+.rule{border-left:6px solid var(--brass);background:#fff8e6;border-radius:4px;padding:8px 12px;font-size:17px;line-height:1.45}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 4px;line-height:1.1}
+.frac>span:first-child{border-bottom:2px solid currentColor;padding:0 4px}
+.ikst{font:17px/1.55 Georgia,serif;margin-top:6px}
+.rule .f{font:700 24px Georgia,serif;color:var(--blue)}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="top"><span class="sign">кг</span><span class="lesson">Физика · 7-сынып</span><span class="sep"></span><span class="stitle" id="stitle"></span>
+    <div class="gchips" id="gchips"></div></div>
+  <div class="mainw">
+    <div class="leftw" id="slides">
+
+<!-- 1 -->
+<section class="slide" data-title="Кіріспе" data-hint="Күні: 05.11.2026 · Тақырып: Масса және денелердің массасын өлшеу">
+  <h2 class="st" style="font-size:48px;line-height:1.1;margin-top:8px"><small>Тығыздық бөлімі · 17-сабақ</small>Масса және денелердің<br>массасын өлшеу</h2>
+  <div class="duo"><div class="pa">
+  <p class="lead" style="color:var(--muted)">Практикалық жұмыс №3: электрондық, серіппелі және иінді таразыларды қолданып, әр түрлі денелердің массасын анықтау</p>
+  </div><div class="pb">
+  <canvas class="lab" id="cTitle" width="840" height="400"></canvas>
+  <div style="font-size:15px;color:var(--muted)">«Тайтөбе ауылының жалпы орта білім беретін мектебі» КММ · 7 «А» · мұғалім Төленді И.Н.</div>
+</div></div>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-title="Сабақтың мақсаты" data-hint="Оқу мақсаты 7.2.2.11">
+  <h2 class="st"><small>Оқу мақсаты 7.2.2.11</small>Бүгін не үйренеміз?</h2>
+  <div class="duo"><div class="pa">
+  <p class="lead">Электронды, серіппелі, иінді таразылардың көмегімен дененің массасын өлшеу.</p>
+  <div class="card" style="border-left:6px solid #4f8a6e"><h3>Барлық оқушылар</h3><div style="font-size:18px">массаның анықтамасын, белгіленуін және SI бірлігін (кг) біледі; таразының үш түрін атайды.</div></div>
+  <div class="card" style="border-left:6px solid #c79a3a"><h3>Көптеген оқушылар</h3><div style="font-size:18px">үш таразымен дененің массасын өлшеп, нәтижені кестеге жазады, массаны килограммға келтіреді.</div></div>
+  <div class="card" style="border-left:6px solid #b8442f"><h3>Кейбір оқушылар</h3><div style="font-size:18px">бір дененің үш таразыдағы нәтижелерін салыстырып, қай таразының дәлірек екенін бөлік құны арқылы дәлелдейді.</div></div>
+  </div><div class="pb">
+  <div class="card"><h3>Бағалау критерийлері</h3>
+    <ul class="pl" style="font-size:17.5px;line-height:1.55"><li>таразымен дененің массасын дұрыс өлшейді;</li><li>массаның өлшем бірліктерін килограммға келтіреді;</li><li>таразылардың дәлдігін салыстырып, қорытынды жасайды.</li></ul></div>
+</div></div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-title="Топқа бөлінейік" data-hint="Әр оқушы экранға шығып, карточканы басады">
+  <h2 class="st"><small>Ұйымдастыру</small>Түсіңді тап – тобыңды тап!</h2>
+  <div class="gdiv">
+    <div class="col">
+      <div class="gcard" id="gCard"><div><div class="q">?</div><div class="tx">Басып көр!</div></div></div>
+      <div class="row" style="align-items:center;font-size:16px">Оқушы саны: <input id="gN" type="number" min="3" max="40" style="font:inherit;width:70px;padding:4px 6px"> <button class="btn" id="gReset">↺ Жаңадан бөлу</button></div>
+      <div id="gWho" style="font-size:16px;color:var(--muted)"></div>
+    </div>
+    <div class="col">
+      <div class="gcols" id="gCols"></div>
+      <div class="tip">Әр топ – бір «станция»: <b style="color:var(--g0)">Қызыл</b> – иінді таразыдан, <b style="color:var(--g1)">Жасыл</b> – серіппелі таразыдан, <b style="color:var(--g2)">Көк</b> – электронды таразыдан бастайды. Топ ұпайы жоғарғы жолақта.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-title="Үй тапсырмасы: миға шабуыл" data-hint="Өткен тақырыптар: механикалық қозғалыс, жылдамдық, ХБЖ, бөлік құны">
+  <h2 class="st"><small>Үй тапсырмасын тексеру · өткенді қайталау</small>Миға шабуыл</h2>
+  <p class="lead">Нөмірді таңда → сұрақ ашылады → топ жауап береді → тағы бір басу – дұрыс жауап. Дұрыс жауапқа топқа <b>+1</b> (жоғарғы жолақтан).</p>
+  <div class="bgrid" id="bGrid"></div>
+</section>
+
+<!-- 3а -->
+<section class="slide" data-title="Ойланайық: ғарыштағы оқиға" data-hint="Анимацияны тоқтат → болжам → тексер. Неге кілт жылдам, ғарышкер баяу?">
+  <h2 class="st"><small>Миға шабуыл · проблемалық жағдаят</small>Ғарышкер аман қала ма?</h2>
+  <div class="duo astro"><div class="pa">
+  <canvas class="lab" id="cAstro" width="840" height="420"></canvas>
+  <div class="row"><button class="btn" id="asPlay">▶ Бастау</button><button class="btn" id="asRe">↺ Басынан</button></div>
+  <div class="card" id="asMsg">Алдымен анимацияны көрейік: <b>▶ Бастау</b>.</div>
+  </div><div class="pb">
+  <div class="card sit"><h3>Жағдаят</h3><div style="font-size:18px;line-height:1.5">Ғарышкер станциядан шығып жұмыс істеп жүрді. Кенет <b>арқан үзіліп кетті</b>, ол станциядан баяу алыстай бастады. Қолында тек <b>гайка кілті</b> бар. <br><b>Аман қалу үшін не істеуі керек?</b></div></div>
+  <div class="aop" id="asOpts">
+    <button data-k="swim"><b>А</b> Қолдарын сермеп, станцияға қарай «жүзеді»</button>
+    <button data-k="to"><b>Ә</b> Кілтті станцияға қарай лақтырады</button>
+    <button data-k="away"><b>Б</b> Кілтті станциядан кері жаққа лақтырады</button>
+    <button data-k="wait"><b>В</b> Ештеңе істемей, күте тұрады</button>
+  </div>
+</div></div>
+</section>
+
+<!-- 3ә -->
+<section class="slide" data-wide="1" data-title="Инерттілік: каток" data-hint="m₁ / m₂ = v₂ / v₁  ·  масса – дененің инерттілігінің өлшемі">
+  <h2 class="st"><small>Жаңа ұғым · 3D зертхана</small>Катоктағы соқтығыс: кім жылдамырақ кері ұшады?</h2>
+  <div class="row">
+    <div class="col"><canvas id="ik3d" class="c3d" width="640" height="430"></canvas>
+      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><button class="btn main" id="ikGo">▶ Ойнату</button><button class="btn" id="ikRe">↺ Қайта</button><button class="btn" id="ikSlow">🐢 Баяу: қосулы</button></div>
+      <div style="display:flex;gap:6px;justify-content:center;align-items:center;font-size:16px">Баланың массасы: <button class="btn" data-ikm="40">40 кг</button><button class="btn" data-ikm="32">32 кг</button><button class="btn" data-ikm="50">50 кг</button></div>
+      <div class="hud" style="grid-template-columns:auto auto auto"><span class="h">Радар</span><span class="h">масса</span><span class="h">соқтығыстан кейін</span>
+        <span style="color:#ff9a8a">Ерлан ағай</span><span>80 кг</span><b id="ikA1">—</b>
+        <span style="color:#9fd3ff">Әли (бала)</span><span id="ikMB">40 кг</span><b id="ikB1" class="q">—</b></div></div>
+    <div class="col grow">
+      <div class="card" style="font-size:17px;line-height:1.5"><h3>Жағдаят</h3>Катокта <b>Ерлан ағай</b> (80 кг) мен кішкентай <b>Әли</b> бір-біріне қарай сырғанап келе жатып, кенет <b>соқтығысып</b> қалды. Екеуі кері қарай ұшты. Радар ағайдың жылдамдығын өлшеді, ал баланікін – <b>өлшей алмады</b>.</div>
+      <div class="rule" id="ikF"><span style="opacity:.7">🔒 Формула анимациядан кейін ашылады</span></div>
+      <div class="card" style="font-size:17px;display:flex;flex-direction:column;gap:8px">
+        <span>Әлидің соқтығыстан кейінгі жылдамдығы:</span><span>v₂ = <input id="ikV" style="font:inherit;width:90px;padding:4px 7px;border:1px solid #c9c0aa;border-radius:4px"> м/с</span>
+        <span><button class="btn main" id="ikChk">Тексеру</button> <button class="btn" id="ikSol">Шешуі</button> <span id="ikRes"></span></span>
+      </div>
+      <div class="card" id="ikCon" style="font-size:17px;line-height:1.5;display:none"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-title="Ойланайық" data-hint="Болжамдарды осында жазайық...">
+  <h2 class="st"><small>Проблемалық сұрақ</small>Қай таразы дұрыс өлшейді?</h2>
+  <div class="duo"><div class="pa">
+  <canvas class="lab" id="cProb" width="840" height="330"></canvas>
+  </div><div class="pb">
+  <div class="row">
+    <div class="card grow"><h3>1-сұрақ</h3><div style="font-size:18px;line-height:1.5">Дүкенде сатушы 1 кг алманы <b>электронды</b> таразыда, ал базарда әжеміз <b>иінді</b> таразыда өлшейді. Қайсысы дұрыс өлшейді?</div></div>
+    <div class="card grow"><h3>2-сұрақ</h3><div style="font-size:18px;line-height:1.5">Дәрігер дәріні <b>0,5 г</b>-ға дейін дәл өлшеуі керек. Ол қандай таразыны таңдайды? Неге?</div></div>
+  </div>
+  <div class="tip">👍 «Бас бармақ»: келісемін – жоғары, күмәнім бар – жанына, келіспеймін – төмен.</div>
+</div></div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-title="Масса деген не?" data-hint="m – масса, [m] = 1 кг ... 1 т = 10³ кг, 1 г = 10⁻³ кг, 1 мг = 10⁻⁶ кг">
+  <h2 class="st"><small>Жаңа ұғым</small>Масса</h2>
+  <div class="duo"><div class="pa">
+  <p class="lead"><b>Масса</b> – дененің <b>инерттілігінің өлшемі</b>. Массасы үлкен дененің жылдамдығын өзгерту қиынырақ. Масса – скаляр шама.</p>
+  <div class="fbox"><span class="big">m</span> &nbsp;— масса, &nbsp;SI бірлігі: <b>1 кг</b> &nbsp;|&nbsp; 1 т = 10<sup>3</sup> кг &nbsp;·&nbsp; 1 г = 10<sup>−3</sup> кг &nbsp;·&nbsp; 1 мг = 10<sup>−6</sup> кг</div>
+  </div><div class="pb">
+  <canvas class="lab" id="cIner" width="840" height="200"></canvas>
+  <div class="row" style="align-items:center">
+    <div class="ctl grow"><div class="lab"><span>Қызыл арбаның массасы</span><span class="val" id="inMv"></span></div><input type="range" id="inM" min="1" max="5" step="1" value="3"></div>
+    <button class="btn main" id="inGo">👉 Бірдей итеру</button><button class="btn" id="inRe">↺</button>
+  </div>
+  <div class="card"><h3>Килограммға айналдыр</h3>
+    <div class="chk"><input id="cvV" value="250"><select id="cvU" class="btn"><option value="1000">т</option><option value="1">кг</option><option value="0.001" selected>г</option><option value="0.000001">мг</option></select>
+    <span id="cvOut" style="font:21px 'Times New Roman',serif"></span></div></div>
+</div></div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-title="Иінді таразы" data-hint="Дене – сол табақшаға, кір тастар – оң табақшаға. m = кір тастардың массаларының қосындысы">
+  <h2 class="st"><small>Виртуалды зертхана · 1</small>Иінді таразы</h2>
+  <div class="duo"><div class="pa">
+  <canvas class="lab" id="cLever" width="840" height="330"></canvas>
+  </div><div class="pb">
+  <div class="objs" id="lvObjs"></div>
+  <div class="wset" id="lvW"></div>
+  <div style="display:flex;gap:8px"><button class="btn" id="lvUndo">↶ Соңғы кір тасты ал</button><button class="btn" id="lvClr">Бәрін ал</button></div>
+  <div class="status card" id="lvSt"></div>
+  <div class="warn"><b>Ереже:</b> дене – сол табақшаға, кір тастар – оң табақшаға. Кір тастарды тек <b>пинцетпен</b> алады. Экранда кір тасты <b>саусақпен сүйреп</b> оң табақшаға сал; табақшадан сүйреп шығарсаң – алынады. Үлкенінен бастап кішісіне көшеміз.</div>
+</div></div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-title="Серіппелі таразы" data-hint="Бөлік құны: c = (a − b) / n">
+  <h2 class="st"><small>Виртуалды зертхана · 2</small>Серіппелі таразы</h2>
+  <div class="duo"><div class="pa">
+  <canvas class="lab" id="cSpring" width="840" height="400"></canvas>
+  </div><div class="pb">
+  <div class="objs" id="spObjs"></div>
+  <div class="card"><div class="chk">Бөлік құны: <input id="spC"> г &nbsp;&nbsp; Көрсеткіш: <input id="spR"> г <button class="btn main" id="spChk">Тексеру</button><span id="spRes"></span></div></div>
+  <div class="tip">Серіппе дененің <b>салмағынан</b> созылады: дене ауыр болған сайын көрсеткіш төмен түседі. Санау алдында көрсеткіштің «0»-де тұрғанын тексер.</div>
+</div></div>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-title="Электронды таразы" data-hint="TARE – ыдыстың массасын «нөлдейді»: m су = m жалпы − m ыдыс">
+  <h2 class="st"><small>Виртуалды зертхана · 3</small>Электронды таразы және TARE</h2>
+  <div class="duo"><div class="pa">
+  <canvas class="lab" id="cEl" width="840" height="330"></canvas>
+  </div><div class="pb">
+  <div class="row" style="align-items:center;flex-wrap:wrap">
+    <button class="btn" id="elGlass">🥛 Стақан қою</button>
+    <div class="ctl grow" style="min-width:230px"><div class="lab"><span>Су құю</span><span class="val" id="elWv"></span></div><input type="range" id="elW" min="0" max="250" step="5" value="0" disabled></div>
+    <div class="ctl" style="width:180px"><div class="lab"><span>Тиындар</span><span class="val" id="elCv"></span></div><input type="range" id="elC" min="0" max="10" step="1" value="0"></div>
+    <button class="btn main" id="elTare">TARE → 0</button>
+  </div>
+  <div class="status card" id="elSt"></div>
+</div></div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-title="Топтық тапсырма" data-hint="Әр топ өз тапсырмасын орындайды: дұрыс жауап – топқа +2">
+  <h2 class="st"><small>Топтық жұмыс</small>Әр топқа – бір таразы</h2>
+  <div class="row" id="gtRow"></div>
+  <div class="tip">Топ ішінде: біреуі есептейді, біреуі тексереді, біреуі жауапты экранға енгізеді. Әр топқа 2 мүмкіндік.</div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-title="Заң және қауіпсіздік" data-hint="Сауда таразысы – поверкадан өткен болуы керек">
+  <h2 class="st"><small>Өмірмен байланыс</small>Таразы және заң</h2>
+  <div class="duo"><div class="pa">
+  <div class="card" style="border-left:6px solid var(--blue)"><h3>ҚР «Өлшем бірлігін қамтамасыз ету туралы» Заңы</h3>
+    <div style="font-size:18.5px;line-height:1.55">Саудада, медицинада, дәріханада қолданылатын таразылар белгілі мерзім сайын <b>салыстырып тексеруден (поверка)</b> өтеді. Тексерілген таразыға <b>пломба / таңба</b> басылады. Бұл – <b>тұтынушының құқығын қорғау</b>: сатып алушы төлеген массасын толық алуы керек.</div></div>
+  <canvas class="lab" id="cLaw" width="840" height="200"></canvas>
+  </div><div class="pb">
+  <div class="row">
+    <div class="card grow"><h3>Ойлан</h3><div style="font-size:17.5px;line-height:1.5">Сатушы таразы табақшасының астына 50 г магнит жапсырып қойды. 2 кг ет сатып алған адам қанша ет алады? Бұл кімнің құқығын бұзады?</div></div>
+    <div class="card grow" style="border-left:5px solid var(--red)"><h3 style="color:var(--red)">Кабинеттегі қауіпсіздік</h3>
+      <ul class="pl" style="font-size:16px;line-height:1.5"><li>ыстық, дымқыл, химиялық затты табақшаға тікелей қоймаймыз;</li><li>таразының ең үлкен жүктемесінен асырмаймыз;</li><li>кір тастарды пинцетпен ғана аламыз;</li><li>таразыны соқпаймыз, тасымалдамаймыз.</li></ul></div>
+  </div>
+</div></div>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-wide="1" data-title="Практикалық жұмыс №3" data-hint="Әр топ кезекпен тақтаға шығып, өз виртуалды станциясын орындайды · 3 минут">
+  <h2 class="st"><small>Практикалық жұмыс №3 · виртуалды станциялар</small>Әр түрлі денелердің массасын анықтау</h2>
+  <div class="ptabs"><div class="ptabs grow" id="ptTabs"></div>
+    <div class="pttmw"><span class="pttm" id="ptTm">03:00</span><button class="btn main" id="ptGo">▶</button><button class="btn" id="ptRe" title="Таймерді қайта қосу">↺</button><button class="btn" id="ptClr" title="Осы топтың нәтижесін өшіру">🗑</button></div></div>
+  <div class="duo ptd"><div class="pa">
+  <canvas class="lab" id="cPt" width="840" height="360"></canvas>
+  <div id="ptCtl"></div>
+  <div class="status card" id="ptSt"></div>
+  </div><div class="pb">
+  <div class="card"><h3 id="ptTH">Тапсырма</h3><div id="ptTask" style="font-size:17px;line-height:1.5"></div></div>
+  <table class="t" id="ptTab"></table>
+  <div class="row" style="align-items:center;flex-wrap:wrap"><button class="btn main" id="ptChk">Тексеру</button><span id="ptRes" style="font-size:17px"></span></div>
+</div></div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-title="Нәтижелерді салыстырайық" data-hint="Қай таразының бөлік құны кіші – сол дәлірек">
+  <h2 class="st"><small>Практикалық жұмыс №3 · қорытынды</small>Топтардың нәтижесі</h2>
+  <table class="t" id="rsTab"></table>
+  <div class="card" id="rsMore" style="font-size:17px;line-height:1.6"></div>
+  <div class="tip"><b>Ойлан:</b> бір алманың массасы үш таразыда неге сәл әртүрлі шықты? Қай таразының нәтижесіне көбірек сенеміз? Неге?</div>
+</section>
+
+<!-- 14 -->
+<section class="slide nofit" data-title="Сергіту сәті: ХБЖ дуэлі" data-wide="1">
+  <div class="duel" id="duel">
+    <div class="side A" id="sideA">
+      <div class="whoq"><input id="nmA" value="1-оқушы"><span class="sc2" id="scA">0</span></div>
+      <div class="pbar"><i id="pbA"></i></div>
+      <div class="qq2" id="qA">Дайынсың ба?</div>
+      <div class="opts" id="oA"></div>
+      <div class="stat"><span id="stA"></span><span id="tA"></span></div>
+    </div>
+    <div class="mid">
+      <div class="lbl">Сергіту сәті</div>
+      <div style="font:700 22px Georgia,serif">ХБЖ<br>дуэлі</div>
+      <div class="lbl">уақыт</div><div class="clock" id="dClock">0,0 с</div>
+      <button class="btn main" id="dGo">▶ Бастау</button>
+      <button class="btn" id="dRe" style="color:#fff;background:transparent;border-color:#4b5262">↺ Жаңа сұрақтар</button>
+      <div style="font-size:12.5px;opacity:.7;line-height:1.4">Әркім өз жартысында ғана басады. 10 сұрақ.</div>
+    </div>
+    <div class="side B" id="sideB">
+      <div class="whoq"><input id="nmB" value="2-оқушы"><span class="sc2" id="scB">0</span></div>
+      <div class="pbar"><i id="pbB"></i></div>
+      <div class="qq2" id="qB">Дайынсың ба?</div>
+      <div class="opts" id="oB"></div>
+      <div class="stat"><span id="stB"></span><span id="tB"></span></div>
+    </div>
+    <div class="overlay" id="dOver" style="display:none"><div class="box"><h3 id="dWin"></h3><p id="dTxt"></p><button class="btn main" id="dOk">Жақсы!</button></div></div>
+  </div>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-title="Функционалдық сауаттылық: кантар" data-hint="m = F / g,  g ≈ 10 Н/кг">
+  <h2 class="st"><small>Функционалдық сауаттылық · 3D зертхана</small>Базардағы кантар (динамометр)</h2>
+  <div class="row">
+    <div class="col"><canvas id="fs3d" width="470" height="560"></canvas>
+      <div style="display:flex;gap:6px;justify-content:center"><button class="btn" id="fsZoom">🔍 Шкаланы жақындату</button><button class="btn" id="fsRot">↺ Бұру</button></div></div>
+    <div class="col grow">
+      <div class="card" style="font-size:16.5px;line-height:1.5"><h3>Жағдаят</h3>Әжең базарға <b>кантар</b> (серіппелі безмен) алып барды. Ол массаны емес, <b>күшті</b> – ньютонмен (Н) көрсетеді. Денені ілгекке іл, кантардың көрсеткішін оқы.<br><span style="color:var(--muted)">Кеңес: m = F / g, мұндағы g ≈ 10 Н/кг. (Ауырлық күшін келесі сабақтарда толық өтеміз.)</span></div>
+      <div class="objs" id="fsObjs"></div>
+      <div class="card fsq">
+        <span>1) Бөлік құны:</span><span><input id="fsC"> Н</span>
+        <span>2) Күш: F =</span><span><input id="fsF"> Н</span>
+        <span>3) Масса: m =</span><span><input id="fsM"> кг</span>
+        <span></span><span><button class="btn main" id="fsChk">Тексеру</button> <span id="fsRes"></span></span>
+      </div>
+      <div class="card" style="font-size:16.5px;line-height:1.45"><h3>4) Алданбайық!</h3>Сатушы «1,5 кг» дейді, ал әжеңнің кантары <b>12 Н</b> көрсетті. Нақты масса қанша? Сатушы қанша кем берді?
+        <div class="chk" style="margin-top:6px;font-size:16.5px">m = <input id="fsQ1"> кг; кем: <input id="fsQ2"> кг <button class="btn" id="fsQChk">✓</button><span id="fsQRes"></span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 15а -->
+<section class="slide" data-wide="1" data-title="ФС: бильярд шарлары" data-hint="m₁ · Δv₁ = m₂ · Δv₂   →   m₂ = m₁ · Δv₁ / Δv₂">
+  <h2 class="st"><small>Функционалдық сауаттылық · 3D зертхана</small>Таразысыз масса: бильярд шары</h2>
+  <div class="row">
+    <div class="col"><canvas id="bl3d" class="c3d" width="640" height="430"></canvas>
+      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><button class="btn main" id="blGo">🎱 Соғу</button><button class="btn" id="blRe">↺ Қайта</button><button class="btn" id="blSlow">🐢 Баяу: қосулы</button><button class="btn" id="blVar">Басқа қызыл шар</button></div>
+      <div class="hud"><span class="h">Радар</span><span class="h">масса</span><span class="h">соққыға дейін</span><span class="h">соққыдан кейін</span>
+        <span>⚪ Ақ шар</span><span>240 г</span><b id="blW0">—</b><b id="blW1">—</b>
+        <span>🔴 Қызыл шар</span><span class="q">? г</span><b id="blR0">—</b><b id="blR1">—</b></div></div>
+    <div class="col grow">
+      <div class="card" style="font-size:17px;line-height:1.5"><h3>Жағдаят</h3>Бильярд клубында бір <b>қызыл шар</b> басқалардан жеңіл сияқты. Клубта таразы жоқ! Ақ шардың массасы белгілі – <b>240 г</b>. Ақ шармен қызыл шарды соғып, радардың көрсетуі бойынша қызыл шардың массасын тап.</div>
+      <div class="rule">Екі дене соқтығысқанда <b>массасы кіші дененің жылдамдығы көбірек өзгереді</b>:<br><span class="f">m₁ · Δv₁ = m₂ · Δv₂</span></div>
+      <div class="card fsq">
+        <span>1) Ақ шардың жылдамдығы қаншаға өзгерді? Δv₁ =</span><span><input id="blA"> м/с</span>
+        <span>2) Қызыл шардікі: Δv₂ =</span><span><input id="blB"> м/с</span>
+        <span>3) Қызыл шардың массасы: m₂ =</span><span><input id="blC"> г</span>
+        <span></span><span><button class="btn main" id="blChk">Тексеру</button> <span id="blRes"></span></span>
+      </div>
+      <div class="tip">Ойлан: қызыл шар ақ шардан ауыр болса, соққыдан кейін ақ шар қалай қозғалар еді?</div>
+    </div>
+  </div>
+</section>
+
+<!-- 15б -->
+<section class="slide" data-wide="1" data-title="ФС: мұз айдынындағы соқтығыс" data-hint="m₁ · Δv₁ = m₂ · Δv₂  ·  массасы кіші ойыншының жылдамдығы көбірек өзгереді">
+  <h2 class="st"><small>Функционалдық сауаттылық · 3D зертхана</small>Хоккейшілер соқтығысты!</h2>
+  <div class="row">
+    <div class="col"><canvas id="hk3d" class="c3d" width="640" height="430"></canvas>
+      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><button class="btn main" id="hkGo">▶ Ойнату</button><button class="btn" id="hkRe">↺ Қайта</button><button class="btn" id="hkSlow">🐢 Баяу: қосулы</button></div>
+      <div class="hud"><span class="h">Төреші радары</span><span class="h">масса</span><span class="h">соқтығысқа дейін</span><span class="h">кейін</span>
+        <span style="color:#ff9a8a">Айбек</span><span>90 кг</span><b id="hkA0">—</b><b id="hkA1">—</b>
+        <span style="color:#9fd3ff">Бекзат</span><span>60 кг</span><b id="hkB0">—</b><b id="hkB1" class="q">—</b></div></div>
+    <div class="col grow">
+      <div class="card" style="font-size:17px;line-height:1.5"><h3>Жағдаят</h3>Жаттығуда <b>Айбек</b> (90 кг) шайбаға қарап жылдам сырғанап келе жатып, тұрған <b>Бекзатқа</b> (60 кг) байқаусызда соқтығысып қалды. Радар Бекзаттың соқтығыстан кейінгі жылдамдығын <b>өлшей алмады</b>. Дәрігер жарақат қаупін бағалау үшін соны білуі керек.</div>
+      <div class="rule">Өзара әрекеттесу: <span class="f">m₁ · Δv₁ = m₂ · Δv₂</span></div>
+      <div class="card fsq">
+        <span>1) Айбектің жылдамдығы қаншаға өзгерді? Δv₁ =</span><span><input id="hkA"> м/с</span>
+        <span>2) Бекзаттың жылдамдығы қаншаға өзгерді? Δv₂ =</span><span><input id="hkB"> м/с</span>
+        <span>3) Соқтығыстан кейін Бекзаттың жылдамдығы: v =</span><span><input id="hkC"> м/с</span>
+        <span></span><span><button class="btn main" id="hkChk">Тексеру</button> <span id="hkRes"></span></span>
+      </div>
+      <div class="card" style="font-size:17px"><b>4) Кімге қауіптірек?</b> <button class="btn" data-hq="0">Айбекке</button> <button class="btn" data-hq="1">Бекзатқа</button> <span id="hkQ"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide" data-title="Жеке жұмыс" data-hint="A – 3 балл, B – 2 балл, C – 2 балл. Барлығы 7 балл">
+  <h2 class="st"><small>Деңгейлік тапсырмалар · 7 балл</small>Жеке жұмыс</h2>
+  <div class="duo"><div class="pa">
+  <div class="who">Оқушы: <select id="tkWho"></select><button class="btn" id="tkPrev">◀</button><button class="btn" id="tkNext">▶</button><span class="score" id="tkScore"></span></div>
+  <div class="tq"><div class="lv lvA">A</div><div class="qt">Килограммға келтір (әрқайсысы 1 балл).</div>
+    <div class="ans"><div class="ai">250 г = <input data-q="A1"> кг <span class="r"></span></div><div class="ai">3,5 т = <input data-q="A2"> кг <span class="r"></span></div><div class="ai">400 мг = <input data-q="A3"> кг <span class="r"></span></div></div></div>
+  <div class="tq"><div class="lv lvB">B</div><div class="qt">Иінді таразы тепе-теңдікте. Оң табақшада <b>100 г, 20 г, 10 г, 5 г</b> және <b>500 мг</b> кір тастары тұр. Дененің массасы қандай? (2 балл)</div>
+    <div class="ans"><div class="ai">m = <input data-q="B1"> г <span class="r"></span></div></div></div>
+  </div><div class="pb">
+  <canvas class="lab" id="cTaskB" width="840" height="150"></canvas>
+  <div class="tq"><div class="lv lvC">C</div><div class="qt">Электронды таразыда бос ыдыс <b>85 г</b> көрсетті, суды құйғаннан кейін – <b>335 г</b>. Судың массасы қандай? Ыдысты қойып, TARE басып, сонан соң су құйса, таразы не көрсетеді? (2 балл)</div>
+    <div class="ans"><div class="ai">m<sub>су</sub> = <input data-q="C1"> г <span class="r"></span></div><div class="ai">таразы: <input data-q="C2"> г <span class="r"></span></div></div></div>
+  <div class="tip" style="font-size:15px">Жауапты жазып, <b>Enter</b> немесе <b>✓</b> бас. Әр сұраққа 2 мүмкіндік: бірінші реттен дұрыс – толық балл, екінші реттен – жартысы. 10 дәрежесін <b>4·10^-4</b> түрінде жаз.</div>
+</div></div>
+</section>
+
+<!-- 17 -->
+<section class="slide nofit" data-title="Бағалау парағы" data-wide="1">
+  <h2 class="st"><small>Жеке жұмыс нәтижесі</small>Кім қанша балл жинады?</h2>
+  <div class="gwrap">
+    <div class="gtab"><table class="t" id="grTab"></table></div>
+    <div class="col">
+      <div class="sum"><div style="border-top:5px solid var(--green)"><b id="g1">0</b>6–7 балл</div><div style="border-top:5px solid var(--yellow)"><b id="g2">0</b>4–5 балл</div><div style="border-top:5px solid var(--red)"><b id="g3">0</b>0–3 балл</div></div>
+      <div class="card col" style="flex:1;min-height:0"><h3>Сынып тізімі (әр жолға бір оқушы)</h3>
+        <textarea class="roster" id="roster" spellcheck="false"></textarea>
+        <div style="display:flex;gap:6px"><button class="btn main" id="rsSave">Тізімді сақтау</button><button class="btn" id="grClr">Нәтижелерді тазалау</button></div></div>
+      <div style="font-size:13.5px;color:var(--muted)">Баға: 6–7 балл – «5», 4–5,5 – «4», 2–3,5 – «3», 0–1,5 – «2».</div>
+    </div>
+  </div>
+</section>
+
+<!-- 18 -->
+<section class="slide" data-title="Рефлексия" data-hint="Бүгін мен ... үйрендім. Маған ең дәл таразы – ..., себебі ...">
+  <h2 class="st"><small>Рефлексия · «Шығу билеті»</small>Сабақтан не алдық?</h2>
+  <div class="duo"><div class="pa">
+  <div class="card" style="font-size:19px;line-height:1.7"><b>Стикерге жаз:</b><br>1) Бүгін мен … үйрендім.<br>2) Маған ең дәл таразы – …, себебі …<br>3) Маған әлі түсініксіз – …</div>
+  </div><div class="pb">
+  <div class="lights">
+    <div class="lt"><div class="c" style="background:#2e7d4f" data-l="0">0</div><div class="tx">Түсіндім, өзім өлшей аламын</div><button class="btn mn" data-m="0">−1</button></div>
+    <div class="lt"><div class="c" style="background:#e0a92e" data-l="1">0</div><div class="tx">Түсіндім, бірақ сұрағым бар</div><button class="btn mn" data-m="1">−1</button></div>
+    <div class="lt"><div class="c" style="background:#b8442f" data-l="2">0</div><div class="tx">Көмек керек</div><button class="btn mn" data-m="2">−1</button></div>
+  </div>
+  <div class="bar" id="lBar"><i style="background:#2e7d4f"></i><i style="background:#e0a92e"></i><i style="background:#b8442f"></i></div>
+  <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--muted)"><span>Стикерді жапсырған сайын шеңберді бір рет бас.</span><button class="btn" id="lClr" style="font-size:13px;padding:3px 10px">↺ Нөлдеу</button></div>
+</div></div>
+</section>
+
+<!-- 19 -->
+<section class="slide" data-title="Қорытынды және үй тапсырмасы" data-hint="Бүгін не білдім?">
+  <h2 class="st"><small>Қорытынды</small>Есте сақтайық</h2>
+  <div class="duo"><div class="pa">
+  <div class="row">
+    <div class="card grow"><h3>Иінді</h3><div style="font-size:17px;line-height:1.5">тепе-теңдік арқылы; дәлдігі – ең кіші кір тасқа тең (0,1 г)</div></div>
+    <div class="card grow"><h3>Серіппелі</h3><div style="font-size:17px;line-height:1.5">серіппенің созылуы арқылы; дәлдігі – бөлік құны (мыс. 50 г)</div></div>
+    <div class="card grow"><h3>Электронды</h3><div style="font-size:17px;line-height:1.5">датчик арқылы; TARE – ыдысты нөлдейді; дәлдігі 0,1 г</div></div>
+  </div>
+  <div class="fbox" style="font-size:21px">[m] = 1 кг &nbsp;·&nbsp; 1 т = 1000 кг &nbsp;·&nbsp; 1 г = 0,001 кг &nbsp;·&nbsp; 1 мг = 0,000001 кг</div>
+  </div><div class="pb">
+  <div class="card"><h3>Үй тапсырмасы</h3>
+    <ol style="margin:0;padding-left:22px;font-size:18px;line-height:1.65">
+      <li>Оқулықтағы «Масса. Массаны өлшеу» тақырыбын оқу.</li>
+      <li><b>Функционалдық тапсырма:</b> үйдегі ас үй таразысымен 3 азық-түліктің массасын өлшеп, қаптамадағы массамен салыстыр. Кесте: <i>Өнім · Қаптамада · Таразыда · Айырма</i>. Айырма неге шықты?</li>
+    </ol></div>
+  <canvas class="lab" id="cEnd" width="840" height="140"></canvas>
+</div></div>
+</section>
+
+    </div>
+    <div class="rightw" id="rightw">
+      <div class="grip" id="grip">⇢ тақтаны жылжыт</div>
+      <div class="board">
+        <div class="tools">
+          <button class="sw on" data-c="#f2efe2" style="background:#f2efe2" title="Бор"></button>
+          <button class="sw" data-c="#ffd75e" style="background:#ffd75e" title="Сары"></button>
+          <button class="sw" data-c="#ff8fa3" style="background:#ff8fa3" title="Қызғылт"></button>
+          <button class="sw" data-c="#7fd8ff" style="background:#7fd8ff" title="Көгілдір"></button>
+          <button class="sw" data-c="#9be37f" style="background:#9be37f" title="Жасыл"></button>
+          <button class="tb" data-w="2.2">жіңішке</button><button class="tb on" data-w="3.6">орташа</button><button class="tb" data-w="6.5">жуан</button>
+          <span class="gapx"></span>
+          <button class="tb" id="erase">⌫ өшір</button><button class="tb" id="undo" title="Ctrl+Z">↶</button><button class="tb" id="wipe">тазалау</button><button class="tb" id="hideB" title="Тақтаны жасыру (T)">✕</button>
+        </div>
+        <div class="bhint" id="bhint"></div>
+        <canvas id="ink"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="btab" id="btab">✎ ТАҚТА</div>
+  <div class="bottom">
+    <button class="btn" id="prev">◀ Артқа</button><div class="dots" id="dots"></div><button class="btn main" id="next">Келесі ▶</button>
+    <span class="cnt" id="cnt"></span><button class="btn" id="snd">🔊</button><button class="btn" id="fs">⛶ Толық экран</button>
+  </div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script src="three.min.js"></script>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const nf=(v,d=4)=>{ if(!isFinite(v)) return '—'; let s=String(+v.toFixed(d)); if(s.includes('e')) return s; return s.replace('.',','); };
+const g1=v=>(Math.round(v*10)/10).toFixed(1).replace('.',',');
+let toastT; function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2600); }
+const store={ get(k,d){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }, set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} } };
+function parseNum(s){ s=String(s).trim().replace(/\s/g,'').replace(/,/g,'.').replace(/[×x*]/g,'·').replace(/−/g,'-');
+  if(s==='') return NaN;
+  let m=/^(-?[\d.]+)·10\^?\(?(-?\d+)\)?$/.exec(s); if(m) return Number(m[1])*Math.pow(10,+m[2]);
+  m=/^10\^\(?(-?\d+)\)?$/.exec(s); if(m) return Math.pow(10,+m[1]);
+  return Number(s); }
+const near=(a,b)=>Math.abs(a-b)<=Math.max(1e-9,Math.abs(b)*1e-6);
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+/* ---------- дыбыс ---------- */
+const SND=(()=>{ let ac=null,on=store.get('ms_snd',true);
+  function init(){ if(ac){ if(ac.state==='suspended') ac.resume(); return; } const C=window.AudioContext||window.webkitAudioContext; if(C) ac=new C(); }
+  function tone(f,d,vol=.15,at=0,type='sine'){ if(!ac||!on) return; const t=ac.currentTime+at,o=ac.createOscillator(),g=ac.createGain();
+    o.type=type; o.frequency.value=f; g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+d); o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t+d+.02); }
+  return { init, get on(){return on;}, toggle(){ on=!on; store.set('ms_snd',on); return on; },
+    ok(){ tone(660,.14); tone(990,.25,.15,.11); }, bad(){ tone(190,.3,.08,0,'square'); }, page(){ tone(520,.07,.04); },
+    clink(){ tone(2100,.08,.06); tone(2900,.06,.03,.02); }, beep(){ tone(1046,.12,.12); },
+    spin(){ tone(700+Math.random()*500,.05,.05); },
+    bell(){ [784,988,1175,1568].forEach((f,i)=>tone(f,.35,.14,i*.16)); } };
+})();
+document.addEventListener('pointerdown',()=>SND.init(),{capture:true});
+
+/* ---------- топтар және ұпай ---------- */
+const GR=[{n:'Қызыл',c:'#c8352b'},{n:'Жасыл',c:'#2e7d4f'},{n:'Көк',c:'#1f5fa8'}];
+let GS=store.get('ms_gs',[0,0,0]);
+function gsShow(){ $('gchips').innerHTML=GR.map((g,i)=>`<div class="gchip" style="background:${g.c}" data-g="${i}" title="+1"><span>${g.n}</span><b>${GS[i]}</b><span class="mn" data-m="${i}" title="−1">−</span></div>`).join(''); store.set('ms_gs',GS); }
+$('gchips').addEventListener('click',e=>{ const m=e.target.closest('[data-m]'); if(m){ GS[+m.dataset.m]=Math.max(0,GS[+m.dataset.m]-1); gsShow(); return; }
+  const c=e.target.closest('[data-g]'); if(c){ GS[+c.dataset.g]++; SND.clink(); gsShow(); } });
+function addGS(i,k){ GS[i]+=k; gsShow(); }
+gsShow();
+
+/* ---------- сурет көмекшілері ---------- */
+function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+function label(ctx,t,x,y,col='#1d2430',size=13,align='center',bold=false,font='Segoe UI, sans-serif'){ ctx.fillStyle=col; ctx.font=(bold?'700 ':'')+size+'px '+font; ctx.textAlign=align; ctx.fillText(t,x,y); ctx.textAlign='left'; }
+function table_(ctx,w,h,y){ ctx.fillStyle='#b98a5a'; ctx.fillRect(0,y,w,h-y); ctx.fillStyle='#a3774a'; ctx.fillRect(0,y,w,6); ctx.strokeStyle='rgba(0,0,0,.08)'; for(let x=30;x<w;x+=90){ ctx.beginPath(); ctx.moveTo(x,y+10); ctx.lineTo(x+40,h); ctx.stroke(); } }
+
+const OBJ={
+  apple(ctx,x,yb,s){ const r=21*s; ctx.fillStyle='#c8352b'; ctx.beginPath(); ctx.arc(x-r*.35,yb-r,r,0,7); ctx.arc(x+r*.35,yb-r,r,0,7); ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.35)'; ctx.beginPath(); ctx.ellipse(x-r*.6,yb-r*1.35,r*.25,r*.4,-.5,0,7); ctx.fill();
+    ctx.strokeStyle='#5a3a1a'; ctx.lineWidth=3*s; ctx.beginPath(); ctx.moveTo(x,yb-r*1.8); ctx.lineTo(x+3*s,yb-r*2.4); ctx.stroke();
+    ctx.fillStyle='#4f8a3e'; ctx.beginPath(); ctx.ellipse(x+10*s,yb-r*2.25,9*s,4*s,-.4,0,7); ctx.fill(); },
+  battery(ctx,x,yb,s){ const w=58*s,h=17*s; rr(ctx,x-w/2,yb-h,w,h,3*s); ctx.fillStyle='#2b2d31'; ctx.fill(); ctx.fillStyle='#c58b2a'; ctx.fillRect(x+w/2-16*s,yb-h,16*s,h); ctx.fillStyle='#888'; ctx.fillRect(x+w/2,yb-h*.72,4*s,h*.44); label(ctx,'AA',x-8*s,yb-h*.28,'#eee',11*s,'center',true); },
+  eraser(ctx,x,yb,s){ const w=46*s,h=18*s; ctx.fillStyle='#e98aa0'; ctx.fillRect(x-w/2,yb-h,w/2,h); ctx.fillStyle='#4a78c2'; ctx.fillRect(x,yb-h,w/2,h); ctx.strokeStyle='rgba(0,0,0,.25)'; ctx.strokeRect(x-w/2,yb-h,w,h); },
+  key(ctx,x,yb,s){ ctx.strokeStyle='#8c8f95'; ctx.lineWidth=5*s; ctx.beginPath(); ctx.arc(x-16*s,yb-9*s,8*s,0,7); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x-8*s,yb-9*s); ctx.lineTo(x+24*s,yb-9*s); ctx.lineTo(x+24*s,yb-3*s); ctx.moveTo(x+15*s,yb-9*s); ctx.lineTo(x+15*s,yb-4*s); ctx.stroke(); },
+  stone(ctx,x,yb,s){ ctx.fillStyle='#7d7a73'; ctx.beginPath(); ctx.moveTo(x-26*s,yb); ctx.bezierCurveTo(x-34*s,yb-26*s,x-6*s,yb-40*s,x+14*s,yb-32*s); ctx.bezierCurveTo(x+34*s,yb-26*s,x+32*s,yb-4*s,x+22*s,yb); ctx.closePath(); ctx.fill(); label(ctx,'?',x,yb-11*s,'#fff',20*s,'center',true); },
+  book(ctx,x,yb,s){ const w=92*s,h=24*s; ctx.fillStyle='#f4f0e2'; ctx.fillRect(x-w/2+4*s,yb-h+4*s,w-6*s,h-8*s); ctx.fillStyle='#2d5f8f'; ctx.fillRect(x-w/2,yb-h,w,5*s); ctx.fillRect(x-w/2,yb-5*s,w,5*s); ctx.fillRect(x-w/2,yb-h,6*s,h); },
+  pencase(ctx,x,yb,s){ const w=84*s,h=26*s; rr(ctx,x-w/2,yb-h,w,h,10*s); ctx.fillStyle='#3e8a5e'; ctx.fill(); ctx.strokeStyle='#d8d8d8'; ctx.setLineDash([4*s,3*s]); ctx.beginPath(); ctx.moveTo(x-w/2+8*s,yb-h/2); ctx.lineTo(x+w/2-8*s,yb-h/2); ctx.stroke(); ctx.setLineDash([]); },
+  bottle(ctx,x,yb,s){ const w=34*s,h=84*s; rr(ctx,x-w/2,yb-h,w,h,8*s); ctx.fillStyle='rgba(120,180,230,.55)'; ctx.fill(); ctx.strokeStyle='#5a8bb5'; ctx.stroke(); ctx.fillStyle='#2a5fa8'; ctx.fillRect(x-8*s,yb-h-10*s,16*s,12*s); ctx.fillStyle='#fff'; ctx.fillRect(x-w/2,yb-h*.6,w,16*s); },
+  flour(ctx,x,yb,s){ ctx.fillStyle='#e9dcb8'; ctx.beginPath(); ctx.moveTo(x-34*s,yb); ctx.lineTo(x-30*s,yb-62*s); ctx.lineTo(x-20*s,yb-74*s); ctx.lineTo(x+20*s,yb-74*s); ctx.lineTo(x+30*s,yb-62*s); ctx.lineTo(x+34*s,yb); ctx.closePath(); ctx.fill(); ctx.strokeStyle='#b9a77a'; ctx.stroke(); label(ctx,'ҰН',x,yb-30*s,'#8a6d2c',16*s,'center',true); },
+  coins(ctx,x,yb,s,n=10){ for(let i=0;i<n;i++){ const y=yb-i*3*s; ctx.fillStyle='#c9a64a'; ctx.beginPath(); ctx.ellipse(x,y-2*s,13*s,4.5*s,0,0,7); ctx.fill(); ctx.strokeStyle='#8f7224'; ctx.lineWidth=1; ctx.stroke(); } },
+  glass(ctx,x,yb,s,water=0){ const wt=50*s,wb=40*s,h=72*s;
+    if(water>0){ const f=Math.min(1,water/250)*0.86, hy=yb-h*f, k=(wt-wb)/2*f; ctx.fillStyle='rgba(90,160,225,.6)'; ctx.beginPath(); ctx.moveTo(x-wb/2,yb); ctx.lineTo(x-wb/2-k,hy); ctx.lineTo(x+wb/2+k,hy); ctx.lineTo(x+wb/2,yb); ctx.closePath(); ctx.fill(); }
+    ctx.strokeStyle='rgba(60,90,110,.85)'; ctx.lineWidth=2.5*s; ctx.beginPath(); ctx.moveTo(x-wt/2,yb-h); ctx.lineTo(x-wb/2,yb); ctx.lineTo(x+wb/2,yb); ctx.lineTo(x+wt/2,yb-h); ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.25)'; ctx.fillRect(x-wt/2+6*s,yb-h+6*s,5*s,h-14*s); }
+};
+function weightPiece(ctx,v,x,yb,s){
+  if(v>=1){ const k=Math.cbrt(v), w=(9+k*5.2)*s, h=(10+k*6.5)*s;
+    const g=ctx.createLinearGradient(x-w/2,0,x+w/2,0); g.addColorStop(0,'#a77f2c'); g.addColorStop(.4,'#f1d98f'); g.addColorStop(1,'#9b7426'); ctx.fillStyle=g;
+    ctx.fillRect(x-w/2,yb-h,w,h); ctx.beginPath(); ctx.ellipse(x,yb-h,w/2,w*.16,0,0,7); ctx.fill();
+    ctx.fillStyle='#b48c38'; ctx.fillRect(x-w*.13,yb-h-w*.32,w*.26,w*.3); ctx.beginPath(); ctx.arc(x,yb-h-w*.36,w*.2,0,7); ctx.fill();
+    if(w>22*s) label(ctx,String(v),x,yb-h*.35,'#4a3608',Math.min(13,9+k)*s,'center',true);
+    return w; }
+  const w=15*s; ctx.fillStyle='#d5d8dc'; ctx.strokeStyle='#8d939a'; ctx.lineWidth=1; ctx.fillRect(x-w/2,yb-3*s,w,3*s); ctx.strokeRect(x-w/2,yb-3*s,w,3*s);
+  ctx.fillRect(x+w/2-3*s,yb-8*s,3*s,6*s); label(ctx,String(Math.round(v*1000)),x-2*s,yb-5*s,'#555',7.5*s,'center',true); return w; }
+function weightsOn(ctx,arr,cx,yb,s,maxW){
+  const items=arr.slice().sort((a,b)=>b-a); let rowY=yb, x=cx-maxW/2, rowH=0;
+  for(const v of items){ const k=Math.cbrt(Math.max(v,1)), w=v>=1?(9+k*5.2)*s:15*s, h=v>=1?(10+k*6.5)*s+w*.5:9*s;
+    if(x+w>cx+maxW/2){ rowY-=rowH+2*s; x=cx-maxW/2; rowH=0; }
+    weightPiece(ctx,v,x+w/2,rowY,s); x+=w+3*s; rowH=Math.max(rowH,h); } }
+function drawLever(ctx,cx,by,s,ang,leftFn,rightW){
+  const py=by-180*s, L=205*s;
+  ctx.fillStyle='#4a4f57'; rr(ctx,cx-90*s,by-16*s,180*s,16*s,4*s); ctx.fill();
+  ctx.fillStyle='#5d636c'; ctx.fillRect(cx-7*s,py,14*s,by-py-14*s);
+  ctx.strokeStyle='#2a2d31'; ctx.lineWidth=1.2; for(let i=-5;i<=5;i++){ const a=Math.PI/2+i*.06, r1=95*s, r2=(i===0?108:102)*s; ctx.beginPath(); ctx.moveTo(cx+Math.cos(a)*r1,py+Math.sin(a)*r1); ctx.lineTo(cx+Math.cos(a)*r2,py+Math.sin(a)*r2); ctx.stroke(); }
+  ctx.strokeStyle='#c8352b'; ctx.lineWidth=2.5*s; ctx.beginPath(); ctx.moveTo(cx,py); ctx.lineTo(cx-Math.sin(ang)*100*s,py+Math.cos(ang)*100*s); ctx.stroke();
+  const lx=cx-Math.cos(ang)*L, ly=py+Math.sin(ang)*L, rx=cx+Math.cos(ang)*L, ry=py-Math.sin(ang)*L;
+  ctx.strokeStyle='#3b3f45'; ctx.lineWidth=8*s; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(rx,ry); ctx.stroke(); ctx.lineCap='butt';
+  ctx.fillStyle='#c79a3a'; ctx.beginPath(); ctx.moveTo(cx,py-14*s); ctx.lineTo(cx-10*s,py+4*s); ctx.lineTo(cx+10*s,py+4*s); ctx.closePath(); ctx.fill();
+  for(const [ex,ey,side] of [[lx,ly,0],[rx,ry,1]]){ const pyB=ey+78*s, pw=74*s;
+    ctx.strokeStyle='#777'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(ex,ey); ctx.lineTo(ex-pw*.8,pyB); ctx.moveTo(ex,ey); ctx.lineTo(ex+pw*.8,pyB); ctx.stroke();
+    if(side===0) leftFn(ex,pyB-2*s); else weightsOn(ctx,rightW,ex,pyB-2*s,s,pw*1.5);
+    ctx.fillStyle='#9aa1aa'; ctx.beginPath(); ctx.ellipse(ex,pyB,pw,8*s,0,0,Math.PI); ctx.fill(); ctx.fillStyle='#c3c8ce'; ctx.beginPath(); ctx.ellipse(ex,pyB,pw,3.5*s,0,0,7); ctx.fill(); }
+}
+function drawSpring(ctx,cx,ty,s,ext,objFn){
+  const H=300*s, top=ty+16*s, ppg=(H-40*s)/1000;
+  ctx.strokeStyle='#555'; ctx.lineWidth=3*s; ctx.beginPath(); ctx.arc(cx,ty+4*s,7*s,Math.PI,0); ctx.stroke();
+  rr(ctx,cx-48*s,top,96*s,H,8*s); ctx.fillStyle='#d9dde2'; ctx.fill(); ctx.strokeStyle='#8d939a'; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.fillStyle='#fffdf6'; ctx.fillRect(cx-6*s,top+12*s,46*s,H-24*s);
+  const z0=top+20*s;
+  for(let g=0;g<=1000;g+=50){ const y=z0+g*ppg, big=g%100===0; ctx.strokeStyle='#222'; ctx.lineWidth=big?1.6:1; ctx.beginPath(); ctx.moveTo(cx-4*s,y); ctx.lineTo(cx+(big?14:8)*s,y); ctx.stroke(); if(big) label(ctx,String(g),cx+16*s,y+4*s,'#222',10.5*s,'left',true); }
+  label(ctx,'г',cx+30*s,top+H-6*s,'#555',11*s,'center',true);
+  const py=z0+Math.max(-10,Math.min(1040,ext))*ppg;
+  ctx.strokeStyle='#6d737b'; ctx.lineWidth=2*s; ctx.beginPath(); ctx.moveTo(cx-24*s,top+8*s); const n=14; for(let i=0;i<=n;i++){ const y=top+8*s+(py-4*s-top-8*s)*i/n; ctx.lineTo(cx-24*s+(i%2?9:-9)*s,y); } ctx.stroke();
+  ctx.fillStyle='#c8352b'; ctx.beginPath(); ctx.moveTo(cx-34*s,py-3*s); ctx.lineTo(cx-4*s,py); ctx.lineTo(cx-34*s,py+3*s); ctx.closePath(); ctx.fill(); ctx.fillRect(cx-34*s,py-2*s,10*s,4*s);
+  const hy=top+H+12*s+(py-z0)*0.12, pd=78*s;
+  ctx.strokeStyle='#555'; ctx.lineWidth=2.5*s; ctx.beginPath(); ctx.moveTo(cx-24*s,py); ctx.lineTo(cx-24*s,hy); ctx.stroke();
+  ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(cx-24*s,hy); ctx.lineTo(cx-74*s,hy+pd); ctx.moveTo(cx-24*s,hy); ctx.lineTo(cx+26*s,hy+pd); ctx.stroke();
+  if(objFn) objFn(cx-24*s,hy+pd-2*s);
+  ctx.fillStyle='#9aa1aa'; ctx.beginPath(); ctx.ellipse(cx-24*s,hy+pd,56*s,7*s,0,0,Math.PI); ctx.fill(); ctx.fillStyle='#c3c8ce'; ctx.beginPath(); ctx.ellipse(cx-24*s,hy+pd,56*s,3*s,0,0,7); ctx.fill();
+  return {py,z0,ppg};
+}
+function drawEScale(ctx,cx,by,s,text,itemsFn){
+  ctx.fillStyle='#e6e8eb'; rr(ctx,cx-120*s,by-46*s,240*s,46*s,10*s); ctx.fill(); ctx.strokeStyle='#9aa1aa'; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.fillStyle='#cfd3d8'; rr(ctx,cx-100*s,by-58*s,200*s,12*s,4*s); ctx.fill();
+  ctx.fillStyle='#1e2a22'; rr(ctx,cx-64*s,by-38*s,128*s,30*s,4*s); ctx.fill();
+  ctx.fillStyle='#8ff0a4'; ctx.font='700 '+(22*s)+'px Consolas, monospace'; ctx.textAlign='right'; ctx.fillText(text,cx+56*s,by-15*s); ctx.textAlign='left';
+  label(ctx,'TARE',cx+92*s,by-18*s,'#555',9*s,'center',true); ctx.fillStyle='#b8442f'; ctx.beginPath(); ctx.arc(cx+92*s,by-30*s,5*s,0,7); ctx.fill();
+  if(itemsFn) itemsFn(cx,by-58*s);
+}
+
+const LABS={};
+
+/* 1. Кіріспе */
+LABS.cTitle={t:0,frame(ctx,w,h,dt){ this.t+=dt; const t=this.t%9;
+  ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); table_(ctx,w,h,335);
+  const ang=.22*Math.exp(-t*.6)*Math.cos(t*2.6);
+  drawLever(ctx,165,335,.62,ang,(x,y)=>OBJ.apple(ctx,x,y,.9),[100,50,2,.5,.2]);
+  const ext=400*(1-Math.exp(-t*1.2)*Math.cos(t*4));
+  drawSpring(ctx,440,10,.74,ext,(x,y)=>OBJ.book(ctx,x,y,.8));
+  const v=Math.min(112.4,t*60); drawEScale(ctx,690,335,.95,g1(v)+' г',(x,y)=>OBJ.glass(ctx,x,y,1));
+  label(ctx,'иінді',165,372,'#5a4a33',16,'center',true); label(ctx,'серіппелі',440,372,'#5a4a33',16,'center',true); label(ctx,'электронды',690,372,'#5a4a33',16,'center',true); }};
+
+/* 2. Топқа бөлу */
+let GD=store.get('ms_gd',null);
+function gdNew(n){ const bag=[]; for(let i=0;i<n;i++) bag.push(i%3); GD={n,bag:shuffle(bag),list:[]}; store.set('ms_gd',GD); gdShow(); }
+function rosterNames(){ return store.get('ms_roster',null)||[]; }
+function gdShow(){ $('gN').value=GD.n;
+  const cols=[[],[],[]]; GD.list.forEach(x=>cols[x.c].push(x.name)); const tgt=c=>GD.list.filter(x=>x.c===c).length+GD.bag.filter(x=>x===c).length;
+  $('gCols').innerHTML=GR.map((g,i)=>`<div class="gcol"><h4 style="background:${g.c}"><span>${g.n} топ</span><span>${cols[i].length}/${tgt(i)}</span></h4><ol>${cols[i].map(n=>'<li>'+n+'</li>').join('')}</ol></div>`).join('');
+  const rn=rosterNames(), next=GD.list.length; $('gWho').textContent=GD.bag.length?('Кезек: '+(rn[next]||((next+1)+'-оқушы'))+' · қалды: '+GD.bag.length):'Барлығы топқа бөлінді ✔'; }
+let gdBusy=false;
+$('gCard').addEventListener('pointerdown',e=>{ e.preventDefault(); if(gdBusy) return; const card=$('gCard');
+  if(!GD.bag.length){ toast('Барлық оқушы бөлінді. «Жаңадан бөлу» басыңыз.'); return; }
+  gdBusy=true; setTimeout(()=>gdBusy=false,350);   // қос басудан қорғау ғана – кідіріс жоқ
+  const c=GD.bag.pop(); const rn=rosterNames(); const name=rn[GD.list.length]||((GD.list.length+1)+'-оқушы'); GD.list.push({name,c}); store.set('ms_gd',GD);
+  card.classList.remove('res'); void card.offsetWidth; card.style.background=GR[c].c; card.classList.add('res');
+  card.innerHTML=`<div><div class="q">${GR[c].n} топ!</div><div class="tx">${name} · келесі оқушы – бас!</div></div>`; SND.ok(); gdShow(); });
+$('gReset').onclick=()=>{ const n=Math.max(3,Math.min(40,+$('gN').value||24)); if(GD&&GD.list.length&&!confirm('Топтарға бөлу жаңадан басталады. Жалғастырамыз ба?')) return; gdNew(n); };
+if(!GD){ const rn=rosterNames(); gdNew(rn.length||24); } else gdShow();
+
+/* 3. Миға шабуыл */
+const BQ=[
+  ['Механикалық қозғалыс дегеніміз не?','Дененің басқа денелерге қатысты орнының уақыт өте өзгеруі.'],
+  ['Траектория мен жолдың айырмашылығы неде?','Траектория – дене жүрген сызық, жол – сол сызықтың ұзындығы.'],
+  ['Жылдамдықтың формуласы және SI бірлігі?','v = s / t;  [v] = 1 м/с.'],
+  ['72 км/сағ = ? м/с','20 м/с  (72 · 1000 : 3600).'],
+  ['Бірқалыпты қозғалыс деген не?','Дене кез келген тең уақыт аралықтарында тең жол жүреді.'],
+  ['s(t) графигі уақыт осіне параллель түзу. Дене не істеп тұр?','Дене тыныштықта тұр (жол өзгермейді).'],
+  ['Орташа жылдамдық қалай табылады?','Барлық жолды барлық уақытқа бөлеміз: v орт = s / t.'],
+  ['Аспаптың бөлік құны қалай анықталады?','c = (a − b) / n: көршілес екі цифрланған сызықтың айырмасын бөлік санына бөлеміз.'],
+  ['Қозғалыстың салыстырмалылығына мысал келтір.','Пойыздағы жолаушы вагонға қатысты тыныштықта, ал жерге қатысты қозғалыста.'],
+];
+$('bGrid').innerHTML=BQ.map((q,i)=>`<div class="bq" data-i="${i}"><div class="n">${i+1}</div><div class="qq">${q[0]}</div><div class="aa">✔ ${q[1]}</div></div>`).join('');
+$('bGrid').addEventListener('click',e=>{ const b=e.target.closest('.bq'); if(!b) return; if(!b.classList.contains('open')){ b.classList.add('open'); SND.page(); } else if(!b.classList.contains('ans')){ b.classList.add('ans'); SND.ok(); } else b.classList.remove('open','ans'); });
+
+/* 3а. Ғарышкер және кілт */
+const AS={ph:'ready',t:0,x:0,y:0,rot:0,vx:0,kx:0,ky:0,kvx:0,arm:0,dir:0,held:true,
+  stars:Array.from({length:120},()=>[Math.random()*840,Math.random()*420,Math.random()*1.6+.3,Math.random()*6])};
+const AS_HX=228, AS_HY=196;
+function asReset(){ Object.assign(AS,{ph:'ready',t:0,x:AS_HX+10,y:AS_HY+6,rot:0,vx:0,arm:0,dir:0,held:true,kvx:0}); asOpts(false); $('asPlay').textContent='▶ Бастау';
+  [...$('asOpts').children].forEach(b=>b.classList.remove('ok','no')); $('asMsg').innerHTML='Алдымен анимацияны көрейік: <b>▶ Бастау</b>.'; }
+function asOpts(on){ [...$('asOpts').children].forEach(b=>b.disabled=!on); }
+function drawAstro(ctx,x,y,rot,arm,key){
+  ctx.save(); ctx.translate(x,y); ctx.rotate(rot);
+  ctx.fillStyle='#b9bec6'; rr(ctx,-27,-26,16,40,4); ctx.fill();                         // ранец
+  ctx.fillStyle='#f4f5f7'; ctx.strokeStyle='#9aa1aa'; ctx.lineWidth=1.5;
+  rr(ctx,-6,18,11,30,5); ctx.fill(); ctx.stroke(); rr(ctx,6,18,11,28,5); ctx.fill(); ctx.stroke();   // аяқ
+  rr(ctx,-14,-24,32,46,9); ctx.fill(); ctx.stroke();                                    // дене
+  ctx.fillStyle='#2d5f8f'; ctx.fillRect(-4,-12,14,9); ctx.fillStyle='#c8352b'; ctx.fillRect(-4,-3,14,3);
+  ctx.save(); ctx.translate(2,-34); ctx.fillStyle='#f4f5f7'; ctx.beginPath(); ctx.arc(0,0,17,0,7); ctx.fill(); ctx.stroke();  // шлем
+  const vg=ctx.createLinearGradient(-8,-8,12,10); vg.addColorStop(0,'#f6d77a'); vg.addColorStop(1,'#b07a1c'); ctx.fillStyle=vg;
+  ctx.beginPath(); ctx.ellipse(5,0,11,9,0,0,7); ctx.fill(); ctx.fillStyle='rgba(255,255,255,.55)'; ctx.beginPath(); ctx.ellipse(1,-3,3,2,-.5,0,7); ctx.fill(); ctx.restore();
+  ctx.fillStyle='#f4f5f7'; ctx.save(); ctx.translate(-8,-14); ctx.rotate(.9); rr(ctx,-4,0,9,30,4); ctx.fill(); ctx.stroke(); ctx.restore();  // сол қол
+  ctx.save(); ctx.translate(14,-14); ctx.rotate(-1.2+arm); rr(ctx,-4,0,9,32,4); ctx.fill(); ctx.stroke();                                   // оң қол
+  if(key){ ctx.translate(0,34); ctx.rotate(1.2-arm); OBJ.key(ctx,8,6,1); } ctx.restore();
+  ctx.restore(); }
+function drawStation(ctx){
+  ctx.fillStyle='#3a4c66'; for(const y of [70,300]){ ctx.fillRect(40,y,130,46); ctx.strokeStyle='#7a91b3'; ctx.lineWidth=1; for(let i=1;i<6;i++){ ctx.beginPath(); ctx.moveTo(40+i*26,y); ctx.lineTo(40+i*26,y+46); ctx.stroke(); } ctx.beginPath(); ctx.moveTo(40,y+23); ctx.lineTo(170,y+23); ctx.stroke(); }
+  ctx.fillStyle='#8d939a'; ctx.fillRect(100,116,10,184);
+  const g=ctx.createLinearGradient(0,150,0,250); g.addColorStop(0,'#e8ebef'); g.addColorStop(1,'#a9b0b9'); ctx.fillStyle=g;
+  rr(ctx,-20,150,250,96,14); ctx.fill(); ctx.strokeStyle='#7d848d'; ctx.lineWidth=2; ctx.stroke();
+  ctx.fillStyle='#cfd4da'; ctx.beginPath(); ctx.arc(AS_HX-6,AS_HY,24,-1.57,1.57); ctx.fill(); ctx.stroke();
+  ctx.fillStyle='#1d2430'; ctx.beginPath(); ctx.arc(AS_HX-6,AS_HY,14,-1.57,1.57); ctx.fill();
+  ctx.strokeStyle='#e0a92e'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(150,148); ctx.lineTo(205,148); ctx.stroke();   // тұтқа
+  label(ctx,'ХҒС',70,205,'#2d5f8f',18,'left',true); }
+LABS.cAstro={frame(ctx,w,h,dt){
+  const A=AS; if(A.ph!=='ready'&&A.ph!=='q') A.t+=dt;
+  ctx.fillStyle='#0b1020'; ctx.fillRect(0,0,w,h);
+  for(const st of A.stars){ ctx.fillStyle='rgba(255,255,255,'+(.45+.4*Math.sin(performance.now()/700+st[3]))+')'; ctx.fillRect(st[0],st[1],st[2],st[2]); }
+  const eg=ctx.createRadialGradient(760,640,120,760,640,330); eg.addColorStop(0,'#3d7fc4'); eg.addColorStop(.85,'#1f4f8a'); eg.addColorStop(1,'rgba(80,150,230,.0)');
+  ctx.fillStyle=eg; ctx.beginPath(); ctx.arc(760,640,330,0,7); ctx.fill();
+  drawStation(ctx);
+  // фаза логикасы
+  if(A.ph==='intro'){ const t=A.t;
+    if(t<3){ A.x=AS_HX+10+(330-AS_HX-10)*(1-Math.cos(Math.PI*t/3))/2; A.y=AS_HY+6+Math.sin(t*1.3)*8; A.rot=.15*Math.sin(t); }
+    else if(t<5){ A.arm=.5*Math.sin((t-3)*6); A.y=AS_HY+6+Math.sin(t*1.3)*8; }
+    else { A.arm*=.9; A.x+=16*dt; A.y-=3*dt; A.rot+=.06*dt; if(t>8){ A.ph='q'; asOpts(true); $('asPlay').textContent='⏸ Тоқтатылды'; SND.bell&&SND.bell();
+      $('asMsg').innerHTML='<b>Тоқта!</b> Топта ақылдасып, нұсқаны таңда (А, Ә, Б, В).'; } } }
+  else if(A.ph==='throw'){ const t=A.t;
+    if(t<.8){ A.arm=-1.6*t/.8*A.dir; A.x+=16*dt; }
+    else { if(A.held){ A.held=false; A.kx=A.x+22*Math.cos(A.rot); A.ky=A.y-6; A.kvx=A.dir*300; A.vx=-A.dir*38; SND.clink(); }
+      A.arm*=.92; A.x+=A.vx*dt; A.kx+=A.kvx*dt; A.rot-= .1*dt*A.dir;
+      if(A.dir>0&&A.x<=252){ A.x=252; A.vx=0; if(A.ph!=='safe'){ A.ph='safe'; SND.ok(); } } } }
+  else if(A.ph==='safe'||A.ph==='lost'){ A.kx+=A.kvx*dt; }
+  if(A.ph==='throw'&&A.dir<0){ if(A.kx<AS_HX+6){ A.kx=AS_HX+6; A.kvx=0; } if(A.x>w+60){ A.ph='lost'; } }
+  if(A.ph==='lost'){ A.x+=A.vx*dt; }
+  // арқан
+  const t=A.t, hx=A.x-20*Math.cos(A.rot), hy=A.y+4;
+  if(A.ph==='ready'||(A.ph==='intro'&&t<5)){ ctx.strokeStyle='#e8dcb0'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(AS_HX+14,AS_HY+10); ctx.quadraticCurveTo((AS_HX+hx)/2,Math.max(AS_HY,hy)+40,hx,hy); ctx.stroke(); }
+  else { const k=A.ph==='intro'?Math.min(1,(t-5)*1.5):1, mx=AS_HX+14+(hx-AS_HX-14)*.55; ctx.strokeStyle='#e8dcb0'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(AS_HX+14,AS_HY+10); ctx.quadraticCurveTo(AS_HX+40,AS_HY+60+30*k,mx-10,AS_HY+70+40*k); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(hx,hy); ctx.quadraticCurveTo(hx-20,hy+30,hx-34,hy+50+20*k); ctx.stroke();
+    if(A.ph==='intro'&&t<6){ const a=1-(t-5); ctx.fillStyle='rgba(255,210,80,'+a+')'; for(let i=0;i<7;i++){ const an=i*.9+t*4; ctx.fillRect(mx-4+Math.cos(an)*(t-5)*60,AS_HY+70+Math.sin(an)*(t-5)*50,4,4); }
+      label(ctx,'ШЫРТ!',mx,AS_HY+40,'rgba(255,220,120,'+a+')',30,'center',true); } }
+  if(!A.held) OBJ.key(ctx,A.kx,A.ky,1.3);
+  drawAstro(ctx,A.x,A.y,A.rot,A.arm,A.held);
+  // жазулар
+  if(A.ph==='ready'){ ctx.fillStyle='rgba(11,16,32,.55)'; ctx.fillRect(0,0,w,h); label(ctx,'▶  Басып, анимацияны бастаңыз',w/2,h/2+10,'#fff',28,'center',true); }
+  if(A.ph==='q'){ ctx.fillStyle='rgba(11,16,32,.6)'; ctx.fillRect(0,0,w,h);
+    ctx.fillStyle='#e0a92e'; ctx.beginPath(); ctx.arc(w/2,140,52,0,7); ctx.fill(); label(ctx,'?',w/2,166,'#1d2430',70,'center',true);
+    label(ctx,'Ғарышкер аман қалу үшін не істеуі керек?',w/2,250,'#fff',30,'center',true);
+    label(ctx,'Қолында тек гайка кілті бар…',w/2,292,'#f6d77a',24,'center',true); }
+  if(A.ph==='throw'||A.ph==='safe'||A.ph==='lost'){ if(!A.held){
+      label(ctx,'кілт: 2 кг →  жылдам',Math.min(w-110,Math.max(110,A.kx)),A.ky-28,'#f6d77a',18,'center',true);
+      if(A.x<w-20) label(ctx,'ғарышкер: 100 кг → баяу',Math.min(w-120,A.x),A.y+76,'#9fd3ff',18,'center',true); } }
+  if(A.ph==='safe'){ label(ctx,'✔ Ғарышкер станцияға оралды!',w/2+60,60,'#8ff0a4',30,'center',true); }
+  if(A.ph==='lost'){ label(ctx,'✘ Ғарышкер станциядан одан әрі алыстады!',w/2+20,60,'#ff9a8a',28,'center',true); }
+}};
+asReset();
+$('asPlay').onclick=()=>{ if(AS.ph==='ready'){ AS.ph='intro'; AS.t=0; $('asPlay').textContent='▶ Жүріп жатыр'; $('asMsg').innerHTML='Мұқият қараңыз…'; } };
+$('cAstro').addEventListener('pointerdown',()=>$('asPlay').onclick());
+$('asRe').onclick=asReset;
+$('asOpts').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b||b.disabled) return; const k=b.dataset.k, M=$('asMsg');
+  if(k==='swim'){ b.classList.add('no'); SND.bad(); M.innerHTML='<span class="bad">✘ Жоқ.</span> Ғарышта ауа жоқ – қолмен итерілетін ештеңе жоқ. Ол орнынан жылжымайды.'; return; }
+  if(k==='wait'){ b.classList.add('no'); SND.bad(); M.innerHTML='<span class="bad">✘ Жоқ.</span> Оны ештеңе тоқтатпайды: ол <b>инерция</b> бойынша бірқалыпты ұзай береді.'; return; }
+  asOpts(false); AS.dir=k==='away'?1:-1; AS.ph='throw'; AS.t=0; $('asPlay').textContent='▶ Тексеріп жатырмыз';
+  if(k==='away'){ b.classList.add('ok'); M.innerHTML='<span class="good">✔ Дұрыс!</span> Кілтті бір жаққа итерсе, кілт те ғарышкерді <b>кері жаққа</b> итереді. Кілт <b>жылдам</b> ұшады, ал ғарышкер <b>баяу</b> оралады. <b>Неге?</b> → Масса!'; }
+  else { b.classList.add('no'); M.innerHTML='<span class="bad">✘ Қарап көрейік…</span> Кілтті станцияға лақтырса, ғарышкер <b>кері жаққа</b> – станциядан алысқа итеріледі! <b>↺ Басынан</b> басып, қайта таңдаңыз.'; } });
+
+/* 4. Проблема */
+LABS.cProb={t:0,frame(ctx,w,h,dt){ this.t+=dt; const t=this.t;
+  ctx.fillStyle='#e8f0f4'; ctx.fillRect(0,0,420,h); ctx.fillStyle='#f4ead6'; ctx.fillRect(420,0,420,h);
+  label(ctx,'ДҮКЕН',210,30,'#2d5f8f',18,'center',true); label(ctx,'БАЗАР',630,30,'#8a5a1e',18,'center',true);
+  ctx.fillStyle='#7a8a96'; ctx.fillRect(20,250,380,h-250); ctx.fillStyle='#a77446'; ctx.fillRect(440,250,380,h-250);
+  drawEScale(ctx,210,250,1,'1,000 кг',(x,y)=>{ for(let i=0;i<5;i++) OBJ.apple(ctx,x-48+i*24,y-(i%2)*14,.9); });
+  const ang=.05*Math.sin(t*1.6)*Math.exp(-(t%6)*.3);
+  drawLever(ctx,630,250,.5,ang,(x,y)=>{ for(let i=0;i<3;i++) OBJ.apple(ctx,x-22+i*22,y-(i===1?16:0),.75); },[1000]);
+  ctx.strokeStyle='#b8442f'; ctx.lineWidth=3; ctx.setLineDash([6,5]); ctx.beginPath(); ctx.moveTo(420,60); ctx.lineTo(420,h-10); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle='#b8442f'; ctx.beginPath(); ctx.arc(420,150,26,0,7); ctx.fill(); label(ctx,'?',420,160,'#fff',30,'center',true); }};
+
+/* 6. Инерттілік */
+const IN={x:[0,0],v:[0,0]};
+LABS.cIner={frame(ctx,w,h,dt){ const m2=+$('inM').value;
+  for(let i=0;i<2;i++){ IN.x[i]+=IN.v[i]*dt*60; IN.v[i]*=Math.pow(.55,dt); if(IN.x[i]>560){ IN.x[i]=560; IN.v[i]=0; } }
+  ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h);
+  [[60,'#2d5f8f',1],[140,'#b8442f',m2]].forEach(([y,c,m],i)=>{ ctx.fillStyle='#cdbf9f'; ctx.fillRect(20,y+38,w-40,4);
+    const x=60+IN.x[i], bw=60+m*10, bh=24+m*5; ctx.fillStyle=c; rr(ctx,x,y+30-bh,bw,bh,4); ctx.fill();
+    ctx.fillStyle='#333'; ctx.beginPath(); ctx.arc(x+12,y+32,7,0,7); ctx.arc(x+bw-12,y+32,7,0,7); ctx.fill();
+    label(ctx,m+' кг',x+bw/2,y+30-bh/2+5,'#fff',14,'center',true);
+    label(ctx,'v = '+g1(IN.v[i]*60/40)+' м/с',w-30,y+10,'#333',14,'right',true); });
+  label(ctx,'Бірдей итерген соң: массасы үлкен арба баяу қозғалады — оның инерттілігі үлкен',w/2,h-8,'#6a6658',13); }};
+$('inGo').onclick=()=>{ const m2=+$('inM').value; IN.v=[4/1,4/m2]; SND.clink(); };
+$('inRe').onclick=()=>{ IN.x=[0,0]; IN.v=[0,0]; };
+const inUpd=()=>{ $('inMv').textContent=$('inM').value+' кг'; IN.x=[0,0]; IN.v=[0,0]; }; $('inM').oninput=inUpd; inUpd();
+function cvUpd(){ const v=parseNum($('cvV').value), k=+$('cvU').value, u=$('cvU').selectedOptions[0].text;
+  if(!isFinite(v)){ $('cvOut').textContent='— санды енгіз'; return; }
+  const p={1000:'10³',1:'1',0.001:'10⁻³',0.000001:'10⁻⁶'}[k];
+  $('cvOut').innerHTML=`${nf(v,6)} ${u} = ${nf(v,6)} · ${p} кг = <b>${nf(v*k,9)} кг</b>`; }
+$('cvV').oninput=cvUpd; $('cvU').onchange=cvUpd; cvUpd();
+
+/* 7. Иінді таразы */
+const LVOBJ=[['apple','🍎 Алма',152.7],['battery','🔋 Батарейка',23.0],['eraser','Өшіргіш',18.4],['key','🔑 Кілт',12.6],['stone','❓ Белгісіз тас',0]];
+const LVSET=[100,50,20,20,10,5,2,2,1,.5,.2,.2,.1];
+const LV={o:0,m:152.7,used:[],ang:0,av:0,done:false};
+LVOBJ.forEach((o,i)=>{ const b=document.createElement('button'); b.className='btn'+(i===0?' on':''); b.textContent=o[1]; b.onclick=()=>{ LV.o=i; LV.m=o[2]||Math.round((8+Math.random()*190)*10)/10; LV.used=[]; LV.done=false; [...$('lvObjs').children].forEach((x,j)=>x.classList.toggle('on',j===i)); lvUpd(); }; $('lvObjs').appendChild(b); });
+LVSET.forEach((v,i)=>{ const b=document.createElement('button'); b.className='wb'+(v<1?' mg':''); b.textContent=v>=1?v+' г':Math.round(v*1000)+' мг'; b.onclick=()=>{ if(!wdClickOk()||LV.used.includes(i)) return; LV.used.push(i); SND.clink(); lvUpd(); }; $('lvW').appendChild(b); });
+$('lvUndo').onclick=()=>{ LV.used.pop(); lvUpd(); }; $('lvClr').onclick=()=>{ LV.used=[]; lvUpd(); };
+const lvSum=()=>Math.round(LV.used.reduce((a,i)=>a+LVSET[i],0)*10)/10;
+function lvUpd(){ [...$('lvW').children].forEach((b,i)=>b.disabled=LV.used.includes(i));
+  const s=lvSum(), list=LV.used.map(i=>LVSET[i]>=1?LVSET[i]+' г':Math.round(LVSET[i]*1000)+' мг').join(' + ');
+  let msg='Оң табақшада: '+(list?list+' = <b>'+g1(s)+' г</b>':'бос')+'<br>';
+  if(Math.abs(s-LV.m)<.05){ msg+=`<span class="good">✔ Тепе-теңдік! m = ${g1(LV.m)} г = ${nf(LV.m/1000,5)} кг</span>`; if(!LV.done){ LV.done=true; SND.ok(); } }
+  else { LV.done=false; msg+= s<LV.m?'<span class="bad">Сол жақ ауыр</span> → кір тас қос.':'<span class="bad">Оң жақ ауыр</span> → соңғы кір тасты кішісімен алмастыр.'; }
+  $('lvSt').innerHTML=msg; }
+LABS.cLever={frame(ctx,w,h,dt){ const s=lvSum(), target=lvTilt(LV.m-s);
+  LV.av+=((target-LV.ang)*30-LV.av*4.5)*dt; LV.ang+=LV.av*dt;
+  ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); table_(ctx,w,h,305);
+  const o=LVOBJ[LV.o][0]; drawLever(ctx,w/2,305,1,LV.ang,(x,y)=>OBJ[o](ctx,x,y,1.1),LV.used.map(i=>LVSET[i])); panHint(ctx,'cLever',w/2,305,LV.ang);
+  label(ctx,'дене',w/2-205,28,'#6a6658',15,'center',true); label(ctx,'кір тастар',w/2+205,28,'#6a6658',15,'center',true); }};
+lvUpd();
+
+/* Кір тастарды қолмен сүйреп салу (иінді таразы, 8-бет және практикалық жұмыс) */
+function lvTilt(d){ return .17*Math.tanh(d/60)+.06*Math.tanh(d/2); }
+const WD={on:false,cv:null,over:false};
+function panHint(ctx,cv,cx,by,ang){ if(!WD.on||WD.cv!==cv) return; const py=by-180, rx=cx+Math.cos(ang)*205, ry=py-Math.sin(ang)*205+70;
+  ctx.save(); ctx.strokeStyle=WD.over?'#2e7d4f':'#c79a3a'; ctx.lineWidth=4; ctx.setLineDash([10,7]); ctx.beginPath(); ctx.ellipse(rx,ry-20,110,62,0,0,7); ctx.stroke(); ctx.restore();
+  if(!WD.over) label(ctx,'осы табақшаға сал',rx,ry+62,'#8a6d2c',16,'center',true); }
+// box – кір тастар батырмалары тұрған контейнер; cvId – таразы canvas-ы; used() – салынған кір тастар тізімі; upd() – жаңарту
+function lvDrag(box,cvId,used,upd){ let g=null,x0=0,y0=0,i=-1,src=null,moved=false;
+  const overPan=(e)=>{ const r=$(cvId).getBoundingClientRect(); return e.clientX>r.left+r.width*.55&&e.clientX<r.right&&e.clientY>r.top&&e.clientY<r.bottom; };
+  const ghost=(txt,mg,e)=>{ g=document.createElement('div'); g.className='wb'+(mg?' mg':''); g.textContent=txt; const k=$('stage').getBoundingClientRect().width/1600;
+    Object.assign(g.style,{position:'fixed',left:0,top:0,zIndex:999,pointerEvents:'none',transform:`translate(${e.clientX}px,${e.clientY}px) translate(-50%,-50%) scale(${k*1.15})`,boxShadow:'0 8px 18px rgba(0,0,0,.35)'}); document.body.appendChild(g); };
+  const move=e=>{ if(!src) return; if(!moved&&Math.hypot(e.clientX-x0,e.clientY-y0)>8){ moved=true; WD.on=true; WD.cv=cvId; ghost(LVSET[i]>=1?LVSET[i]+' г':Math.round(LVSET[i]*1000)+' мг',LVSET[i]<1,e); }
+    if(g){ const k=$('stage').getBoundingClientRect().width/1600; g.style.transform=`translate(${e.clientX}px,${e.clientY}px) translate(-50%,-50%) scale(${k*1.15})`; WD.over=overPan(e); } };
+  const up=e=>{ if(!src) return; const fromPan=src==='pan';
+    if(moved){ const on=overPan(e); const u=used(); if(fromPan){ if(!on){ u.splice(u.indexOf(i),1); SND.clink(); } } else if(on&&!u.includes(i)){ u.push(i); SND.clink(); }
+      upd(); WD.supp=performance.now(); }
+    if(g) g.remove(); g=null; src=null; moved=false; WD.on=false; WD.over=false; };
+  box.addEventListener('pointerdown',e=>{ const b=e.target.closest('.wb'); if(!b||b.disabled) return; i=[...b.parentNode.children].indexOf(b); src='set'; x0=e.clientX; y0=e.clientY; moved=false; });
+  $(cvId).addEventListener('pointerdown',e=>{ const u=used(); if(!u.length||!overPan(e)) return; i=u[u.length-1]; src='pan'; x0=e.clientX; y0=e.clientY; moved=false; e.preventDefault(); });
+  addEventListener('pointermove',move); addEventListener('pointerup',up); addEventListener('pointercancel',up); }
+// батырманы жай басу да жұмыс істейді, тек сүйреуден кейінгі «click»-ті елемейміз
+const wdClickOk=()=>!(WD.supp&&performance.now()-WD.supp<350);
+lvDrag($('lvW'),'cLever',()=>LV.used,lvUpd);
+
+/* 8. Серіппелі таразы */
+const SPOBJ=[['apple','🍎 Алма',150],['pencase','Пенал',250],['book','📘 Кітап',400],['bottle','Су бөтелкесі',550],['flour','Ұн пакеті',900]];
+const SP={o:0,x:0,v:0};
+SPOBJ.forEach((o,i)=>{ const b=document.createElement('button'); b.className='btn'+(i===0?' on':''); b.textContent=o[1]; b.onclick=()=>{ SP.o=i; $('spR').value=''; $('spRes').textContent=''; [...$('spObjs').children].forEach((x,j)=>x.classList.toggle('on',j===i)); }; $('spObjs').appendChild(b); });
+LABS.cSpring={frame(ctx,w,h,dt){ const eq=SPOBJ[SP.o][2]; for(let k=0;k<4;k++){ const d=dt/4; SP.v+=(-(SP.x-eq)*55-SP.v*3.2)*d; SP.x+=SP.v*d; }
+  ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h);
+  ctx.fillStyle='#8a6a48'; ctx.fillRect(130,8,200,10);
+  const o=SPOBJ[SP.o][0]; const r=drawSpring(ctx,230,16,.84,SP.x,(x,y)=>OBJ[o](ctx,x,y,.9));
+  const zx=470,zy=34,zw=320,zh=320, Z=3; ctx.save(); rr(ctx,zx,zy,zw,zh,10); ctx.fillStyle='#fffdf6'; ctx.fill(); ctx.clip();
+  const cy=r.py; for(let g=0;g<=1000;g+=50){ const y=zy+zh/2+(r.z0+g*r.ppg-cy)*Z; if(y<zy-20||y>zy+zh+20) continue; const big=g%100===0;
+    ctx.strokeStyle='#222'; ctx.lineWidth=big?3:2; ctx.beginPath(); ctx.moveTo(zx+120,y); ctx.lineTo(zx+120+(big?80:45),y); ctx.stroke(); if(big) label(ctx,String(g),zx+215,y+8,'#222',24,'left',true); }
+  ctx.fillStyle='#c8352b'; ctx.beginPath(); ctx.moveTo(zx+20,zy+zh/2-12); ctx.lineTo(zx+118,zy+zh/2); ctx.lineTo(zx+20,zy+zh/2+12); ctx.closePath(); ctx.fill();
+  ctx.restore(); ctx.strokeStyle='#8d939a'; ctx.lineWidth=2; rr(ctx,zx,zy,zw,zh,10); ctx.stroke();
+  label(ctx,'🔍 үлкейтілген шкала',zx+zw/2,zy+zh+26,'#6a6658',15,'center',true);
+  ctx.strokeStyle='rgba(141,147,154,.6)'; ctx.setLineDash([5,5]); ctx.beginPath(); ctx.moveTo(270,r.py); ctx.lineTo(zx,zy+zh/2); ctx.stroke(); ctx.setLineDash([]); }};
+$('spChk').onclick=()=>{ const c=parseNum($('spC').value), v=parseNum($('spR').value), m=SPOBJ[SP.o][2];
+  const okc=near(c,50), okv=near(v,m);
+  $('spRes').innerHTML=(okc?'<span class="good">бөлік құны ✔</span>':'<span class="bad">бөлік құны ✘ (100 г − 0) : 2 = ?</span>')+' &nbsp; '+(okv?`<span class="good">m = ${m} г = ${nf(m/1000)} кг ✔</span>`:'<span class="bad">көрсеткіш ✘</span>');
+  if(okc&&okv) SND.ok(); else SND.bad(); };
+
+/* 9. Электронды таразы */
+const EL={glass:false,water:0,ws:0,coins:0,tare:0};
+const GLASS=112.4, COIN=2.2;
+const elTot=()=>(EL.glass?GLASS+EL.ws:0)+EL.coins*COIN;
+$('elGlass').onclick=()=>{ EL.glass=!EL.glass; if(!EL.glass){ EL.water=0; EL.ws=0; $('elW').value=0; } $('elW').disabled=!EL.glass; $('elGlass').textContent=EL.glass?'🥛 Стақанды алу':'🥛 Стақан қою'; elUpd(); };
+$('elW').oninput=()=>{ EL.water=+$('elW').value; elUpd(); };
+$('elC').oninput=()=>{ EL.coins=+$('elC').value; elUpd(); };
+$('elTare').onclick=()=>{ EL.tare=Math.round(elTot()*10)/10; SND.beep(); elUpd(); };
+function elUpd(){ $('elWv').textContent=EL.water+' мл'; $('elCv').textContent=EL.coins+' дана';
+  const parts=[]; if(EL.glass) parts.push('стақан'); if(EL.water) parts.push('су'); if(EL.coins) parts.push(EL.coins+' тиын');
+  let m='Табақшада: '+(parts.join(', ')||'ештеңе жоқ')+'. ';
+  if(EL.tare) m+=`TARE басылған: <b>${g1(EL.tare)} г</b> алынып тасталады. `;
+  if(EL.coins===10) m+='<br>10 тиын → бір тиын: m₁ = m₁₀ : 10 (қатарлау әдісі).';
+  $('elSt').innerHTML=m; }
+LABS.cEl={frame(ctx,w,h,dt){ const pouring=EL.ws<EL.water-.5; EL.ws+=(EL.water-EL.ws)*Math.min(1,dt*2.5); if(Math.abs(EL.water-EL.ws)<.3) EL.ws=EL.water;
+  ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); table_(ctx,w,h,290);
+  const val=Math.round((elTot()-EL.tare)*10)/10;
+  drawEScale(ctx,w/2,290,1.7,g1(val)+' г',(x,y)=>{ if(EL.glass) OBJ.glass(ctx,x-30,y,1.6,EL.ws); if(EL.coins) OBJ.coins(ctx,x+(EL.glass?95:0),y,1.6,EL.coins); });
+  if(pouring&&EL.glass){ const x=w/2-30, y0=20; ctx.fillStyle='#5aa0e1'; ctx.save(); ctx.translate(x+70,y0); ctx.rotate(.9); rr(ctx,-20,-30,40,60,6); ctx.fill(); ctx.restore();
+    ctx.strokeStyle='rgba(90,160,225,.8)'; ctx.lineWidth=5; ctx.beginPath(); ctx.moveTo(x+48,y0+22); ctx.quadraticCurveTo(x+20,y0+60,x+10,290-100); ctx.stroke(); } }};
+elUpd();
+
+/* 10. Топтық тапсырма */
+const GT=[
+  {t:'Иінді таразы',tx:'Иінді таразы тепе-теңдікте. Оң табақшада <b>200 г, 50 г, 20 г, 5 г</b> және <b>500 мг</b> кір тастары. Дененің массасы қанша? Килограммға айналдыр.',
+   q:[['m =','г',275.5],['m =','кг',.2755]]},
+  {t:'Серіппелі таразы',tx:'Шкаланың «0» мен «100 г» белгілерінің арасында <b>4 бөлік</b> бар. Көрсеткіш «0»-ден бастап <b>7-бөлікте</b> тұр. Бөлік құны мен дененің массасын тап.',
+   q:[['c =','г',25],['m =','г',175]]},
+  {t:'Электронды таразы',tx:'Бос стақан <b>120 г</b>, сумен бірге <b>370 г</b> көрсетті. Судың массасын тап. TARE басылғаннан кейін 10 бірдей тиын <b>22 г</b> көрсетті – бір тиынның массасы?',
+   q:[['m су =','кг',.25],['m₁ =','г',2.2]]},
+];
+let GTS=store.get('ms_gt',{});
+function gtBuild(){ $('gtRow').innerHTML=GT.map((g,i)=>`<div class="gtask grow" style="border-top-color:${GR[i].c}"><h4 style="color:${GR[i].c}">${GR[i].n} топ · ${g.t}</h4><div class="tx">${g.tx}</div>
+  ${g.q.map((q,j)=>`<div class="ai">${q[0]} <input data-gt="${i}_${j}"> ${q[1]}</div>`).join('')}
+  <div><button class="btn main" data-gtc="${i}">Тексеру</button></div><div class="r" id="gtr${i}"></div></div>`).join('');
+  GT.forEach((g,i)=>gtShow(i)); }
+function gtShow(i){ const s=GTS[i]; const r=$('gtr'+i); if(!s){ r.textContent=''; return; }
+  if(s.done&&s.ok) r.innerHTML='<span class="good">✔ Дұрыс! Топқа +2</span>';
+  else if(s.done) r.innerHTML='<span class="bad">Жауабы: '+GT[i].q.map(q=>q[0]+' '+nf(q[2],4)+' '+q[1]).join('; ')+'</span>';
+  else r.innerHTML='<span class="bad">✘ Тағы 1 мүмкіндік</span>'; }
+$('gtRow').addEventListener('click',e=>{ const b=e.target.closest('[data-gtc]'); if(!b) return; const i=+b.dataset.gtc; const s=GTS[i]=GTS[i]||{t:0,done:false,ok:false}; if(s.done) return;
+  const ok=GT[i].q.every((q,j)=>near(parseNum(document.querySelector(`[data-gt="${i}_${j}"]`).value),q[2]));
+  s.t++; if(ok){ s.done=true; s.ok=true; addGS(i,2); SND.ok(); } else { SND.bad(); if(s.t>=2) s.done=true; }
+  store.set('ms_gt',GTS); gtShow(i); });
+gtBuild();
+
+/* 11. Заң */
+LABS.cLaw={t:0,frame(ctx,w,h,dt){ this.t+=dt; ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); table_(ctx,w,h,170);
+  drawEScale(ctx,200,170,1.1,'2,000 кг',(x,y)=>{ ctx.fillStyle='#b5463c'; rr(ctx,x-50,y-34,100,34,12); ctx.fill(); ctx.fillStyle='#e7a39a'; rr(ctx,x-30,y-28,30,10,5); ctx.fill(); });
+  ctx.fillStyle='#2d5f8f'; ctx.beginPath(); ctx.arc(380,95,18,0,7); ctx.fill(); label(ctx,'✓',380,102,'#fff',18,'center',true); label(ctx,'поверка',380,132,'#2d5f8f',12,'center',true);
+  const blink=(Math.sin(this.t*4)+1)/2; ctx.globalAlpha=.4+.6*blink; ctx.fillStyle='#b8442f'; ctx.fillRect(160,178,80,12); ctx.globalAlpha=1; label(ctx,'магнит 50 г ?',200,200,'#b8442f',12,'center',true);
+  label(ctx,'Таразы: 2,000 кг',580,60,'#1d2430',21,'center',true); label(ctx,'Етің шын массасы: ? кг',580,100,'#b8442f',21,'center',true);
+  label(ctx,'Тұтынушы төлеген массасын толық алуы керек',580,140,'#6a6658',15,'center'); }};
+
+/* 12. Практикалық жұмыс: әр топқа бөлек виртуалды станция */
+const PTG=[
+  {dev:'lever',t:'Иінді таразы',acc:.1,
+   task:'1) Денені таңда – ол сол табақшаға қойылады.<br>2) Кір тастарды <b>сүйреп</b> оң табақшаға сал, таразыны <b>теңестір</b>. Үлкенінен баста!<br>3) Массаны <b>г</b> және <b>кг</b> бойынша кестеге жаз.<br>4) Таразының дәлдігін (ең кіші кір тас) анықта.',
+   bodies:[['apple','🍎 Алма',152.7],['battery','🔋 Батарейка',23.0],['eraser','Өшіргіш',18.4]]},
+  {dev:'spring',t:'Серіппелі таразы',acc:50,
+   task:'1) Шкаладағы «0» мен «100» арасындағы бөлік санын санап, <b>бөлік құнын</b> тап: c = (100 − 0) : n.<br>2) Денені іліп, көрсеткішті оқы (үлкейтілген шкаладан).<br>3) Массаны <b>г</b> және <b>кг</b> бойынша кестеге жаз.',
+   bodies:[['apple','🍎 Алма',152.7],['pencase','Пенал',250],['book','📘 Кітап',400]]},
+  {dev:'el',t:'Электронды таразы',acc:.1,
+   task:'1) Алманы қойып, массасын жаз.<br>2) Бос стақанды қой → <b>TARE</b> бас → 200 мл су құй. Судың массасы?<br>3) 10 тиынды қой. Бір тиынның массасы: m₁ = m₁₀ : 10.<br>4) Таразының дәлдігі (соңғы цифр) қанша?',
+   bodies:[['apple','🍎 Алма',152.7],['water','🥛 Стақандағы су',200],['coin','1 тиын (10 тиын : 10)',2.2]]},
+];
+let PTD=store.get('ms_pt',[{},{},{}]), PTP=store.get('ms_ptp',[{},{},{}]), ptG=0;
+const PL={o:0,used:[],ang:0,av:0}, PS={o:0,x:0,v:0}, PE={apple:false,glass:false,water:0,ws:0,coins:0,tare:0};
+const PTM={left:[180,180,180],run:false,last:0};
+const peTot=()=>(PE.apple?152.7:0)+(PE.glass?GLASS+PE.ws:0)+PE.coins*COIN;
+const plSum=()=>Math.round(PL.used.reduce((a,i)=>a+LVSET[i],0)*10)/10;
+function ptTabs(){ $('ptTabs').innerHTML=PTG.map((g,i)=>{ const n=Object.keys(PTP[i]).length;
+  return `<button class="ptab${i===ptG?' on':''}" data-g="${i}" style="border-color:${GR[i].c};${i===ptG?'background:'+GR[i].c:'color:'+GR[i].c}">${GR[i].n} топ<small>${g.t} · ${n}/4 ұпай${n===4?' ✔':''}</small></button>`; }).join(''); }
+$('ptTabs').addEventListener('click',e=>{ const b=e.target.closest('[data-g]'); if(!b) return; PTM.run=false; ptG=+b.dataset.g; ptBuild(); SND.page(); });
+function ptBuild(){ const G=PTG[ptG], c=GR[ptG].c; ptTabs();
+  $('ptTH').innerHTML=`<span style="color:${c}">${GR[ptG].n} топ · ${G.t}</span>`; $('ptTask').innerHTML=G.task;
+  const C=$('ptCtl'); C.innerHTML='';
+  if(G.dev==='lever'){
+    C.innerHTML='<div class="objs" id="plO"></div><div class="wset" id="plW"></div><div style="display:flex;gap:8px"><button class="btn" id="plU">↶ Соңғы кір тасты ал</button><button class="btn" id="plC">Бәрін ал</button></div>';
+    G.bodies.forEach((o,i)=>{ const b=document.createElement('button'); b.className='btn'+(i===PL.o?' on':''); b.textContent=o[1]; b.onclick=()=>{ PL.o=i; PL.used=[]; [...$('plO').children].forEach((x,j)=>x.classList.toggle('on',j===i)); ptUpd(); }; $('plO').appendChild(b); });
+    LVSET.forEach((v,i)=>{ const b=document.createElement('button'); b.className='wb'+(v<1?' mg':''); b.textContent=v>=1?v+' г':Math.round(v*1000)+' мг'; b.onclick=()=>{ if(!wdClickOk()||PL.used.includes(i)) return; PL.used.push(i); SND.clink(); ptUpd(); }; $('plW').appendChild(b); });
+    $('plU').onclick=()=>{ PL.used.pop(); ptUpd(); }; $('plC').onclick=()=>{ PL.used=[]; ptUpd(); }; }
+  else if(G.dev==='spring'){
+    C.innerHTML='<div class="objs" id="psO"></div>';
+    G.bodies.forEach((o,i)=>{ const b=document.createElement('button'); b.className='btn'+(i===PS.o?' on':''); b.textContent=o[1]; b.onclick=()=>{ PS.o=i; [...$('psO').children].forEach((x,j)=>x.classList.toggle('on',j===i)); ptUpd(); }; $('psO').appendChild(b); }); }
+  else {
+    C.innerHTML=`<div class="row" style="align-items:center;flex-wrap:wrap"><button class="btn" id="peA">🍎 Алма</button><button class="btn" id="peG">🥛 Стақан</button>
+      <div class="ctl grow" style="min-width:200px"><div class="lab"><span>Су құю</span><span class="val" id="peWv"></span></div><input type="range" id="peW" min="0" max="250" step="10" value="${PE.water}"></div>
+      <div class="ctl" style="width:170px"><div class="lab"><span>Тиындар</span><span class="val" id="peCv"></span></div><input type="range" id="peC" min="0" max="10" step="1" value="${PE.coins}"></div>
+      <button class="btn main" id="peT">TARE → 0</button></div>`;
+    $('peA').onclick=()=>{ PE.apple=!PE.apple; ptUpd(); }; $('peG').onclick=()=>{ PE.glass=!PE.glass; if(!PE.glass){ PE.water=0; PE.ws=0; $('peW').value=0; } ptUpd(); };
+    $('peW').oninput=()=>{ PE.water=+$('peW').value; ptUpd(); }; $('peC').oninput=()=>{ PE.coins=+$('peC').value; ptUpd(); };
+    $('peT').onclick=()=>{ PE.tare=Math.round(peTot()*10)/10; SND.beep(); ptUpd(); }; }
+  const d=PTD[ptG], P=PTP[ptG];
+  let h='<tr><th>Дене</th><th>m, г</th><th>m, кг</th></tr>';
+  G.bodies.forEach((o,i)=>{ h+=`<tr><td class="l">${o[1]}</td><td class="${P['b'+i]?'ok':''}"><input data-k="${i}_g" value="${d[i+'_g']??''}"></td><td class="${P['b'+i]?'ok':''}"><input data-k="${i}_k" value="${d[i+'_k']??''}"></td></tr>`; });
+  h+=`<tr><td class="l">${G.dev==='spring'?'Бөлік құны':'Дәлдігі'}, г</td><td colspan="2" class="${P.acc?'ok':''}"><input data-k="acc" value="${d.acc??''}"></td></tr>`;
+  $('ptTab').innerHTML=h;
+  $('ptTab').querySelectorAll('input').forEach(inp=>inp.oninput=()=>{ PTD[ptG][inp.dataset.k]=inp.value; store.set('ms_pt',PTD); rsBuild(); });
+  $('ptRes').innerHTML=''; ptUpd(); ptTm(); }
+function ptUpd(){ const G=PTG[ptG], S=$('ptSt');
+  if(G.dev==='lever'){ const m=G.bodies[PL.o][2], s=plSum(); [...$('plW').children].forEach((b,i)=>b.disabled=PL.used.includes(i));
+    const list=PL.used.map(i=>LVSET[i]>=1?LVSET[i]+' г':Math.round(LVSET[i]*1000)+' мг').join(' + ');
+    let msg='Оң табақшада: '+(list?list+' = <b>'+g1(s)+' г</b>':'бос')+'<br>';
+    if(Math.abs(s-m)<.05) msg+='<span class="good">✔ Тепе-теңдік! Енді массаны кестеге жаз.</span>';
+    else msg+= s<m?'<span class="bad">Сол жақ ауыр</span> → кір тас қос.':'<span class="bad">Оң жақ ауыр</span> → соңғы кір тасты кішісімен алмастыр.';
+    S.innerHTML=msg; }
+  else if(G.dev==='spring'){ S.innerHTML=`Ілінген дене: <b>${G.bodies[PS.o][1]}</b>. Көрсеткішті үлкейтілген шкаладан оқы. Көрсеткіш екі сызықтың арасында тұрса – жақынырақ сызықты ал.`; }
+  else { $('peWv').textContent=PE.water+' мл'; $('peCv').textContent=PE.coins+' дана'; $('peW').disabled=!PE.glass;
+    $('peA').classList.toggle('on',PE.apple); $('peG').classList.toggle('on',PE.glass);
+    const parts=[]; if(PE.apple) parts.push('алма'); if(PE.glass) parts.push('стақан'); if(PE.water) parts.push(PE.water+' мл су'); if(PE.coins) parts.push(PE.coins+' тиын');
+    S.innerHTML='Табақшада: '+(parts.join(', ')||'ештеңе жоқ')+'. '+(PE.tare?`TARE: <b>${g1(PE.tare)} г</b> алынып тасталды.`:''); } }
+$('ptChk').onclick=()=>{ const G=PTG[ptG], d=PTD[ptG], P=PTP[ptG]; let got=0, bad=0;
+  G.bodies.forEach((o,i)=>{ const vg=parseNum(d[i+'_g']??''), vk=parseNum(d[i+'_k']??''); if(!isFinite(vg)&&!isFinite(vk)) return;
+    const tol=G.dev==='spring'?5:.05, ok=isFinite(vg)&&Math.abs(vg-o[2])<=tol&&isFinite(vk)&&Math.abs(vk*1000-vg)<.011;
+    if(ok){ if(!P['b'+i]){ P['b'+i]=1; got++; } } else bad++; });
+  const va=parseNum(d.acc??''); if(isFinite(va)){ if(near(va,G.acc)){ if(!P.acc){ P.acc=1; got++; } } else bad++; }
+  store.set('ms_ptp',PTP); if(got){ addGS(ptG,got); SND.ok(); } else if(bad) SND.bad();
+  const n=Object.keys(P).length; ptBuild();
+  $('ptRes').innerHTML=(got?`<span class="good">✔ +${got} ұпай</span> `:'')+(bad?`<span class="bad">✘ ${bad} жауап қате – тексеріп, түзет</span> `:'')+`<b>${n}/4</b>`+(n===4?' <span class="good">Станция орындалды! Келесі топ шықсын.</span>':''); };
+LABS.cPt={frame(ctx,w,h,dt){ const G=PTG[ptG]; ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h);
+  if(G.dev==='lever'){ const m=G.bodies[PL.o][2], s=plSum(), target=lvTilt(m-s);
+    PL.av+=((target-PL.ang)*30-PL.av*4.5)*dt; PL.ang+=PL.av*dt; table_(ctx,w,h,330);
+    const o=G.bodies[PL.o][0]; drawLever(ctx,w/2,330,1,PL.ang,(x,y)=>OBJ[o](ctx,x,y,1.1),PL.used.map(i=>LVSET[i])); panHint(ctx,'cPt',w/2,330,PL.ang);
+    label(ctx,'дене',w/2-205,40,'#6a6658',16,'center',true); label(ctx,'кір тастар',w/2+205,40,'#6a6658',16,'center',true); }
+  else if(G.dev==='spring'){ const eq=G.bodies[PS.o][2]; for(let k=0;k<4;k++){ const d=dt/4; PS.v+=(-(PS.x-eq)*55-PS.v*3.2)*d; PS.x+=PS.v*d; }
+    ctx.fillStyle='#8a6a48'; ctx.fillRect(130,6,200,10);
+    const o=G.bodies[PS.o][0]; const r=drawSpring(ctx,230,14,.76,PS.x,(x,y)=>OBJ[o](ctx,x,y,.85));
+    const zx=470,zy=20,zw=330,zh=300,Z=3; ctx.save(); rr(ctx,zx,zy,zw,zh,10); ctx.fillStyle='#fffdf6'; ctx.fill(); ctx.clip();
+    for(let g=0;g<=1000;g+=50){ const y=zy+zh/2+(r.z0+g*r.ppg-r.py)*Z; if(y<zy-20||y>zy+zh+20) continue; const big=g%100===0;
+      ctx.strokeStyle='#222'; ctx.lineWidth=big?3:2; ctx.beginPath(); ctx.moveTo(zx+120,y); ctx.lineTo(zx+120+(big?80:45),y); ctx.stroke(); if(big) label(ctx,String(g),zx+215,y+8,'#222',24,'left',true); }
+    ctx.fillStyle='#c8352b'; ctx.beginPath(); ctx.moveTo(zx+20,zy+zh/2-12); ctx.lineTo(zx+118,zy+zh/2); ctx.lineTo(zx+20,zy+zh/2+12); ctx.closePath(); ctx.fill();
+    ctx.restore(); ctx.strokeStyle='#8d939a'; ctx.lineWidth=2; rr(ctx,zx,zy,zw,zh,10); ctx.stroke();
+    label(ctx,'🔍 үлкейтілген шкала',zx+zw/2,zy+zh+26,'#6a6658',15,'center',true);
+    ctx.strokeStyle='rgba(141,147,154,.6)'; ctx.setLineDash([5,5]); ctx.beginPath(); ctx.moveTo(270,r.py); ctx.lineTo(zx,zy+zh/2); ctx.stroke(); ctx.setLineDash([]); }
+  else { const pouring=PE.ws<PE.water-.5; PE.ws+=(PE.water-PE.ws)*Math.min(1,dt*2.5); if(Math.abs(PE.water-PE.ws)<.3) PE.ws=PE.water;
+    table_(ctx,w,h,320); const val=Math.round((peTot()-PE.tare)*10)/10;
+    drawEScale(ctx,w/2,320,1.7,g1(val)+' г',(x,y)=>{ if(PE.apple) OBJ.apple(ctx,x-115,y,1.5); if(PE.glass) OBJ.glass(ctx,x,y,1.6,PE.ws); if(PE.coins) OBJ.coins(ctx,x+(PE.glass?105:20),y,1.6,PE.coins); });
+    if(pouring&&PE.glass){ const x=w/2, y0=30; ctx.fillStyle='#5aa0e1'; ctx.save(); ctx.translate(x+70,y0); ctx.rotate(.9); rr(ctx,-20,-30,40,60,6); ctx.fill(); ctx.restore();
+      ctx.strokeStyle='rgba(90,160,225,.8)'; ctx.lineWidth=5; ctx.beginPath(); ctx.moveTo(x+48,y0+22); ctx.quadraticCurveTo(x+20,y0+60,x+10,320-110); ctx.stroke(); } } }};
+function ptTm(){ const sec=Math.ceil(PTM.left[ptG]); $('ptTm').textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
+  $('ptTm').classList.toggle('low',sec<=30); $('ptGo').textContent=PTM.run?'⏸':'▶'; }
+$('ptGo').onclick=()=>{ if(PTM.left[ptG]<=0) return; PTM.run=!PTM.run; PTM.last=performance.now(); ptTm(); };
+$('ptRe').onclick=()=>{ PTM.run=false; PTM.left[ptG]=180; ptTm(); };
+$('ptClr').onclick=()=>{ if(!confirm(GR[ptG].n+' топтың станциядағы нәтижесі өшеді. Жалғастырамыз ба?')) return; PTD[ptG]={}; PTP[ptG]={}; store.set('ms_pt',PTD); store.set('ms_ptp',PTP); PTM.left[ptG]=180; PTM.run=false; ptBuild(); rsBuild(); };
+setInterval(()=>{ if(!PTM.run) return; const now=performance.now(), prev=Math.ceil(PTM.left[ptG]); PTM.left[ptG]-=(now-PTM.last)/1000; PTM.last=now; const c=Math.ceil(PTM.left[ptG]);
+  if(c!==prev&&c<=5&&c>0) SND.beep(); if(PTM.left[ptG]<=0){ PTM.left[ptG]=0; PTM.run=false; SND.bell(); toast('Уақыт бітті! Келесі топ шықсын.'); } if(c!==prev||PTM.left[ptG]<=0) ptTm(); },200);
+
+/* 13. Нәтижелер кестесі (виртуалды станциялардан) */
+function rsBuild(){ const v=(g,k)=>{ const x=parseNum(PTD[g][k]??''); return isFinite(x)?nf(x,4):'—'; };
+  let h='<tr><th></th>'+PTG.map((g,i)=>`<th style="color:${GR[i].c}">${GR[i].n} топ · ${g.t}</th>`).join('')+'</tr>';
+  h+='<tr><td class="l"><b>🍎 Алма</b>, г</td>'+PTG.map((g,i)=>`<td style="font-size:22px"><b>${v(i,'0_g')}</b></td>`).join('')+'</tr>';
+  h+='<tr><td class="l">Дәлдігі (бөлік құны), г</td>'+PTG.map((g,i)=>`<td>${v(i,'acc')}</td>`).join('')+'</tr>';
+  h+='<tr><td class="l">Станция ұпайы</td>'+PTG.map((g,i)=>`<td>${Object.keys(PTP[i]).length} / 4</td>`).join('')+'</tr>';
+  $('rsTab').innerHTML=h;
+  $('rsMore').innerHTML=PTG.map((g,i)=>`<b style="color:${GR[i].c}">${GR[i].n}:</b> `+g.bodies.slice(1).map((o,j)=>`${o[1]} – ${v(i,(j+1)+'_g')} г`).join(' · ')).join('<br>'); }
+lvDrag($('ptCtl'),'cPt',()=>PTG[ptG].dev==='lever'?PL.used:[],ptUpd);
+ptBuild(); rsBuild();
+
+/* 14. Дуэль: ХБЖ */
+const DPOOL=[
+  ['3 км = ? м',3000],['0,5 км = ? м',500],['2000 м = ? км',2],['150 см = ? м',1.5],['25 см = ? м',.25],['1 м = ? см',100],
+  ['5 мм = ? м',.005],['3 дм = ? м',.3],['10 мм = ? см',1],['500 г = ? кг',.5],['250 г = ? кг',.25],['2000 г = ? кг',2],
+  ['1,5 кг = ? г',1500],['1 кг = ? г',1000],['1 г = ? кг',.001],['2 т = ? кг',2000],['0,3 т = ? кг',300],['500 мг = ? г',.5],
+  ['2 мин = ? с',120],['0,5 мин = ? с',30],['1 сағ = ? мин',60],['1 сағ = ? с',3600],['1,5 сағ = ? мин',90],['1 л = ? мл',1000],
+  ['250 мл = ? л',.25],['36 км/сағ = ? м/с',10],['72 км/сағ = ? м/с',20],['18 км/сағ = ? м/с',5],
+  ['Массаның SI бірлігі?','кг',['кг','г','т','мг']],['Ұзындықтың SI бірлігі?','м',['м','см','км','мм']],['Уақыттың SI бірлігі?','с',['с','мин','сағ','тәулік']],['Жылдамдықтың SI бірлігі?','м/с',['м/с','км/сағ','км/с','м/мин']]];
+const fmt=v=>typeof v==='number'?nf(v,6):v;
+function dOpts(q){ if(q[2]) return shuffle(q[2]); const a=q[1], c=new Set([a]); for(const k of shuffle([10,.1,100,.01,1000,.001,2,.5])){ if(c.size>=4) break; const v=+(a*k).toPrecision(6); if(v!==a) c.add(v); } return shuffle([...c]); }
+const D={on:false,t0:0,P:[null,null]};
+function dDeal(){ const pool=shuffle(DPOOL); D.P=[0,1].map(k=>({qs:pool.slice(k*10,k*10+10),i:0,sc:0,busy:false,done:false,time:0,cur:[]})); }
+function dRender(k){ const s=k?'B':'A', p=D.P[k]; $('sc'+s).textContent=p.sc; $('pb'+s).style.width=(p.i*10)+'%'; $('st'+s).textContent=p.done?'Аяқтады ✔':(D.on?(p.i+1)+' / 10':'');
+  if(!D.on&&!p.done){ $('q'+s).textContent='Дайынсың ба?'; $('o'+s).innerHTML=''; return; }
+  if(p.done){ $('q'+s).textContent='Жарайсың! '+p.sc+' / 10'; $('o'+s).innerHTML=''; return; }
+  const q=p.qs[p.i]; p.cur=dOpts(q); $('q'+s).textContent=q[0];
+  $('o'+s).innerHTML=p.cur.map((v,j)=>`<button class="o" data-k="${k}" data-j="${j}">${fmt(v)}</button>`).join(''); }
+function dAns(btn){ const k=+btn.dataset.k, p=D.P[k], s=k?'B':'A'; if(!D.on||p.busy||p.done) return; p.busy=true;
+  const q=p.qs[p.i], v=p.cur[+btn.dataset.j], ok=v===q[1]; const bs=[...$('o'+s).children];
+  bs.forEach((b,j)=>{ if(p.cur[j]===q[1]) b.classList.add('good'); else if(b===btn) b.classList.add('badc'); else b.classList.add('dim'); });
+  if(ok){ p.sc++; SND.ok(); } else SND.bad();
+  setTimeout(()=>{ p.i++; p.busy=false; if(p.i>=10){ p.done=true; p.time=(performance.now()-D.t0)/1000; $('t'+s).textContent=nf(p.time,1)+' с'; dEnd(); } dRender(k); }, ok?550:1000); }
+function dEnd(){ if(!(D.P[0].done&&D.P[1].done)) return; D.on=false; SND.bell();
+  const a=D.P[0], b=D.P[1], na=$('nmA').value||'1-оқушы', nb=$('nmB').value||'2-оқушы';
+  let w; if(a.sc!==b.sc) w=a.sc>b.sc?na:nb; else w=a.time<=b.time?na:nb;
+  $('dWin').textContent='🏆 '+w; $('dTxt').textContent=`${na}: ${a.sc} ұпай, ${nf(a.time,1)} с  ·  ${nb}: ${b.sc} ұпай, ${nf(b.time,1)} с`; $('dOver').style.display='flex'; }
+function dStart(){ dDeal(); D.on=true; D.t0=performance.now(); $('tA').textContent=''; $('tB').textContent=''; dRender(0); dRender(1); SND.beep(); }
+$('dGo').onclick=dStart; $('dRe').onclick=()=>{ D.on=false; dDeal(); dRender(0); dRender(1); $('tA').textContent=''; $('tB').textContent=''; };
+$('dOk').onclick=()=>{ $('dOver').style.display='none'; };
+['oA','oB'].forEach(id=>$(id).addEventListener('pointerdown',e=>{ const b=e.target.closest('.o'); if(b){ e.preventDefault(); dAns(b); } }));
+setInterval(()=>{ if(D.on) $('dClock').textContent=nf((performance.now()-D.t0)/1000,1)+' с'; },100);
+dDeal(); dRender(0); dRender(1);
+
+/* 15. ФС: 3D кантар */
+const FSOBJ=[['🍎 Алма',.15,'apple'],['🏋 Гир',.2,'weight'],['📘 Кітап',.35,'book'],['📱 Телефон',.18,'phone'],['❓ Белгісіз',0,'stone']];
+const FS={o:0,m:.15,x:0,v:0,zoom:false,yaw:-.35,pitch:.05,auto:true,ready:false};
+FSOBJ.forEach((o,i)=>{ const b=document.createElement('button'); b.className='btn'+(i===0?' on':''); b.textContent=o[0]; b.onclick=()=>{ FS.o=i; FS.m=o[1]||Math.round(10+Math.random()*35)/100; fsHang(); $('fsRes').textContent=''; ['fsF','fsM'].forEach(id=>$(id).value='');
+  [...$('fsObjs').children].forEach((x,j)=>x.classList.toggle('on',j===i)); }; $('fsObjs').appendChild(b); });
+const G3={};
+function fs3dInit(){ if(FS.ready) return; if(!window.THREE){ FS.ready='no'; const c=$('fs3d').getContext('2d'); if(c){ c.fillStyle='#333'; c.font='16px Segoe UI'; c.fillText('three.min.js табылмады (осы папкада болуы керек)',14,40); } return; }
+  FS.ready=true; const T=THREE, cv=$('fs3d');
+  const R=new T.WebGLRenderer({canvas:cv,antialias:true}); R.setPixelRatio(Math.min(2,devicePixelRatio||1)); R.setSize(470,560,false); R.setClearColor(0xdfe6ea);
+  const S=new T.Scene(); const C=new T.PerspectiveCamera(36,470/560,.1,50);
+  S.add(new T.HemisphereLight(0xffffff,0x8a7a66,.85)); const dl=new T.DirectionalLight(0xffffff,.7); dl.position.set(3,5,4); S.add(dl);
+  const wood=new T.MeshStandardMaterial({color:0x9a6b40,roughness:.8}), metal=new T.MeshStandardMaterial({color:0x8c939b,metalness:.6,roughness:.35});
+  const base=new T.Mesh(new T.BoxGeometry(2.2,.12,1.2),wood); base.position.y=-2.55; S.add(base);
+  const rod=new T.Mesh(new T.CylinderGeometry(.045,.045,5,16),metal); rod.position.set(-.9,0,0); S.add(rod);
+  const arm=new T.Mesh(new T.CylinderGeometry(.04,.04,1.1,16),metal); arm.rotation.z=Math.PI/2; arm.position.set(-.38,2.4,0); S.add(arm);
+  // шкала: 0–5 Н, бөлік құны 0,1 Н
+  const tc=document.createElement('canvas'); tc.width=256; tc.height=1024; const g=tc.getContext('2d');
+  g.fillStyle='#fffdf4'; g.fillRect(0,0,256,1024); const y0=90, y5=930, py=(y5-y0)/5;
+  for(let k=0;k<=50;k++){ const y=y0+k*py/10, big=k%10===0, mid=k%5===0; g.fillStyle='#1d2430'; g.fillRect(150,y-(big?2.5:1.5),big?80:mid?55:35,big?5:3); if(big){ g.font='700 54px Segoe UI'; g.textAlign='right'; g.fillText(String(k/10),138,y+19); } }
+  g.font='700 46px Segoe UI'; g.textAlign='center'; g.fillText('Н',128,1000); g.font='600 30px Segoe UI'; g.fillText('ДИНАМОМЕТР',128,50);
+  const tex=new T.CanvasTexture(tc); tex.anisotropy=4;
+  const plateH=3.0, plate=new T.Mesh(new T.BoxGeometry(.75,plateH,.08),[metal,metal,metal,metal,new T.MeshStandardMaterial({map:tex,roughness:.6}),metal]);
+  plate.position.set(0,.85,0); S.add(plate);
+  const ring=new T.Mesh(new T.TorusGeometry(.12,.025,10,24),metal); ring.position.set(0,2.47,0); S.add(ring);
+  G3.ys=plate.position.y+plateH/2-plateH*90/1024; G3.ye=plate.position.y+plateH/2-plateH*930/1024; G3.pyN=(G3.ys-G3.ye)/5;
+  G3.yBot=plate.position.y-plateH/2;
+  G3.T=T; G3.S=S; G3.C=C; G3.R=R; G3.metal=metal; G3.springTop=plate.position.y+plateH/2-.05;
+  G3.pointer=new T.Mesh(new T.BoxGeometry(.5,.035,.05),new T.MeshStandardMaterial({color:0xc8352b})); S.add(G3.pointer);
+  G3.stem=new T.Mesh(new T.CylinderGeometry(.018,.018,1,8),metal); S.add(G3.stem);
+  G3.hook=new T.Mesh(new T.TorusGeometry(.09,.018,8,20,Math.PI*1.4),metal); S.add(G3.hook);
+  G3.str=new T.Mesh(new T.CylinderGeometry(.008,.008,1,6),new T.MeshStandardMaterial({color:0x444444})); S.add(G3.str);
+  fsHang(); }
+function fsMakeObj(kind){ const T=G3.T; const grp=new T.Group();
+  if(kind==='apple'){ const m=new T.Mesh(new T.SphereGeometry(.2,24,18),new T.MeshStandardMaterial({color:0xc8352b,roughness:.45})); m.scale.y=.9; m.position.y=-.2; grp.add(m);
+    const st=new T.Mesh(new T.CylinderGeometry(.012,.012,.08,6),new T.MeshStandardMaterial({color:0x5a3a1a})); grp.add(st); }
+  else if(kind==='weight'){ const mat=new T.MeshStandardMaterial({color:0xc9a64a,metalness:.7,roughness:.3}); const m=new T.Mesh(new T.CylinderGeometry(.15,.15,.32,28),mat); m.position.y=-.22; grp.add(m);
+    const k=new T.Mesh(new T.CylinderGeometry(.05,.05,.06,16),mat); k.position.y=-.03; grp.add(k); }
+  else if(kind==='book'){ const m=new T.Mesh(new T.BoxGeometry(.6,.45,.12),[0,1,2,3,4,5].map(i=>new T.MeshStandardMaterial({color:i<2?0xf4f0e2:0x2d5f8f}))); m.position.y=-.26; grp.add(m); }
+  else if(kind==='phone'){ const m=new T.Mesh(new T.BoxGeometry(.3,.58,.04),new T.MeshStandardMaterial({color:0x222831,roughness:.3})); m.position.y=-.31; grp.add(m);
+    const sc=new T.Mesh(new T.PlaneGeometry(.26,.5),new T.MeshStandardMaterial({color:0x3a6ea5,emissive:0x112233})); sc.position.set(0,-.31,.021); grp.add(sc); }
+  else { const m=new T.Mesh(new T.DodecahedronGeometry(.2,0),new T.MeshStandardMaterial({color:0x7d7a73,roughness:.9,flatShading:true})); m.position.y=-.2; grp.add(m); }
+  return grp; }
+function fsHang(){ if(FS.ready!==true) return; if(G3.obj) G3.S.remove(G3.obj); G3.obj=fsMakeObj(FSOBJ[FS.o][2]); G3.S.add(G3.obj); FS.v+=2; SND.clink(); }
+function fs3dFrame(dt){ if(!FS.ready) fs3dInit(); if(FS.ready!==true) return;
+  const F=FS.m*10; for(let k=0;k<4;k++){ const d=dt/4; FS.v+=(-(FS.x-F)*45-FS.v*2.6)*d; FS.x+=FS.v*d; }
+  const T=G3.T, yP=G3.ys-FS.x*G3.pyN;
+  G3.pointer.position.set(0,yP,.07);
+  if(G3.spring){ G3.S.remove(G3.spring); G3.spring.geometry.dispose(); }
+  const top=G3.springTop, len=Math.max(.15,top-yP), turns=16, N=turns*20, pts=[];
+  for(let i=0;i<=N;i++){ const a=i/20*Math.PI*2; pts.push(new T.Vector3(-.2+Math.cos(a)*.07,top-len*i/N,.1+Math.sin(a)*.07)); }
+  G3.spring=new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(pts),N,.012,6,false),G3.metal); G3.S.add(G3.spring);
+  const stemBot=G3.yBot-.18-FS.x*.02;
+  G3.stem.scale.y=Math.max(.01,yP-stemBot); G3.stem.position.set(-.2,(yP+stemBot)/2,.1);
+  G3.hook.position.set(-.2,stemBot-.08,.1); G3.hook.rotation.z=Math.PI*.8;
+  G3.str.scale.y=.12; G3.str.position.set(-.2,stemBot-.23,.1);
+  G3.obj.position.set(-.2,stemBot-.29,.1);
+  if(FS.auto) FS.yaw=-.35+Math.sin(performance.now()/4000)*.25;
+  const tgt=FS.zoom?new T.Vector3(0,yP,0):new T.Vector3(.05,.15,0), dist=FS.zoom?1.7:7.6;
+  G3.C.position.set(tgt.x+Math.sin(FS.yaw)*dist*Math.cos(FS.pitch),tgt.y+Math.sin(FS.pitch)*dist,tgt.z+Math.cos(FS.yaw)*dist*Math.cos(FS.pitch)); G3.C.lookAt(tgt);
+  G3.R.render(G3.S,G3.C); }
+(()=>{ const cv=$('fs3d'); let drag=null; cv.addEventListener('pointerdown',e=>{ drag={x:e.clientX,y:e.clientY}; FS.auto=false; cv.setPointerCapture(e.pointerId); cv.style.cursor='grabbing'; });
+  cv.addEventListener('pointermove',e=>{ if(!drag) return; FS.yaw-=(e.clientX-drag.x)*.008; FS.pitch=Math.max(-.4,Math.min(.6,FS.pitch+(e.clientY-drag.y)*.006)); drag={x:e.clientX,y:e.clientY}; });
+  const up=()=>{ drag=null; cv.style.cursor='grab'; }; cv.addEventListener('pointerup',up); cv.addEventListener('pointercancel',up); })();
+$('fsZoom').onclick=()=>{ FS.zoom=!FS.zoom; FS.auto=false; FS.yaw=0; FS.pitch=0; $('fsZoom').textContent=FS.zoom?'🔭 Алыстату':'🔍 Шкаланы жақындату'; };
+$('fsRot').onclick=()=>{ FS.auto=true; FS.zoom=false; FS.pitch=.05; $('fsZoom').textContent='🔍 Шкаланы жақындату'; };
+$('fsChk').onclick=()=>{ const c=parseNum($('fsC').value), F=parseNum($('fsF').value), m=parseNum($('fsM').value), Ft=Math.round(FS.m*100)/10;
+  const a=near(c,.1), b=Math.abs(F-Ft)<.051, d=Math.abs(m-Ft/10)<.0051;
+  $('fsRes').innerHTML=[a?'<span class="good">c ✔</span>':'<span class="bad">c ✘</span>',b?'<span class="good">F ✔</span>':'<span class="bad">F ✘</span>',d?`<span class="good">m = ${nf(Ft/10,3)} кг ✔</span>`:'<span class="bad">m ✘ (m = F : 10)</span>'].join(' ');
+  if(a&&b&&d) SND.ok(); else SND.bad(); };
+$('fsQChk').onclick=()=>{ const a=near(parseNum($('fsQ1').value),1.2), b=near(parseNum($('fsQ2').value),.3);
+  $('fsQRes').innerHTML=(a?'<span class="good"> 1,2 кг ✔</span>':'<span class="bad"> m ✘</span>')+(b?'<span class="good"> 0,3 кг кем ✔</span>':'<span class="bad"> айырма ✘</span>'); if(a&&b) SND.ok(); else SND.bad(); };
+
+/* 15а–15б. ФС: соқтығыс (3D) */
+const SC3D={};
+function c3Base(cv,bg){ const T=THREE; const R=new T.WebGLRenderer({canvas:cv,antialias:true}); R.setPixelRatio(Math.min(2,devicePixelRatio||1)); R.setSize(cv.width,cv.height,false); R.setClearColor(bg);
+  const S=new T.Scene(), C=new T.PerspectiveCamera(38,cv.width/cv.height,.02,200);
+  S.add(new T.HemisphereLight(0xffffff,0x556677,.85)); const dl=new T.DirectionalLight(0xffffff,.65); dl.position.set(3,8,5); S.add(dl); return {T,R,S,C}; }
+function c3Label(T,text,col){ const c=document.createElement('canvas'); c.width=320; c.height=80; const g=c.getContext('2d');
+  g.fillStyle='rgba(255,255,255,.92)'; rr(g,4,4,312,72,18); g.fill(); g.fillStyle=col; g.font='700 40px Segoe UI'; g.textAlign='center'; g.fillText(text,160,55);
+  const sp=new T.Sprite(new T.SpriteMaterial({map:new T.CanvasTexture(c),depthTest:false})); sp.scale.set(.4,.1,1); return sp; }
+function c3Orbit(cv,st){ let d=null; cv.addEventListener('pointerdown',e=>{ d={x:e.clientX,y:e.clientY}; st.auto=false; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove',e=>{ if(!d) return; st.yaw-=(e.clientX-d.x)*.008; st.pitch=Math.max(.12,Math.min(1.35,st.pitch+(e.clientY-d.y)*.006)); d={x:e.clientX,y:e.clientY}; });
+  const up=()=>d=null; cv.addEventListener('pointerup',up); cv.addEventListener('pointercancel',up); }
+function c3Cam(o,st,tgt,dist){ o.C.position.set(tgt.x+Math.sin(st.yaw)*Math.cos(st.pitch)*dist,tgt.y+Math.sin(st.pitch)*dist,tgt.z+Math.cos(st.yaw)*Math.cos(st.pitch)*dist); o.C.lookAt(tgt); }
+const v1=x=>nf(x,1)+' м/с';
+function c3NoThree(cv){ const c=cv.getContext('2d'); if(c){ c.fillStyle='#fff'; c.font='16px Segoe UI'; c.fillText('three.min.js табылмады (осы папкада болуы керек)',14,40); } }
+
+/* бильярд: ақ шар 240 г, 2 м/с; серпімді соққы */
+const BLV=[160,80,240];
+const BL={ready:false,vi:0,ph:'ready',t:0,slow:true,yaw:.5,pitch:.62,auto:true,hit:false,W:{x:-.85,v:0},R:{x:.25,v:0}};
+const BLR=.045, BLX=1.27-BLR;
+function blOut(){ const m1=240,m2=BLV[BL.vi]; return [(m1-m2)/(m1+m2)*2,2*m1/(m1+m2)*2]; }
+function blReset(){ Object.assign(BL,{ph:'ready',t:0,hit:false,W:{x:-.85,v:0},R:{x:.25,v:0}}); ['blW0','blW1','blR0','blR1'].forEach(i=>$(i).textContent='—'); $('blGo').disabled=false; }
+function blInit(){ if(BL.ready) return; if(!window.THREE){ BL.ready='no'; c3NoThree($('bl3d')); return; } BL.ready=true;
+  const o=c3Base($('bl3d'),0x1d2a26), T=o.T; BL.o=o;
+  const cloth=new T.Mesh(new T.BoxGeometry(2.54,.04,1.27),new T.MeshStandardMaterial({color:0x1f7a4d,roughness:.95})); cloth.position.y=-.02; o.S.add(cloth);
+  const wood=new T.MeshStandardMaterial({color:0x6b3f1f,roughness:.6});
+  [[0,.64,2.74,.1],[0,-.64,2.74,.1]].forEach(([x,z,w,d])=>{ const m=new T.Mesh(new T.BoxGeometry(w,.09,d),wood); m.position.set(x,.03,z); o.S.add(m); });
+  [[1.32,0],[-1.32,0]].forEach(([x,z])=>{ const m=new T.Mesh(new T.BoxGeometry(.1,.09,1.37),wood); m.position.set(x,.03,z); o.S.add(m); });
+  const black=new T.MeshStandardMaterial({color:0x050505}); [[-1.25,-.6],[0,-.62],[1.25,-.6],[-1.25,.6],[0,.62],[1.25,.6]].forEach(([x,z])=>{ const m=new T.Mesh(new T.CylinderGeometry(.06,.06,.012,20),black); m.position.set(x,.003,z); o.S.add(m); });
+  const leg=new T.MeshStandardMaterial({color:0x4a2a12}); [[-1.1,-.5],[1.1,-.5],[-1.1,.5],[1.1,.5]].forEach(([x,z])=>{ const m=new T.Mesh(new T.BoxGeometry(.12,.75,.12),leg); m.position.set(x,-.42,z); o.S.add(m); });
+  const fl=new T.Mesh(new T.PlaneGeometry(12,12),new T.MeshStandardMaterial({color:0x3a3028})); fl.rotation.x=-Math.PI/2; fl.position.y=-.8; o.S.add(fl);
+  const lamp=new T.PointLight(0xfff2d0,.6,6); lamp.position.set(0,1.4,0); o.S.add(lamp);
+  const ball=(col)=>new T.Mesh(new T.SphereGeometry(BLR,32,24),new T.MeshStandardMaterial({color:col,roughness:.18,metalness:.05}));
+  BL.wm=ball(0xf5f2e8); BL.rm=ball(0xc0201a); o.S.add(BL.wm,BL.rm);
+  const dot=new T.Mesh(new T.SphereGeometry(BLR*.35,12,8),new T.MeshStandardMaterial({color:0xffffff})); dot.position.set(0,BLR*.82,0); BL.rm.add(dot);
+  BL.wl=c3Label(T,'240 г','#1d2430'); BL.rl=c3Label(T,'? г','#c0201a'); o.S.add(BL.wl,BL.rl);
+  BL.cueM=new T.Mesh(new T.CylinderGeometry(.008,.014,1.3,12),new T.MeshStandardMaterial({color:0xd8b276,roughness:.5})); BL.cueM.rotation.z=Math.PI/2+.06; o.S.add(BL.cueM);
+  c3Orbit($('bl3d'),BL); blReset(); }
+SC3D.bl3d=function(dt){ if(!BL.ready) blInit(); if(BL.ready!==true) return; const o=BL.o, k=BL.slow?.3:1, d=dt*k;
+  if(BL.ph==='strike'){ BL.t+=d; if(BL.t>.18){ BL.ph='run'; BL.W.v=2; $('blW0').textContent=v1(2); $('blR0').textContent=v1(0); SND.clink(); } }
+  if(BL.ph==='run'){ for(const b of [BL.W,BL.R]){ b.x+=b.v*d; if(BL.hit&&b.v){ const s=Math.sign(b.v); b.v-=s*.18*d; if(Math.sign(b.v)!==s) b.v=0; }
+      if(b.x>BLX){ b.x=BLX; b.v=-.6*b.v; } if(b.x<-BLX){ b.x=-BLX; b.v=-.6*b.v; } }
+    if(!BL.hit&&BL.R.x-BL.W.x<=2*BLR){ BL.hit=true; const [a,b]=blOut(); BL.W.v=a; BL.R.v=b; $('blW1').textContent=v1(a); $('blR1').textContent=v1(b); SND.clink(); }
+    else if(BL.hit&&Math.abs(BL.R.x-BL.W.x)<=2*BLR&&(BL.R.v-BL.W.v)*(BL.R.x-BL.W.x)<0){ const m1=240,m2=BLV[BL.vi],u1=BL.W.v,u2=BL.R.v;   // қайта соқтығысу
+      BL.W.v=((m1-m2)*u1+2*m2*u2)/(m1+m2); BL.R.v=((m2-m1)*u2+2*m1*u1)/(m1+m2); }
+    if(BL.hit&&!BL.W.v&&!BL.R.v) BL.ph='done'; }
+  BL.wm.position.set(BL.W.x,BLR,0); BL.rm.position.set(BL.R.x,BLR,0); BL.wm.rotation.z=-BL.W.x/BLR; BL.rm.rotation.z=-BL.R.x/BLR;
+  BL.wl.position.set(BL.W.x,BLR*2+.08,0); BL.rl.position.set(BL.R.x,BLR*2+.08,0);
+  const back=BL.ph==='ready'?.12:BL.ph==='strike'?.12-BL.t/.18*.12:0; BL.cueM.visible=BL.ph!=='run'||BL.W.x<-.6; BL.cueM.position.set(BL.W.x-BLR-.66-back,BLR+.04,0);
+  if(BL.auto) BL.yaw=.5+Math.sin(performance.now()/5000)*.25;
+  c3Cam(o,BL,new o.T.Vector3(0,0,0),2.35); o.R.render(o.S,o.C); };
+$('blGo').onclick=()=>{ if(BL.ph!=='ready') return; BL.ph='strike'; BL.t=0; $('blGo').disabled=true; };
+$('blRe').onclick=blReset;
+$('blSlow').onclick=()=>{ BL.slow=!BL.slow; $('blSlow').textContent=BL.slow?'🐢 Баяу: қосулы':'⏩ Қалыпты жылдамдық'; };
+$('blVar').onclick=()=>{ BL.vi=(BL.vi+1)%BLV.length; blReset(); ['blA','blB','blC'].forEach(i=>$(i).value=''); $('blRes').textContent=''; toast('Жаңа қызыл шар қойылды – массасы белгісіз'); };
+$('blChk').onclick=()=>{ const [a,b]=blOut(), m2=BLV[BL.vi]; if(!BL.hit){ toast('Алдымен шарды соғып, радарды қара!'); return; }
+  const r=[near(parseNum($('blA').value),2-a),near(parseNum($('blB').value),b),near(parseNum($('blC').value),m2)];
+  $('blRes').innerHTML=r.map((ok,i)=>ok?`<span class="good">${i+1} ✔</span>`:`<span class="bad">${i+1} ✘</span>`).join(' ')+(r[2]?` <span class="good">m₂ = 240 · ${nf(2-a,1)} : ${nf(b,1)} = ${m2} г</span>`:'');
+  if(r.every(x=>x)) SND.ok(); else SND.bad(); };
+
+/* хоккей: Айбек 90 кг, 4 м/с → 1,2 м/с; Бекзат 60 кг, 0 → 4,2 м/с */
+/* 3ә. Инерттілік: каток */
+const IK={ready:false,ph:'ready',slow:true,yaw:.35,pitch:.38,auto:true,hit:false,t:0,mb:40,A:{x:-4,v:0},B:{x:4,v:0},sol:false};
+const ikV2=()=>80*1/IK.mb;
+function ikReset(){ Object.assign(IK,{ph:'ready',hit:false,t:0,A:{x:-4,v:0},B:{x:4,v:0}}); $('ikA1').textContent='—'; $('ikB1').textContent='—'; $('ikGo').disabled=false;
+  $('ikMB').textContent=IK.mb+' кг'; if(IK.bl) IK.bl.material.map=c3Label(IK.o.T,'Әли '+IK.mb+' кг','#1f5fa8').material.map;
+  if(IK.b){ const sc=.55+IK.mb/200; IK.b.scale.set(sc,sc,sc); }
+  document.querySelectorAll('[data-ikm]').forEach(b=>b.classList.toggle('main',+b.dataset.ikm===IK.mb));
+  $('ikRes').textContent=''; $('ikV').value=''; }
+function ikPerson(T,col,hat){ const g=new T.Group(), jac=new T.MeshStandardMaterial({color:col,roughness:.7}), dark=new T.MeshStandardMaterial({color:0x262b36,roughness:.8}), skin=new T.MeshStandardMaterial({color:0xe3b892}), hm=new T.MeshStandardMaterial({color:hat});
+  const legs=[]; for(const z of [-.13,.13]){ const p=new T.Group(); const l=new T.Mesh(new T.CylinderGeometry(.08,.07,.8,10),dark); l.position.y=-.4; p.add(l);
+    const sk=new T.Mesh(new T.BoxGeometry(.3,.1,.1),new T.MeshStandardMaterial({color:0xf2f2f2})); sk.position.set(.04,-.82,0); p.add(sk);
+    const bl=new T.Mesh(new T.BoxGeometry(.38,.02,.02),new T.MeshStandardMaterial({color:0xcfd6dc,metalness:.8,roughness:.2})); bl.position.set(.04,-.88,0); p.add(bl);
+    p.position.set(0,.9,z); g.add(p); legs.push(p); }
+  const body=new T.Mesh(new T.BoxGeometry(.44,.72,.54),jac); body.position.y=1.26; g.add(body);
+  const scarf=new T.Mesh(new T.BoxGeometry(.46,.1,.56),hm); scarf.position.y=1.6; g.add(scarf);
+  const head=new T.Mesh(new T.SphereGeometry(.16,16,12),skin); head.position.y=1.8; g.add(head);
+  const cap=new T.Mesh(new T.SphereGeometry(.17,16,12,0,Math.PI*2,0,Math.PI/2),hm); cap.position.y=1.84; g.add(cap);
+  const pom=new T.Mesh(new T.SphereGeometry(.06,10,8),new T.MeshStandardMaterial({color:0xffffff})); pom.position.y=2.02; g.add(pom);
+  const arms=[]; for(const z of [-.34,.34]){ const a=new T.Mesh(new T.CylinderGeometry(.06,.06,.62,8),jac); a.position.set(.1,1.25,z); a.rotation.z=.9; g.add(a); arms.push(a); }
+  g.userData.legs=legs; g.userData.arms=arms; return g; }
+function ikInit(){ if(IK.ready) return; if(!window.THREE){ IK.ready='no'; c3NoThree($('ik3d')); return; } IK.ready=true;
+  const o=c3Base($('ik3d'),0xbfd6e6), T=o.T; IK.o=o;
+  const tc=document.createElement('canvas'); tc.width=1024; tc.height=512; const g=tc.getContext('2d'); g.fillStyle='#e6f1f8'; g.fillRect(0,0,1024,512);
+  for(let i=0;i<420;i++){ g.strokeStyle='rgba(140,170,195,.22)'; g.lineWidth=1+Math.random()*1.5; g.beginPath(); const x=Math.random()*1024,y=Math.random()*512; g.arc(x,y,20+Math.random()*120,Math.random()*6,Math.random()*6); g.stroke(); }
+  const ice=new T.Mesh(new T.CircleGeometry(11,64),new T.MeshStandardMaterial({map:new T.CanvasTexture(tc),roughness:.2,metalness:.1})); ice.rotation.x=-Math.PI/2; ice.scale.set(1.4,1,1); o.S.add(ice);
+  const snow=new T.Mesh(new T.PlaneGeometry(80,60),new T.MeshStandardMaterial({color:0xfbfdff,roughness:1})); snow.rotation.x=-Math.PI/2; snow.position.y=-.01; o.S.add(snow);
+  const bank=new T.Mesh(new T.TorusGeometry(11,.35,8,64),new T.MeshStandardMaterial({color:0xffffff,roughness:1})); bank.rotation.x=Math.PI/2; bank.scale.set(1.4,1,1); o.S.add(bank);
+  const tr=new T.MeshStandardMaterial({color:0x2f6b45,roughness:.9}), st=new T.MeshStandardMaterial({color:0x6b4a2b});
+  for(let i=0;i<16;i++){ const an=i/16*Math.PI*2, x=Math.cos(an)*19, z=Math.sin(an)*13-2; if(z>6) continue; const tg=new T.Group();
+    const c1=new T.Mesh(new T.ConeGeometry(1,2.4,10),tr); c1.position.y=2.2; const c2=new T.Mesh(new T.ConeGeometry(.7,1.8,10),tr); c2.position.y=3.3; const tk=new T.Mesh(new T.CylinderGeometry(.15,.15,1,8),st); tk.position.y=.5; tg.add(c1,c2,tk); tg.position.set(x,0,z); o.S.add(tg); }
+  const lamp=new T.MeshStandardMaterial({color:0x444444}); [[-9,-8],[9,-8]].forEach(([x,z])=>{ const p=new T.Mesh(new T.CylinderGeometry(.06,.06,4,8),lamp); p.position.set(x,2,z); o.S.add(p); const b=new T.Mesh(new T.SphereGeometry(.25,12,10),new T.MeshStandardMaterial({color:0xfff2b0,emissive:0xffd66b,emissiveIntensity:.6})); b.position.set(x,4.1,z); o.S.add(b); });
+  IK.a=ikPerson(T,0xc8352b,0x8a2a20); IK.b=ikPerson(T,0x1f5fa8,0xf0b429); IK.a.scale.set(1.15,1.15,1.15); o.S.add(IK.a,IK.b);
+  IK.al=c3Label(T,'Ерлан ағай 80 кг','#c8352b'); IK.bl=c3Label(T,'Әли 40 кг','#1f5fa8'); [IK.al,IK.bl].forEach(l=>{ l.scale.set(1.8,.45,1); o.S.add(l); });
+  c3Orbit($('ik3d'),IK); if(IK.ph==='ready') ikReset(); else { const sc=.55+IK.mb/200; IK.b.scale.set(sc,sc,sc); IK.bl.material.map=c3Label(T,'Әли '+IK.mb+' кг','#1f5fa8').material.map; } }
+function ikFormula(){ $('ikF').innerHTML='Өзара әрекеттесу: <span class="f" style="white-space:nowrap"><span class="frac"><span>m₁</span><span>m₂</span></span> = <span class="frac"><span>v₂</span><span>v₁</span></span></span><br><b>Массасы кіші дененің жылдамдығы көп өзгереді</b>'; }
+SC3D.ik3d=function(dt){ if(!IK.ready) ikInit(); if(IK.ready!==true) return; const o=IK.o, d=dt*(IK.slow?.35:1), v2=ikV2();
+  if(IK.ph==='run'){ IK.t+=d; IK.A.x+=IK.A.v*d; IK.B.x+=IK.B.v*d;
+    if(!IK.hit&&IK.B.x-IK.A.x<=.75){ IK.hit=true; IK.ht=IK.t; IK.A.v=-1; IK.B.v=v2; $('ikA1').textContent=v1(1); $('ikB1').textContent='? (өлшенбеді)'; SND.bad(); }
+    if(IK.hit&&IK.t-IK.ht>2.6){ IK.ph='done'; ikFormula(); toast('Формула ашылды → Әлидің жылдамдығын есепте!'); } }
+  if(IK.ph==='done'){ IK.A.v*=Math.pow(.25,d); IK.B.v*=Math.pow(.25,d); IK.A.x+=IK.A.v*d; IK.B.x+=IK.B.v*d; }
+  const sw=(p,on)=>p.userData.legs.forEach((l,i)=>l.rotation.z=Math.sin(IK.t*7+(i?Math.PI:0))*.3*on);
+  const wob=IK.hit?Math.exp(-(IK.t-IK.ht)*1.5)*Math.sin((IK.t-IK.ht)*14):0;
+  IK.a.position.set(IK.A.x,0,0); IK.a.rotation.set(0,0,IK.hit?.12*wob:0); sw(IK.a,IK.ph==='run'&&!IK.hit?1:0);
+  IK.b.position.set(IK.B.x,0,0); IK.b.rotation.set(0,Math.PI,IK.hit?-.35*wob:0); sw(IK.b,IK.ph==='run'&&!IK.hit?1:0);
+  const arm=IK.hit?.3:.9; IK.a.userData.arms.forEach(a=>a.rotation.z=arm); IK.b.userData.arms.forEach(a=>a.rotation.z=arm);
+  IK.al.position.set(IK.A.x,2.75,0); IK.bl.position.set(IK.B.x,IK.b.scale.y*2.3+.25,0);
+  if(IK.auto) IK.yaw=.35+Math.sin(performance.now()/5000)*.25;
+  const fx=(IK.A.x+IK.B.x)/2, dist=11+Math.max(0,IK.B.x-IK.A.x-6)*.9; c3Cam(o,IK,new o.T.Vector3(fx,1,0),dist); o.R.render(o.S,o.C); };
+$('ikGo').onclick=()=>{ if(IK.ph!=='ready') return; IK.ph='run'; IK.A.v=1.5; IK.B.v=-1.5*ikV2(); $('ikGo').disabled=true; };
+$('ikRe').onclick=ikReset;
+$('ikSlow').onclick=()=>{ IK.slow=!IK.slow; $('ikSlow').textContent=IK.slow?'🐢 Баяу: қосулы':'⏩ Қалыпты жылдамдық'; };
+document.querySelectorAll('[data-ikm]').forEach(b=>b.onclick=()=>{ IK.mb=+b.dataset.ikm; ikReset(); });
+function ikConclude(){ const v2=ikV2(); $('ikCon').style.display='';
+  $('ikCon').innerHTML=`<h3>Қорытынды: инерттілік</h3>Ағай (80 кг) баяу, ал Әли (${IK.mb} кг) <b>${nf(v2/1,2)} есе жылдам</b> кері ұшты. Массасы үлкен дене өз жылдамдығын өзгертуге көбірек «қарсыласады». Дененің бұл қасиеті – <b>инерттілік</b>.<br><b>Масса – дененің инерттілігінің өлшемі.</b> Ғарышкер де осылай: кілт жеңіл → жылдам, ғарышкер ауыр → баяу.`; }
+$('ikChk').onclick=()=>{ if(IK.ph!=='done'){ toast('Алдымен анимацияны соңына дейін көр!'); return; }
+  const v2=ikV2(), ok=Math.abs(parseNum($('ikV').value)-v2)<=.051;
+  $('ikRes').innerHTML=ok?'<span class="good">✔ Дұрыс!</span>':'<span class="bad">✘ Формуладан v₂-ні өрнектеп көр</span>';
+  if(ok){ $('ikB1').textContent=v1(v2); ikConclude(); SND.ok(); } else SND.bad(); };
+$('ikSol').onclick=()=>{ if(IK.ph!=='done'){ toast('Алдымен анимацияны соңына дейін көр!'); return; } const v2=ikV2();
+  $('ikRes').innerHTML=`<div class="ikst">Берілгені: m₁ = 80 кг, m₂ = ${IK.mb} кг, v₁ = 1 м/с<br>v₂ = <span class="frac"><span>m₁ · v₁</span><span>m₂</span></span> = <span class="frac"><span>80 · 1</span><span>${IK.mb}</span></span> = <b>${nf(v2,2)} м/с</b></div>`;
+  $('ikB1').textContent=v1(v2); ikConclude(); };
+
+const HK={ready:false,ph:'ready',slow:true,yaw:.9,pitch:.42,auto:true,hit:false,ft:0,A:{x:-6,v:0},B:{x:0,v:0},t:0};
+function hkReset(){ Object.assign(HK,{ph:'ready',hit:false,ft:0,t:0,A:{x:-6,v:0},B:{x:0,v:0}}); ['hkA0','hkA1','hkB0','hkB1'].forEach(i=>$(i).textContent='—'); $('hkGo').disabled=false; }
+function hkPlayer(T,col){ const g=new T.Group(), jer=new T.MeshStandardMaterial({color:col,roughness:.7}), dark=new T.MeshStandardMaterial({color:0x1d2430,roughness:.7}), skin=new T.MeshStandardMaterial({color:0xe0b48a});
+  const legs=[]; for(const z of [-.13,.13]){ const p=new T.Group(); const l=new T.Mesh(new T.CylinderGeometry(.08,.07,.8,10),dark); l.position.y=-.4; p.add(l);
+    const sk=new T.Mesh(new T.BoxGeometry(.32,.06,.07),new T.MeshStandardMaterial({color:0x111111})); sk.position.set(.05,-.82,0); p.add(sk);
+    const bl=new T.Mesh(new T.BoxGeometry(.38,.02,.02),new T.MeshStandardMaterial({color:0xcfd6dc,metalness:.8,roughness:.2})); bl.position.set(.05,-.87,0); p.add(bl);
+    p.position.set(0,.9,z); g.add(p); legs.push(p); }
+  const body=new T.Mesh(new T.BoxGeometry(.42,.7,.52),jer); body.position.y=1.25; g.add(body);
+  const pants=new T.Mesh(new T.BoxGeometry(.4,.2,.5),dark); pants.position.y=.9; g.add(pants);
+  const head=new T.Mesh(new T.SphereGeometry(.15,16,12),skin); head.position.y=1.75; g.add(head);
+  const hel=new T.Mesh(new T.SphereGeometry(.17,16,12,0,Math.PI*2,0,Math.PI/2),jer); hel.position.y=1.77; g.add(hel);
+  for(const z of [-.32,.32]){ const a=new T.Mesh(new T.CylinderGeometry(.06,.06,.6,8),jer); a.position.set(.12,1.2,z); a.rotation.z=.5; g.add(a); }
+  const stick=new T.Mesh(new T.BoxGeometry(.04,1.5,.04),new T.MeshStandardMaterial({color:0xc9a04a})); stick.position.set(.55,.7,.3); stick.rotation.z=.7; g.add(stick);
+  const blade=new T.Mesh(new T.BoxGeometry(.3,.08,.04),new T.MeshStandardMaterial({color:0x222222})); blade.position.set(1.05,.05,.3); g.add(blade);
+  g.userData.legs=legs; return g; }
+function hkInit(){ if(HK.ready) return; if(!window.THREE){ HK.ready='no'; c3NoThree($('hk3d')); return; } HK.ready=true;
+  const o=c3Base($('hk3d'),0x9cb4c8), T=o.T; HK.o=o;
+  const tc=document.createElement('canvas'); tc.width=1024; tc.height=512; const g=tc.getContext('2d'); g.fillStyle='#eef4f8'; g.fillRect(0,0,1024,512);
+  g.fillStyle='#c8352b'; g.fillRect(508,0,8,512); g.fillStyle='#1f5fa8'; g.fillRect(330,0,14,512); g.fillRect(680,0,14,512);
+  g.strokeStyle='#1f5fa8'; g.lineWidth=5; g.beginPath(); g.arc(512,256,70,0,7); g.stroke(); g.strokeStyle='#c8352b'; [[200,130],[200,382],[824,130],[824,382]].forEach(([x,y])=>{ g.beginPath(); g.arc(x,y,55,0,7); g.stroke(); });
+  for(let i=0;i<300;i++){ g.strokeStyle='rgba(160,180,200,.18)'; g.lineWidth=1; g.beginPath(); const x=Math.random()*1024,y=Math.random()*512; g.moveTo(x,y); g.lineTo(x+Math.random()*80-40,y+Math.random()*20-10); g.stroke(); }
+  const ice=new T.Mesh(new T.PlaneGeometry(30,15),new T.MeshStandardMaterial({map:new T.CanvasTexture(tc),roughness:.25,metalness:.1})); ice.rotation.x=-Math.PI/2; o.S.add(ice);
+  const bw=new T.MeshStandardMaterial({color:0xffffff}), by=new T.MeshStandardMaterial({color:0xe0a92e});
+  [[0,-7.5,30,.15],[0,7.5,30,.15]].forEach(([x,z,w,d])=>{ const m=new T.Mesh(new T.BoxGeometry(w,1,d),bw); m.position.set(x,.5,z); o.S.add(m); const k=new T.Mesh(new T.BoxGeometry(w,.12,d+.02),by); k.position.set(x,.95,z); o.S.add(k); });
+  [[-15,0],[15,0]].forEach(([x,z])=>{ const m=new T.Mesh(new T.BoxGeometry(.15,1,15),bw); m.position.set(x,.5,z); o.S.add(m); });
+  HK.a=hkPlayer(T,0xc8352b); HK.b=hkPlayer(T,0x1f5fa8); o.S.add(HK.a,HK.b);
+  HK.al=c3Label(T,'Айбек 90 кг','#c8352b'); HK.bl=c3Label(T,'Бекзат 60 кг','#1f5fa8'); [HK.al,HK.bl].forEach(l=>{ l.scale.set(1.6,.4,1); o.S.add(l); });
+  const puck=new T.Mesh(new T.CylinderGeometry(.08,.08,.03,16),new T.MeshStandardMaterial({color:0x111111})); puck.position.set(-4.2,.015,.4); o.S.add(puck); HK.puck=puck;
+  c3Orbit($('hk3d'),HK); hkReset(); }
+SC3D.hk3d=function(dt){ if(!HK.ready) hkInit(); if(HK.ready!==true) return; const o=HK.o, d=dt*(HK.slow?.35:1);
+  if(HK.ph==='run'){ HK.t+=d; HK.A.x+=HK.A.v*d; HK.B.x+=HK.B.v*d;
+    if(!HK.hit&&HK.B.x-HK.A.x<=.62){ HK.hit=true; HK.A.v=1.2; HK.B.v=4.2; $('hkA1').textContent=v1(1.2); $('hkB1').textContent='? (өлшенбеді)'; SND.bad(); }
+    if(HK.hit){ HK.ft=Math.min(1,HK.ft+d*2); HK.A.v=Math.max(0,HK.A.v-.5*d); HK.B.v=Math.max(0,HK.B.v-1*d); if(HK.B.x>13){ HK.B.x=13; HK.B.v=0; } if(!HK.A.v&&!HK.B.v) HK.ph='done'; } }
+  const sw=(p,v)=>p.userData.legs.forEach((l,i)=>l.rotation.z=Math.sin(HK.t*9+(i?Math.PI:0))*.35*Math.min(1,v/2));
+  HK.a.position.set(HK.A.x,0,0); sw(HK.a,HK.ph==='run'&&!HK.hit?4:HK.A.v);
+  HK.b.position.set(HK.B.x,0,0); HK.b.rotation.set(0,-Math.PI/2+(HK.hit?HK.ft*Math.PI/2:0),0); HK.b.rotation.z=-HK.ft*1.25; HK.b.position.y=HK.ft*.25;
+  HK.puck.position.x=HK.ph==='run'?HK.A.x+1.4:-4.6;
+  HK.al.position.set(HK.A.x,2.35,0); HK.bl.position.set(HK.B.x,2.35-HK.ft*1.2,0);
+  if(HK.auto) HK.yaw=.9+Math.sin(performance.now()/5000)*.25;
+  const fx=Math.max(-2,Math.min(6,(HK.A.x+HK.B.x)/2)); c3Cam(o,HK,new o.T.Vector3(fx,.9,0),10.5); o.R.render(o.S,o.C); };
+$('hkGo').onclick=()=>{ if(HK.ph!=='ready') return; HK.ph='run'; HK.A.v=4; $('hkA0').textContent=v1(4); $('hkB0').textContent=v1(0); $('hkGo').disabled=true; };
+$('hkRe').onclick=hkReset;
+$('hkSlow').onclick=()=>{ HK.slow=!HK.slow; $('hkSlow').textContent=HK.slow?'🐢 Баяу: қосулы':'⏩ Қалыпты жылдамдық'; };
+$('hkChk').onclick=()=>{ if(!HK.hit){ toast('Алдымен видеоны ойнатып, радарды қара!'); return; }
+  const r=[near(parseNum($('hkA').value),2.8),near(parseNum($('hkB').value),4.2),near(parseNum($('hkC').value),4.2)];
+  $('hkRes').innerHTML=r.map((ok,i)=>ok?`<span class="good">${i+1} ✔</span>`:`<span class="bad">${i+1} ✘</span>`).join(' ')+(r[1]?' <span class="good">Δv₂ = 90 · 2,8 : 60 = 4,2 м/с</span>':'');
+  if(r[2]) $('hkB1').textContent=v1(4.2); if(r.every(x=>x)) SND.ok(); else SND.bad(); };
+document.querySelectorAll('[data-hq]').forEach(b=>b.onclick=()=>{ const ok=b.dataset.hq==='1';
+  $('hkQ').innerHTML=ok?'<span class="good">✔ Дұрыс! Бекзаттың массасы кіші → жылдамдығы күрт өзгерді (0 → 4,2 м/с). Сондықтан хоккейде шлем мен қорғаныш киім міндетті.</span>':'<span class="bad">✘ Ойлан: кімнің жылдамдығы көбірек өзгерді?</span>'; ok?SND.ok():SND.bad(); });
+
+/* 16–17. Жеке жұмыс және бағалау */
+const TQ={A1:[.25,1],A2:[3500,1],A3:[.0004,1],B1:[135.5,2],C1:[250,1],C2:[250,1]};
+const MAXP=7;
+let ROSTER=store.get('ms_roster',null); if(!ROSTER){ ROSTER=[]; for(let i=1;i<=20;i++) ROSTER.push(i+'-оқушы'); }
+let RES=store.get('ms_res',{}), who=0;
+const pts=n=>Object.values(RES[n]||{}).reduce((a,r)=>a+(r.p||0),0);
+const mark=p=>p>=6?5:p>=4?4:p>=2?3:2;
+function tkFill(){ const sel=$('tkWho'); sel.innerHTML=ROSTER.map((n,i)=>`<option value="${i}">${i+1}. ${n}</option>`).join(''); if(who>=ROSTER.length) who=0; sel.value=who; tkLoad(); }
+function tkLoad(){ const r=RES[ROSTER[who]]||{};
+  document.querySelectorAll('[data-q]').forEach(inp=>{ const q=inp.dataset.q, s=r[q], out=inp.parentElement.querySelector('.r');
+    inp.value=s?s.v:''; inp.className=s&&s.done?(s.p>0?'okk':'nok'):''; inp.disabled=!!(s&&s.done);
+    out.innerHTML=!s?'':s.done?(s.p>0?`<span class="good">✔ +${nf(s.p,1)}</span>`:`<span class="bad">✘ ${nf(TQ[q][0],5)}</span>`):'<span class="bad">✘ тағы 1 мүмкіндік</span>'; });
+  $('tkScore').textContent=nf(pts(ROSTER[who]),1)+' / '+MAXP+' балл'; }
+function tkCheck(inp){ const q=inp.dataset.q, n=ROSTER[who]; if(!n) return; const v=parseNum(inp.value); if(!isFinite(v)){ toast('Санды жаз'); return; }
+  const r=RES[n]=RES[n]||{}; const s=r[q]=r[q]||{t:0,p:0,v:'',done:false}; if(s.done) return;
+  s.t++; s.v=inp.value; if(near(v,TQ[q][0])){ s.p=s.t===1?TQ[q][1]:TQ[q][1]/2; s.done=true; SND.ok(); } else { SND.bad(); if(s.t>=2){ s.done=true; s.p=0; } }
+  store.set('ms_res',RES); tkLoad(); grBuild(); }
+document.querySelectorAll('[data-q]').forEach(inp=>{ inp.addEventListener('keydown',e=>{ if(e.key==='Enter'){ tkCheck(inp); e.preventDefault(); } });
+  const b=document.createElement('button'); b.className='btn'; b.style.cssText='padding:3px 9px;font-size:14px'; b.textContent='✓'; b.title='Тексеру'; b.onclick=()=>tkCheck(inp); inp.after(b); });
+$('tkWho').onchange=()=>{ who=+$('tkWho').value; tkLoad(); };
+$('tkPrev').onclick=()=>{ who=(who-1+ROSTER.length)%ROSTER.length; $('tkWho').value=who; tkLoad(); };
+$('tkNext').onclick=()=>{ who=(who+1)%ROSTER.length; $('tkWho').value=who; tkLoad(); };
+function grBuild(){ let h='<tr><th>№</th><th>Аты-жөні</th><th>A (3)</th><th>B (2)</th><th>C (2)</th><th>Барлығы</th><th>Баға</th></tr>', c=[0,0,0];
+  ROSTER.forEach((n,i)=>{ const r=RES[n]||{}, sum=k=>Object.entries(r).filter(([q])=>q[0]===k).reduce((a,[,s])=>a+(s.p||0),0), p=pts(n), any=Object.keys(r).length;
+    if(any) c[p>=6?0:p>=4?1:2]++;
+    h+=`<tr><td>${i+1}</td><td class="l">${n}</td><td>${any?nf(sum('A'),1):''}</td><td>${any?nf(sum('B'),1):''}</td><td>${any?nf(sum('C'),1):''}</td><td><b>${any?nf(p,1):''}</b></td><td><b>${any?'«'+mark(p)+'»':''}</b></td></tr>`; });
+  $('grTab').innerHTML=h; $('g1').textContent=c[0]; $('g2').textContent=c[1]; $('g3').textContent=c[2]; }
+$('roster').value=ROSTER.join('\n');
+$('rsSave').onclick=()=>{ const l=$('roster').value.split('\n').map(s=>s.trim()).filter(Boolean); if(!l.length){ toast('Тізім бос'); return; } ROSTER=l; store.set('ms_roster',ROSTER); tkFill(); grBuild(); gdShow(); toast('Тізім сақталды: '+l.length+' оқушы'); };
+$('grClr').onclick=()=>{ if(!confirm('Барлық оқушының нәтижесі өшеді. Жалғастырамыз ба?')) return; RES={}; store.set('ms_res',RES); tkLoad(); grBuild(); };
+tkFill(); grBuild();
+LABS.cTaskB={frame(ctx,w,h,dt){ ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); table_(ctx,w,h,140); drawLever(ctx,w/2,140,.62,0,(x,y)=>OBJ.stone(ctx,x,y,.9),[100,20,10,5,.5]); }};
+
+/* 18. Бағдаршам */
+let LT=store.get('ms_lt',[0,0,0]);
+function ltShow(){ document.querySelectorAll('.lt .c').forEach((c,i)=>c.textContent=LT[i]); const n=LT[0]+LT[1]+LT[2]; [...$('lBar').children].forEach((b,i)=>b.style.width=(n?LT[i]/n*100:0)+'%'); store.set('ms_lt',LT); }
+document.querySelectorAll('.lt .c').forEach(c=>c.onclick=()=>{ LT[+c.dataset.l]++; SND.clink(); ltShow(); });
+document.querySelectorAll('.lt .mn').forEach(b=>b.onclick=()=>{ const i=+b.dataset.m; LT[i]=Math.max(0,LT[i]-1); ltShow(); });
+$('lClr').onclick=()=>{ LT=[0,0,0]; ltShow(); }; ltShow();
+
+/* 19. Соңы */
+LABS.cEnd={t:0,frame(ctx,w,h,dt){ this.t+=dt; ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); table_(ctx,w,h,122);
+  [['apple',.8],['battery',.8],['eraser',1],['key',1],['book',.7],['bottle',.6],['pencase',.7]].forEach(([o,s],i)=>{ const x=70+i*115, b=Math.abs(Math.sin(this.t*2+i))*10; OBJ[o](ctx,x,122-b,s); }); }};
+
+/* ---------- тақта ---------- */
+const board=(()=>{ const cv=$('ink'), ctx=cv.getContext('2d'); let ink=store.get('ms2_ink',{}), color='#f2efe2', width=3.6, eraser=false, curS=null, saveT;
+  const list=()=> (ink[cur]=ink[cur]||[]);
+  function resize(){ const r=cv.getBoundingClientRect(); if(!r.width) return; const k=window.devicePixelRatio||1; cv.width=Math.round(r.width*k); cv.height=Math.round(r.height*k); redraw(); }
+  function seg(s,i){ const W=cv.width,H=cv.height,p=s.p,base=s.w*W/600; ctx.globalCompositeOperation=s.e?'destination-out':'source-over'; ctx.strokeStyle=s.c; ctx.lineCap='round'; ctx.lineJoin='round';
+    if(i===0){ ctx.lineWidth=base*(.6+p[0][2]*.8); ctx.beginPath(); ctx.moveTo(p[0][0]*W,p[0][1]*H); ctx.lineTo(p[0][0]*W+.1,p[0][1]*H); ctx.stroke(); return; }
+    const a=p[i-1],b=p[i],z=p[i-2]||a; ctx.lineWidth=base*(.6+b[2]*.8); ctx.beginPath(); ctx.moveTo((z[0]+a[0])/2*W,(z[1]+a[1])/2*H); ctx.quadraticCurveTo(a[0]*W,a[1]*H,(a[0]+b[0])/2*W,(a[1]+b[1])/2*H); ctx.stroke(); }
+  function redraw(){ ctx.globalCompositeOperation='source-over'; ctx.clearRect(0,0,cv.width,cv.height); for(const s of list()) for(let i=0;i<s.p.length;i++) seg(s,i); ctx.globalCompositeOperation='source-over'; }
+  function save(){ clearTimeout(saveT); saveT=setTimeout(()=>store.set('ms2_ink',ink),400); }
+  function pt(e){ const r=cv.getBoundingClientRect(); return [(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height,e.pointerType==='pen'?(e.pressure||.5):.5]; }
+  cv.addEventListener('pointerdown',e=>{ if(e.button>0&&e.pointerType==='mouse') return; cv.setPointerCapture(e.pointerId); curS={c:color,w:eraser?width*5:width,e:eraser,p:[pt(e)]}; list().push(curS); seg(curS,0); e.preventDefault(); });
+  cv.addEventListener('pointermove',e=>{ if(!curS) return; const evs=e.getCoalescedEvents?e.getCoalescedEvents():[e]; for(const ev of evs){ curS.p.push(pt(ev)); seg(curS,curS.p.length-1); } });
+  const end=()=>{ if(curS){ curS=null; ctx.globalCompositeOperation='source-over'; save(); } };
+  cv.addEventListener('pointerup',end); cv.addEventListener('pointercancel',end); cv.addEventListener('lostpointercapture',end);
+  document.querySelectorAll('.sw').forEach(b=>b.onclick=()=>{ color=b.dataset.c; eraser=false; $('erase').classList.remove('on'); document.querySelectorAll('.sw').forEach(x=>x.classList.toggle('on',x===b)); });
+  document.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{ width=+b.dataset.w; document.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b)); });
+  $('erase').onclick=()=>{ eraser=!eraser; $('erase').classList.toggle('on',eraser); };
+  function undo(){ list().pop(); redraw(); save(); } $('undo').onclick=undo;
+  $('wipe').onclick=()=>{ if(!list().length) return; ink[cur]=[]; redraw(); save(); toast('Осы беттегі жазба тазаланды'); };
+  return {resize,redraw,undo}; })();
+
+/* ---------- слайдты сыйғызу (тақта ашық/жабық) ---------- */
+const slides=[...document.querySelectorAll('.slide')]; let cur=0;
+slides.forEach(s=>{ if(s.classList.contains('nofit')) return; const sc=document.createElement('div'); sc.className='sc'; while(s.firstChild) sc.appendChild(s.firstChild); s.appendChild(sc); });
+function fitSlide(s){ if(!s||s.classList.contains('nofit')) return; const sc=s.querySelector('.sc'), L=$('slides');
+  const AW=L.clientWidth-48, AH=L.clientHeight-26; if(AW<=0) return; let best={k:0,w:900};
+  sc.style.transform='none';
+  for(let w=880; w<=Math.max(880,Math.min(1500,AW)); w+=40){ sc.style.width=w+'px'; const h=sc.offsetHeight; const k=Math.min(AW/w,AH/h,1.75); if(k>best.k+.004) best={k,w}; }
+  sc.style.width=best.w+'px'; sc.style.left=(24+(AW-best.w*best.k)/2)+'px'; sc.style.transform=`scale(${best.k})`; }
+let NB=store.get('ms_noboard',false);
+function setBoard(hidden){ NB=hidden; store.set('ms_noboard',NB); $('stage').classList.toggle('noboard',NB); $('rightw').style.transform=''; fitSlide(slides[cur]); setTimeout(()=>{ fitSlide(slides[cur]); board.resize(); },380); }
+$('hideB').onclick=()=>setBoard(true);
+(()=>{ // тақтаны қолмен оңға ысыру → жасырылады; оң жақтағы «ТАҚТА» белгісін басу → қайта шығады
+  const g=$('grip'), rw=$('rightw'); let x0=null;
+  const k=()=>$('stage').getBoundingClientRect().width/1600;
+  g.addEventListener('pointerdown',e=>{ x0=e.clientX; g.setPointerCapture(e.pointerId); rw.classList.add('drag'); e.preventDefault(); });
+  g.addEventListener('pointermove',e=>{ if(x0===null) return; const dx=Math.max(0,(e.clientX-x0)/k()); rw.style.transform=`translateX(${dx}px)`; });
+  const up=e=>{ if(x0===null) return; const dx=(e.clientX-x0)/k(); x0=null; rw.classList.remove('drag'); if(dx>110) setBoard(true); else rw.style.transform=''; };
+  g.addEventListener('pointerup',up); g.addEventListener('pointercancel',up);
+  $('btab').addEventListener('pointerdown',e=>{ e.preventDefault(); setBoard(false); });
+})();
+
+/* ---------- навигация ---------- */
+slides.forEach((s,i)=>{ const b=document.createElement('button'); b.className='dot'+(s.dataset.wide?' gm':''); b.textContent=i+1; b.title=s.dataset.title; b.onclick=()=>go(i); $('dots').appendChild(b); });
+function go(i){ i=Math.max(0,Math.min(slides.length-1,i)); if(i!==cur) SND.page(); slides[cur].classList.remove('on'); cur=i; const s=slides[cur]; s.classList.add('on');
+  $('stitle').textContent=s.dataset.title; $('bhint').textContent=s.dataset.hint||''; $('stage').classList.toggle('wide',!!s.dataset.wide);
+  [...$('dots').children].forEach((d,j)=>d.classList.toggle('on',j===cur)); $('cnt').textContent=(cur+1)+' / '+slides.length;
+  $('prev').disabled=cur===0; $('next').disabled=cur===slides.length-1; store.set('ms_slide',cur); fitSlide(s); requestAnimationFrame(()=>{ board.resize(); fitSlide(s); }); }
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{ const typing=/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName);
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!typing){ board.undo(); e.preventDefault(); return; } if(typing) return;
+  if(['ArrowRight','PageDown'].includes(e.key)){ go(cur+1); e.preventDefault(); } else if(['ArrowLeft','PageUp'].includes(e.key)){ go(cur-1); e.preventDefault(); }
+  else if('fFаА'.includes(e.key)) toggleFS(); else if('tTеЕ'.includes(e.key)) setBoard(!NB); });
+function toggleFS(){ try{ if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }catch(e){} }
+$('fs').onclick=toggleFS; $('snd').onclick=()=>{ $('snd').textContent=SND.toggle()?'🔊':'🔇'; }; $('snd').textContent=SND.on?'🔊':'🔇';
+function fit(){ const s=Math.min(innerWidth/1600,innerHeight/900); $('stage').style.transform=`translate(${(innerWidth-1600*s)/2}px,${(innerHeight-900*s)/2}px) scale(${s})`; board.resize(); }
+addEventListener('resize',fit); $('slides').classList.add('notrans'); $('stage').classList.toggle('noboard',NB); fit(); setTimeout(()=>$('slides').classList.remove('notrans'),200);
+$('slides').addEventListener('transitionend',e=>{ if(e.target===$('slides')){ fitSlide(slides[cur]); board.resize(); } });
+const hashN=/^#(\d+)$/.exec(location.hash); go(hashN?(+hashN[1]-1):Math.min(store.get('ms_slide',0),slides.length-1));
+addEventListener('hashchange',()=>{ const m=/^#(\d+)$/.exec(location.hash); if(m) go(+m[1]-1); });
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>fitSlide(slides[cur]));
+let prevT=performance.now();
+(function loop(now){ const dt=Math.min(.05,Math.max(0,(now-prevT)/1000)); prevT=now;
+  slides[cur].querySelectorAll('canvas.lab').forEach(cv=>{ const L=LABS[cv.id]; if(L) L.frame(cv.getContext('2d'),cv.width,cv.height,dt); });
+  if(slides[cur].contains($('fs3d'))) fs3dFrame(dt);
+  for(const id in SC3D) if(slides[cur].contains($(id))) SC3D[id](dt);
+  requestAnimationFrame(loop); })(prevT);
+</script>
+</body>
+</html>

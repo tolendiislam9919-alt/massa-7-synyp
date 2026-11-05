@@ -172,16 +172,28 @@ textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8p
 /* ФС 3D */
 #fs3d{display:block;width:470px;height:560px;border-radius:6px;border:1px solid var(--line);cursor:grab;touch-action:none;background:#dfe6ea}
 .fsq{display:grid;grid-template-columns:auto 1fr;gap:8px 10px;align-items:center;font-size:17px}
+.fsq.blq{gap:5px 10px;font-size:16px}
+html.oq .fsq.blq{grid-template-columns:1fr;gap:3px}
+html.oq .fsq.blq>span:nth-child(even){margin-bottom:9px}
 .fsq input{font:inherit;font-size:17px;width:100px;padding:4px 7px;border:1px solid #c9c0aa;border-radius:4px}
 
-/* бағдаршам */
-.lights{display:flex;gap:26px;justify-content:center;align-items:flex-end}
-.lt{display:flex;flex-direction:column;align-items:center;gap:8px}
-.lt .c{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;font:800 54px Georgia,serif;color:#fff;cursor:pointer;box-shadow:inset 0 -10px 0 rgba(0,0,0,.15),0 6px 14px rgba(0,0,0,.15);user-select:none}
-.lt .tx{font-size:17px;text-align:center;max-width:190px;line-height:1.3}
-.lt .mn{font-size:13px;padding:2px 10px}
-.bar{display:flex;height:22px;border-radius:4px;overflow:hidden;border:1px solid var(--line);background:#fff}
-.bar i{display:block;height:100%;transition:width .3s}
+/* рефлексия: оқушы экранға шығып басады, жанында статистика */
+.rfl{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.rfbtns{display:flex;flex-direction:column;gap:12px}
+.rfb{display:flex;align-items:center;gap:16px;width:100%;min-height:132px;padding:12px 22px;border:none;border-radius:12px;color:#fff;font:700 27px/1.2 "Segoe UI",sans-serif;text-align:left;cursor:pointer;user-select:none;touch-action:manipulation;box-shadow:inset 0 -8px 0 rgba(0,0,0,.15);transition:transform .12s}
+.rfb:active,.rfb.hit{transform:scale(.97)}
+.rfb i{flex:none;width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.25);display:grid;place-items:center;font:800 38px Georgia,serif}
+.rfb.y{color:var(--ink)}
+.rfs{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 20px;display:flex;flex-direction:column;gap:14px}
+.rfhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.rfhead h3{margin:0;font:700 17px "Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:.6px;color:var(--blue)}
+.rftot{font-size:19px;color:var(--muted)} .rftot b{font:800 40px Georgia,serif;color:var(--ink)}
+.rfrow .l{display:flex;justify-content:space-between;gap:10px;font-size:19px;margin-bottom:5px}
+.rfrow .l b{font:700 22px Georgia,serif;white-space:nowrap}
+.rftrack{height:26px;background:#eee8d9;border-radius:4px;overflow:hidden}
+.rftrack i{display:block;height:100%;width:0;border-radius:0 4px 4px 0;transition:width .35s ease}
+.rfsum{font-size:19px;line-height:1.4;border-top:1px dashed var(--line);padding-top:10px;min-height:66px}
+.rfctl{display:flex;gap:8px;margin-top:auto}
 
 /* тақта */
 .rightw{flex:1;padding:14px 18px 14px 22px;display:flex;position:relative;transition:transform .3s}
@@ -241,13 +253,87 @@ textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8p
 .hud b{font:700 20px Consolas,monospace;color:#8ff0a4} .hud .q{color:#f6d77a}
 .hud .h{font-size:12px;letter-spacing:1px;text-transform:uppercase;opacity:.7}
 .rule{border-left:6px solid var(--brass);background:#fff8e6;border-radius:4px;padding:8px 12px;font-size:17px;line-height:1.45}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 4px;line-height:1.1}
+.frac>span:first-child{border-bottom:2px solid currentColor;padding:0 4px}
+.ikst{font:17px/1.55 Georgia,serif;margin-top:6px}
 .rule .f{font:700 24px Georgia,serif;color:var(--blue)}
+
+/* ---------- телефонмен қосылу (мұғалім экраны) ---------- */
+.lesst{margin-left:auto;display:flex;align-items:center;gap:4px;flex:none}
+.lesst button{border:none;cursor:pointer;color:#fff;background:rgba(255,255,255,.14);border-radius:6px}
+#lessT{font:700 24px Consolas,monospace;padding:2px 9px;min-width:92px;letter-spacing:1px}
+#lessR{font-size:16px;padding:5px 8px}
+#lessT.warn{background:var(--yellow);color:#1d2430}
+#lessT.low{background:var(--red)}
+#lessT.end{background:var(--red);animation:lessend .8s steps(2,start) infinite}
+#lessT.paused{opacity:.6}
+@keyframes lessend{to{opacity:.25}}
+.phchip{margin-left:6px;min-width:0;font:700 15px "Segoe UI";color:#1d2430;background:var(--yellow);border:none;border-radius:16px;padding:6px 14px;cursor:pointer;white-space:nowrap;max-width:560px;overflow:hidden;text-overflow:ellipsis}
+.phchip.hot{animation:phhot 1.1s ease-in-out infinite}
+@keyframes phhot{50%{box-shadow:0 0 0 6px rgba(224,169,46,.45)}}
+.gchips{margin-left:8px}
+.jn{position:absolute;inset:0;display:grid;grid-template-columns:600px 1fr;gap:26px;padding:20px 30px}
+.jn h2{font:700 36px Georgia,serif;margin:0 0 6px}
+.jn .qrb{width:540px;height:540px;background:#fff;border-radius:14px;padding:12px;border:1px solid var(--line)}
+.qrb svg{width:100%;height:100%;display:block}
+.qrno{height:100%;display:grid;place-items:center;text-align:center;color:var(--red);font:700 26px "Segoe UI"}
+.jnurl{font:700 19px Consolas,monospace;color:var(--blue);word-break:break-all;margin-top:8px}
+.nmg{display:flex;flex-wrap:wrap;gap:9px;align-content:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;flex:1;min-height:0;overflow:auto}
+.nmc{color:#fff;font:700 21px "Segoe UI";padding:7px 15px;border-radius:20px;cursor:pointer;animation:fadein .3s}
+.phov{position:absolute;inset:0;z-index:30;background:rgba(29,36,48,.82);align-items:center;justify-content:center}
+.phbox{background:var(--card);border-radius:12px;width:1500px;height:810px;padding:18px 22px;display:grid;grid-template-columns:640px 1fr;gap:22px}
+.phbox .qrb{width:640px;height:640px;background:#fff;padding:10px;border:1px solid var(--line);border-radius:10px}
+.phbox .jnurl{font-size:16px}
+.phtb{overflow:auto;border:1px solid var(--line);border-radius:6px;background:#fff}
+#phMonT td.ok{background:#e6f3ea}
+.big2{font-size:20px;padding:10px 22px}
+
+/* ---------- оқушы телефоны: слайдтың беті экранға жайылады ---------- */
+html.oq,html.oq body{height:auto;min-height:100%;overflow:auto;background:var(--paper)}
+html.oq .stage{position:static;width:100%;height:auto;transform:none!important;overflow:visible;padding-top:46px}
+html.oq .top,html.oq .bottom,html.oq .rightw,html.oq .btab,html.oq .phov{display:none!important}
+html.oq .mainw{position:static;display:block}
+html.oq .leftw{position:static;width:auto!important;transition:none}
+html.oq .slide{position:static}
+html.oq .sc{position:static;width:auto!important;left:auto!important;transform:none!important;padding:10px 12px 34px}
+html.oq .duo,html.oq .duo.ptd,html.oq .stage .row{display:flex;flex-direction:column;align-items:stretch!important;gap:10px}
+html.oq .col{min-width:0;width:100%}
+html.oq .sc div[style*="display:flex"]{flex-wrap:wrap}
+html.oq canvas.lab,html.oq .c3d,html.oq #fs3d{width:100%!important;height:auto!important;max-width:100%}
+html.oq canvas.lab:not(#cLever):not(#cPt),html.oq .c3d,html.oq #fs3d{touch-action:pan-y}
+html.oq h2.st{font-size:24px}
+html.oq .sc input:not([type=range]){font-size:17px}
+html.oq .sc .btn{font-size:16px;padding:9px 13px}
+html.oq .tq{grid-template-columns:38px 1fr}
+html.oq .hud{font-size:14px;gap:4px 8px}
+html.oq .fsq{grid-template-columns:1fr auto}
+html.oq .aop{grid-template-columns:1fr}
+html.oq .toast{position:fixed;top:54px;font-size:16px;width:max-content;max-width:92vw}
+html.oq #ikSol,html.oq #tkWho,html.oq #tkPrev,html.oq #tkNext,html.oq #ptGo,html.oq #ptRe,html.oq #ptClr,html.oq #ptChkRow{display:none!important}
+html.oq .ptabs{flex-direction:column;gap:6px}
+html.oq #ptTabs{flex-direction:row;gap:5px}
+html.oq .ptab{min-width:0;font-size:15px;padding:6px 7px}
+html.oq .ptab small{font-size:12px}
+html.oq .pttmw{justify-content:center}
+#ptPhoneNote{display:none}
+html.oq #ptPhoneNote{display:block}
+.oqtop{position:fixed;left:0;right:0;top:0;height:46px;z-index:40;display:flex;align-items:center;gap:8px;padding:0 12px;background:var(--blue);color:#fff;font:600 15px "Segoe UI",sans-serif}
+.oqtop .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.oqdot{width:10px;height:10px;border-radius:50%;background:#e0a92e;flex:none}.oqdot.on{background:#7fe08f}.oqdot.off{background:#e8604c}
+.oqgp{padding:1px 9px;border-radius:12px;font-size:13px;color:#fff;flex:none}
+.oqapp{position:fixed;inset:46px 0 0 0;z-index:35;background:var(--paper);overflow:auto;padding:14px}
+.oqapp .box{max-width:520px;margin:0 auto}
+.oqapp h1{font:700 25px/1.2 Georgia,serif;margin:18px 0 10px}
+.oqapp input{width:100%;font:600 20px "Segoe UI",sans-serif;padding:12px;border:2px solid var(--line);border-radius:9px;background:#fff;margin-bottom:10px}
+.oqapp .go{display:block;width:100%;font:700 19px "Segoe UI",sans-serif;padding:14px;border-radius:10px;border:none;background:var(--blue);color:#fff}
+.oqapp .mut{color:var(--muted);font-size:15px;line-height:1.45}
 </style>
+<script>if(new URLSearchParams(location.search).get('r')) document.documentElement.className='oq';</script>
 </head>
 <body>
 <div class="stage" id="stage">
   <div class="top"><span class="sign">кг</span><span class="lesson">Физика · 7-сынып</span><span class="sep"></span><span class="stitle" id="stitle"></span>
-    <div class="gchips" id="gchips"></div></div>
+    <div class="lesst"><button id="lessT" title="Тоқтату / жалғастыру">45:00</button><button id="lessR" title="Сабақ уақытын басынан бастау">↺</button></div><button class="phchip" id="phChip">📱 QR</button><div class="gchips" id="gchips"></div></div>
   <div class="mainw">
     <div class="leftw" id="slides">
 
@@ -260,6 +346,41 @@ textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8p
   <canvas class="lab" id="cTitle" width="840" height="400"></canvas>
   <div style="font-size:15px;color:var(--muted)">«Тайтөбе ауылының жалпы орта білім беретін мектебі» КММ · 7 «А» · мұғалім Төленді И.Н.</div>
 </div></div>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-title="Сабақтың мақсаты" data-hint="Оқу мақсаты 7.2.2.11">
+  <h2 class="st"><small>Оқу мақсаты 7.2.2.11</small>Бүгін не үйренеміз?</h2>
+  <div class="duo"><div class="pa">
+  <p class="lead">Электронды, серіппелі, иінді таразылардың көмегімен дененің массасын өлшеу.</p>
+  <div class="card" style="border-left:6px solid #4f8a6e"><h3>Барлық оқушылар</h3><div style="font-size:18px">массаның анықтамасын, белгіленуін және SI бірлігін (кг) біледі; таразының үш түрін атайды.</div></div>
+  <div class="card" style="border-left:6px solid #c79a3a"><h3>Көптеген оқушылар</h3><div style="font-size:18px">үш таразымен дененің массасын өлшеп, нәтижені кестеге жазады, массаны килограммға келтіреді.</div></div>
+  <div class="card" style="border-left:6px solid #b8442f"><h3>Кейбір оқушылар</h3><div style="font-size:18px">бір дененің үш таразыдағы нәтижелерін салыстырып, қай таразының дәлірек екенін бөлік құны арқылы дәлелдейді.</div></div>
+  </div><div class="pb">
+  <div class="card"><h3>Бағалау критерийлері</h3>
+    <ul class="pl" style="font-size:17.5px;line-height:1.55"><li>таразымен дененің массасын дұрыс өлшейді;</li><li>массаның өлшем бірліктерін килограммға келтіреді;</li><li>таразылардың дәлдігін салыстырып, қорытынды жасайды.</li></ul></div>
+</div></div>
+</section>
+
+<!-- QR -->
+<section class="slide nofit" id="slJoin" data-wide="1" data-title="Телефонмен қосыл" data-hint="Әр оқушы QR-ды сканерлеп, атын жазады">
+  <div class="jn">
+    <div>
+      <div class="qrb" data-qr></div>
+      <div class="jnurl" data-url></div>
+      <div data-net style="font-size:14px;margin-top:4px"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;min-height:0">
+      <div><h2>Телефоныңды ал – QR-ды сканерле!</h2>
+      <div id="phWifi" style="display:none;background:#fff4d9;border:1px solid #e6cf8f;border-radius:8px;padding:7px 13px;font-size:21px;margin-bottom:8px"></div>
+      <div style="font-size:21px;line-height:1.45">Атың мен тегіңді жаз, ол осы экранда шығады. Мұғалім тапсырма бетінде QR-ды үлкейткенде, <b>слайдтың сол беті телефоныңа шығады</b>: таразымен өзің өлшеп, жауабыңды өзің тексересің.</div></div>
+      <div id="phFile" class="warn" style="display:none;font-size:17px"><b>QR жасау үшін сайт сілтемесі керек.</b> Слайд компьютерден тікелей ашылған. Екі жол бар: 1) GitHub Pages сілтемесін осында жазу; 2) папкадағы <b>start.bat</b> арқылы ашу (телефондар компьютермен бір Wi-Fi-да болсын):
+        <div style="display:flex;gap:6px;margin-top:6px"><input id="phPub" placeholder="https://.../massa-7-synyp/" style="flex:1;font:inherit;padding:5px 8px"><button class="btn main" id="phPubOk">Сақтау</button></div></div>
+      <div style="display:flex;align-items:center;gap:12px;font-size:22px"><span>Қосылғандар: <b id="phCount" style="font:800 34px Georgia,serif">0</b></span><span style="font-size:15px;color:var(--muted)">Топ автоматты бөлінеді. Қате атты алып тастау үшін үстінен бас.</span><button class="btn" id="phReset" style="margin-left:auto">↺ Жаңа сабақ (жаңа QR)</button></div>
+      <div class="nmg" id="phNames"></div>
+      <button class="btn main big2" data-phstart style="flex:none;font-size:28px;padding:12px 22px">▶ Бастау</button>
+    </div>
+  </div>
 </section>
 
 <!-- 2 -->
@@ -286,7 +407,7 @@ textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8p
 </section>
 
 <!-- 3а -->
-<section class="slide" data-title="Ойланайық: ғарыштағы оқиға" data-hint="Анимацияны тоқтат → болжам → тексер. Неге кілт жылдам, ғарышкер баяу?">
+<section class="slide" data-phone="astro" data-title="Ойланайық: ғарыштағы оқиға" data-hint="Анимацияны тоқтат → болжам → тексер. Неге кілт жылдам, ғарышкер баяу?">
   <h2 class="st"><small>Миға шабуыл · проблемалық жағдаят</small>Ғарышкер аман қала ма?</h2>
   <div class="duo astro"><div class="pa">
   <canvas class="lab" id="cAstro" width="840" height="420"></canvas>
@@ -303,33 +424,29 @@ textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8p
 </div></div>
 </section>
 
-<!-- 4 -->
-<section class="slide" data-title="Ойланайық" data-hint="Болжамдарды осында жазайық...">
-  <h2 class="st"><small>Проблемалық сұрақ</small>Қай таразы дұрыс өлшейді?</h2>
-  <div class="duo"><div class="pa">
-  <canvas class="lab" id="cProb" width="840" height="330"></canvas>
-  </div><div class="pb">
+<!-- 3ә -->
+<section class="slide" data-wide="1" data-phone="ik" data-title="Инерттілік: каток" data-hint="m₁ / m₂ = v₂ / v₁  ·  масса – дененің инерттілігінің өлшемі">
+  <h2 class="st"><small>Жаңа ұғым · 3D зертхана</small>Катоктағы соқтығыс: кім жылдамырақ кері ұшады?</h2>
   <div class="row">
-    <div class="card grow"><h3>1-сұрақ</h3><div style="font-size:18px;line-height:1.5">Дүкенде сатушы 1 кг алманы <b>электронды</b> таразыда, ал базарда әжеміз <b>иінді</b> таразыда өлшейді. Қайсысы дұрыс өлшейді?</div></div>
-    <div class="card grow"><h3>2-сұрақ</h3><div style="font-size:18px;line-height:1.5">Дәрігер дәріні <b>0,5 г</b>-ға дейін дәл өлшеуі керек. Ол қандай таразыны таңдайды? Неге?</div></div>
+    <div class="col"><canvas id="ik3d" class="c3d" width="640" height="430"></canvas>
+      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><button class="btn main" id="ikGo">▶ Ойнату</button><button class="btn" id="ikRe">↺ Қайта</button><button class="btn" id="ikSlow">🐢 Баяу: қосулы</button></div>
+      <div style="display:flex;gap:6px;justify-content:center;align-items:center;font-size:16px">Баланың массасы: <button class="btn" data-ikm="40">40 кг</button><button class="btn" data-ikm="32">32 кг</button><button class="btn" data-ikm="50">50 кг</button></div>
+      <div class="hud" style="grid-template-columns:auto auto auto"><span class="h">Радар</span><span class="h">масса</span><span class="h">соқтығыстан кейін</span>
+        <span style="color:#ff9a8a">Ерлан ағай</span><span>80 кг</span><b id="ikA1">—</b>
+        <span style="color:#9fd3ff">Әли (бала)</span><span id="ikMB">40 кг</span><b id="ikB1" class="q">—</b></div></div>
+    <div class="col grow">
+      <div class="card" style="font-size:17px;line-height:1.5"><h3>Жағдаят</h3>Катокта <b>Ерлан ағай</b> (80 кг) мен кішкентай <b>Әли</b> бір-біріне қарай сырғанап келе жатып, кенет <b>соқтығысып</b> қалды. Екеуі кері қарай ұшты. Радар ағайдың жылдамдығын өлшеді, ал баланікін – <b>өлшей алмады</b>.</div>
+      <div class="rule" id="ikF"><span style="opacity:.7">🔒 Формула анимациядан кейін ашылады</span></div>
+      <div class="card" style="font-size:17px;display:flex;flex-direction:column;gap:8px">
+        <span>Әлидің соқтығыстан кейінгі жылдамдығы:</span><span>v₂ = <input id="ikV" style="font:inherit;width:90px;padding:4px 7px;border:1px solid #c9c0aa;border-radius:4px"> м/с</span>
+        <span><button class="btn main" id="ikChk">Тексеру</button> <button class="btn" id="ikSol">Шешуі</button> <span id="ikRes"></span></span>
+      </div>
+      <div class="card" id="ikCon" style="font-size:17px;line-height:1.5;display:none"></div>
+    </div>
   </div>
-  <div class="tip">👍 «Бас бармақ»: келісемін – жоғары, күмәнім бар – жанына, келіспеймін – төмен.</div>
-</div></div>
 </section>
 
-<!-- 5 -->
-<section class="slide" data-title="Сабақтың мақсаты" data-hint="Оқу мақсаты 7.2.2.11">
-  <h2 class="st"><small>Оқу мақсаты 7.2.2.11</small>Бүгін не үйренеміз?</h2>
-  <div class="duo"><div class="pa">
-  <p class="lead">Электронды, серіппелі, иінді таразылардың көмегімен дененің массасын өлшеу.</p>
-  <div class="card" style="border-left:6px solid #4f8a6e"><h3>Барлық оқушылар</h3><div style="font-size:18px">массаның анықтамасын, белгіленуін және SI бірлігін (кг) біледі; таразының үш түрін атайды.</div></div>
-  <div class="card" style="border-left:6px solid #c79a3a"><h3>Көптеген оқушылар</h3><div style="font-size:18px">үш таразымен дененің массасын өлшеп, нәтижені кестеге жазады, массаны килограммға келтіреді.</div></div>
-  <div class="card" style="border-left:6px solid #b8442f"><h3>Кейбір оқушылар</h3><div style="font-size:18px">бір дененің үш таразыдағы нәтижелерін салыстырып, қай таразының дәлірек екенін бөлік құны арқылы дәлелдейді.</div></div>
-  </div><div class="pb">
-  <div class="card"><h3>Бағалау критерийлері</h3>
-    <ul class="pl" style="font-size:17.5px;line-height:1.55"><li>таразымен дененің массасын дұрыс өлшейді;</li><li>массаның өлшем бірліктерін килограммға келтіреді;</li><li>таразылардың дәлдігін салыстырып, қорытынды жасайды.</li></ul></div>
-</div></div>
-</section>
+
 
 <!-- 6 -->
 <section class="slide" data-title="Масса деген не?" data-hint="m – масса, [m] = 1 кг ... 1 т = 10³ кг, 1 г = 10⁻³ кг, 1 мг = 10⁻⁶ кг">
@@ -350,7 +467,7 @@ textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8p
 </section>
 
 <!-- 7 -->
-<section class="slide" data-title="Иінді таразы" data-hint="Дене – сол табақшаға, кір тастар – оң табақшаға. m = кір тастардың массаларының қосындысы">
+<section class="slide" data-phone="lever" data-title="Иінді таразы" data-hint="Дене – сол табақшаға, кір тастар – оң табақшаға. m = кір тастардың массаларының қосындысы">
   <h2 class="st"><small>Виртуалды зертхана · 1</small>Иінді таразы</h2>
   <div class="duo"><div class="pa">
   <canvas class="lab" id="cLever" width="840" height="330"></canvas>
@@ -364,19 +481,19 @@ textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8p
 </section>
 
 <!-- 8 -->
-<section class="slide" data-title="Серіппелі таразы" data-hint="Бөлік құны: c = (a − b) / n">
+<section class="slide" data-phone="spring" data-title="Серіппелі таразы" data-hint="Бөлік құны: c = (a − b) / n">
   <h2 class="st"><small>Виртуалды зертхана · 2</small>Серіппелі таразы</h2>
   <div class="duo"><div class="pa">
   <canvas class="lab" id="cSpring" width="840" height="400"></canvas>
   </div><div class="pb">
   <div class="objs" id="spObjs"></div>
   <div class="card"><div class="chk">Бөлік құны: <input id="spC"> г &nbsp;&nbsp; Көрсеткіш: <input id="spR"> г <button class="btn main" id="spChk">Тексеру</button><span id="spRes"></span></div></div>
-  <div class="tip">Серіппе дененің <b>салмағынан</b> созылады: дене ауыр болған сайын көрсеткіш төмен түседі. Санау алдында көрсеткіштің «0»-де тұрғанын тексер.</div>
+  <div class="tip">Дене ауыр болған сайын серіппе көбірек созылып, көрсеткіш төмен түседі. Санау алдында көрсеткіштің «0»-де тұрғанын тексер.</div>
 </div></div>
 </section>
 
 <!-- 9 -->
-<section class="slide" data-title="Электронды таразы" data-hint="TARE – ыдыстың массасын «нөлдейді»: m су = m жалпы − m ыдыс">
+<section class="slide" data-phone="el" data-title="Электронды таразы" data-hint="TARE – ыдыстың массасын «нөлдейді»: m су = m жалпы − m ыдыс">
   <h2 class="st"><small>Виртуалды зертхана · 3</small>Электронды таразы және TARE</h2>
   <div class="duo"><div class="pa">
   <canvas class="lab" id="cEl" width="840" height="330"></canvas>
@@ -392,30 +509,14 @@ textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8p
 </section>
 
 <!-- 10 -->
-<section class="slide" data-title="Топтық тапсырма" data-hint="Әр топ өз тапсырмасын орындайды: дұрыс жауап – топқа +2">
+<section class="slide" data-phone="gt" data-title="Топтық тапсырма" data-hint="Әр топ өз тапсырмасын орындайды: дұрыс жауап – топқа +2">
   <h2 class="st"><small>Топтық жұмыс</small>Әр топқа – бір таразы</h2>
   <div class="row" id="gtRow"></div>
   <div class="tip">Топ ішінде: біреуі есептейді, біреуі тексереді, біреуі жауапты экранға енгізеді. Әр топқа 2 мүмкіндік.</div>
 </section>
 
-<!-- 11 -->
-<section class="slide" data-title="Заң және қауіпсіздік" data-hint="Сауда таразысы – поверкадан өткен болуы керек">
-  <h2 class="st"><small>Өмірмен байланыс</small>Таразы және заң</h2>
-  <div class="duo"><div class="pa">
-  <div class="card" style="border-left:6px solid var(--blue)"><h3>ҚР «Өлшем бірлігін қамтамасыз ету туралы» Заңы</h3>
-    <div style="font-size:18.5px;line-height:1.55">Саудада, медицинада, дәріханада қолданылатын таразылар белгілі мерзім сайын <b>салыстырып тексеруден (поверка)</b> өтеді. Тексерілген таразыға <b>пломба / таңба</b> басылады. Бұл – <b>тұтынушының құқығын қорғау</b>: сатып алушы төлеген массасын толық алуы керек.</div></div>
-  <canvas class="lab" id="cLaw" width="840" height="200"></canvas>
-  </div><div class="pb">
-  <div class="row">
-    <div class="card grow"><h3>Ойлан</h3><div style="font-size:17.5px;line-height:1.5">Сатушы таразы табақшасының астына 50 г магнит жапсырып қойды. 2 кг ет сатып алған адам қанша ет алады? Бұл кімнің құқығын бұзады?</div></div>
-    <div class="card grow" style="border-left:5px solid var(--red)"><h3 style="color:var(--red)">Кабинеттегі қауіпсіздік</h3>
-      <ul class="pl" style="font-size:16px;line-height:1.5"><li>ыстық, дымқыл, химиялық затты табақшаға тікелей қоймаймыз;</li><li>таразының ең үлкен жүктемесінен асырмаймыз;</li><li>кір тастарды пинцетпен ғана аламыз;</li><li>таразыны соқпаймыз, тасымалдамаймыз.</li></ul></div>
-  </div>
-</div></div>
-</section>
-
 <!-- 12 -->
-<section class="slide" data-wide="1" data-title="Практикалық жұмыс №3" data-hint="Әр топ кезекпен тақтаға шығып, өз виртуалды станциясын орындайды · 3 минут">
+<section class="slide" data-wide="1" data-phone="pt" data-title="Практикалық жұмыс №3" data-hint="Топтар станцияны телефонмен бірге орындайды, қорғауда тақтаға шығып жауабын енгізеді · 3 минут">
   <h2 class="st"><small>Практикалық жұмыс №3 · виртуалды станциялар</small>Әр түрлі денелердің массасын анықтау</h2>
   <div class="ptabs"><div class="ptabs grow" id="ptTabs"></div>
     <div class="pttmw"><span class="pttm" id="ptTm">03:00</span><button class="btn main" id="ptGo">▶</button><button class="btn" id="ptRe" title="Таймерді қайта қосу">↺</button><button class="btn" id="ptClr" title="Осы топтың нәтижесін өшіру">🗑</button></div></div>
@@ -426,7 +527,8 @@ textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8p
   </div><div class="pb">
   <div class="card"><h3 id="ptTH">Тапсырма</h3><div id="ptTask" style="font-size:17px;line-height:1.5"></div></div>
   <table class="t" id="ptTab"></table>
-  <div class="row" style="align-items:center;flex-wrap:wrap"><button class="btn main" id="ptChk">Тексеру</button><span id="ptRes" style="font-size:17px"></span></div>
+  <div class="tip" id="ptPhoneNote">Топпен бірге орында, нәтижені осы кестеге жазып ал. <b>Қорғауда тақтаға шығып</b>, жауабыңды тақтадағы кестеге енгізесің.</div>
+  <div class="row" id="ptChkRow" style="align-items:center;flex-wrap:wrap"><button class="btn main" id="ptChk">Тексеру</button><span id="ptRes" style="font-size:17px"></span></div>
 </div></div>
 </section>
 
@@ -468,74 +570,87 @@ textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8p
 </section>
 
 <!-- 15 -->
-<section class="slide" data-title="Функционалдық сауаттылық: кантар" data-hint="m = F / g,  g ≈ 10 Н/кг">
-  <h2 class="st"><small>Функционалдық сауаттылық · 3D зертхана</small>Базардағы кантар (динамометр)</h2>
+<section class="slide" data-wide="1" data-phone="fs" data-title="ФС: базардағы сауда" data-hint="Бөлік құны: c = (a − b) / n  ·  өлшеу қателігі: ΔF = c / 2  ·  F = (… ± ΔF) Н">
+  <h2 class="st"><small>Функционалдық сауаттылық · 3D зертхана</small>Базардағы сауда</h2>
   <div class="row">
     <div class="col"><canvas id="fs3d" width="470" height="560"></canvas>
+      <div class="objs" id="fsObjs" style="justify-content:center"></div>
       <div style="display:flex;gap:6px;justify-content:center"><button class="btn" id="fsZoom">🔍 Шкаланы жақындату</button><button class="btn" id="fsRot">↺ Бұру</button></div></div>
     <div class="col grow">
-      <div class="card" style="font-size:16.5px;line-height:1.5"><h3>Жағдаят</h3>Әжең базарға <b>кантар</b> (серіппелі безмен) алып барды. Ол массаны емес, <b>күшті</b> – ньютонмен (Н) көрсетеді. Денені ілгекке іл, кантардың көрсеткішін оқы.<br><span style="color:var(--muted)">Кеңес: m = F / g, мұндағы g ≈ 10 Н/кг. (Ауырлық күшін келесі сабақтарда толық өтеміз.)</span></div>
-      <div class="objs" id="fsObjs"></div>
+      <div class="card" style="font-size:17px;line-height:1.5"><h3>Жағдаят</h3>Базарда сатушының таразысы бұзылып қалды. Қолында тек <b>динамометр</b> бар. Ол тауарларды кезекпен іліп тексереді. Әр затты ілгекке іл де, сол жақ шкаладан <b>көрсеткішті (Н)</b>, оң жақ сызғыштан <b>серіппенің ұзаруын (см)</b> оқы.</div>
       <div class="card fsq">
-        <span>1) Бөлік құны:</span><span><input id="fsC"> Н</span>
-        <span>2) Күш: F =</span><span><input id="fsF"> Н</span>
-        <span>3) Масса: m =</span><span><input id="fsM"> кг</span>
-        <span></span><span><button class="btn main" id="fsChk">Тексеру</button> <span id="fsRes"></span></span>
+        <span>1) Шкаланың бөлік құны: c =</span><span><input id="fsC"> Н</span>
+        <span>2) Өлшеу қателігі: ΔF = c : 2 =</span><span><input id="fsE"> Н</span>
       </div>
-      <div class="card" style="font-size:16.5px;line-height:1.45"><h3>4) Алданбайық!</h3>Сатушы «1,5 кг» дейді, ал әжеңнің кантары <b>12 Н</b> көрсетті. Нақты масса қанша? Сатушы қанша кем берді?
-        <div class="chk" style="margin-top:6px;font-size:16.5px">m = <input id="fsQ1"> кг; кем: <input id="fsQ2"> кг <button class="btn" id="fsQChk">✓</button><span id="fsQRes"></span></div></div>
+      <table class="t" id="fsTab"></table>
+      <div class="row" style="align-items:center;flex-wrap:wrap"><button class="btn main" id="fsChk">Тексеру</button><span id="fsRes" style="font-size:16px"></span></div>
+      <div class="rule" id="fsEnd" style="display:none"></div>
     </div>
   </div>
 </section>
 
 <!-- 15а -->
-<section class="slide" data-wide="1" data-title="ФС: бильярд шарлары" data-hint="m₁ · Δv₁ = m₂ · Δv₂   →   m₂ = m₁ · Δv₁ / Δv₂">
+<section class="slide" data-wide="1" data-phone="bl" data-title="ФС: бильярд шарлары" data-hint="v = s / t  ·  m₁ / m₂ = v₂ / v₁  ·  1 г = 0,001 кг">
   <h2 class="st"><small>Функционалдық сауаттылық · 3D зертхана</small>Таразысыз масса: бильярд шары</h2>
   <div class="row">
     <div class="col"><canvas id="bl3d" class="c3d" width="640" height="430"></canvas>
       <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><button class="btn main" id="blGo">🎱 Соғу</button><button class="btn" id="blRe">↺ Қайта</button><button class="btn" id="blSlow">🐢 Баяу: қосулы</button><button class="btn" id="blVar">Басқа қызыл шар</button></div>
-      <div class="hud"><span class="h">Радар</span><span class="h">масса</span><span class="h">соққыға дейін</span><span class="h">соққыдан кейін</span>
-        <span>⚪ Ақ шар</span><span>240 г</span><b id="blW0">—</b><b id="blW1">—</b>
-        <span>🔴 Қызыл шар</span><span class="q">? г</span><b id="blR0">—</b><b id="blR1">—</b></div></div>
+      <div class="ctl"><div class="lab"><span>Кийдің соққы күші: әлсіз ← → күшті</span><span class="val" id="blUv"></span></div><input type="range" id="blU" min="1" max="9" step="1" value="5"></div>
+      <div class="hud" style="grid-template-columns:auto auto auto"><span class="h">Радар</span><span class="h">масса</span><span class="h">жылдамдығы қаншаға өзгерді</span>
+        <span>⚪ Ақ шар</span><span>240 г</span><b id="blW1">—</b>
+        <span>🔴 Қызыл шар</span><span class="q">? г</span><b id="blR1">—</b>
+        <span>⏱ Секундомер</span><span>s = 1 м</span><b id="blT">—</b></div></div>
     <div class="col grow">
-      <div class="card" style="font-size:17px;line-height:1.5"><h3>Жағдаят</h3>Бильярд клубында бір <b>қызыл шар</b> басқалардан жеңіл сияқты. Клубта таразы жоқ! Ақ шардың массасы белгілі – <b>240 г</b>. Ақ шармен қызыл шарды соғып, радардың көрсетуі бойынша қызыл шардың массасын тап.</div>
-      <div class="rule">Екі дене соқтығысқанда <b>массасы кіші дененің жылдамдығы көбірек өзгереді</b>:<br><span class="f">m₁ · Δv₁ = m₂ · Δv₂</span></div>
-      <div class="card fsq">
-        <span>1) Ақ шардың жылдамдығы қаншаға өзгерді? Δv₁ =</span><span><input id="blA"> м/с</span>
-        <span>2) Қызыл шардікі: Δv₂ =</span><span><input id="blB"> м/с</span>
-        <span>3) Қызыл шардың массасы: m₂ =</span><span><input id="blC"> г</span>
-        <span></span><span><button class="btn main" id="blChk">Тексеру</button> <span id="blRes"></span></span>
+      <div class="card" style="font-size:16.5px;line-height:1.45"><h3>Жағдаят</h3>Бильярд клубында жарыс алдында бір <b>қызыл шар</b> жеңіл сияқты көрінді. Таразы жоқ! Ереже бойынша <b>200 г-нан жеңіл шар ойынға жіберілмейді</b>. Ақ шардың массасы белгілі – <b>240 г</b>. Ақ шар қызыл шарға дейін <b>1 м</b> жол жүреді, секундомер оның уақытын өлшейді. Соққы күшін өзің таңда да, шарды соқ.</div>
+      <div class="rule" style="padding:6px 12px">Өзара әрекеттесу: <span class="f"><span class="frac"><span>m₁</span><span>m₂</span></span> = <span class="frac"><span>v₂</span><span>v₁</span></span></span> &nbsp; мұндағы v₁, v₂ – соққыдан жылдамдықтың қаншаға өзгергені.</div>
+      <div class="card fsq blq">
+        <span>1) Ақ шардың соққыға дейінгі орташа жылдамдығы: v = s / t =</span><span><input id="blO"> м/с</span>
+        <span>2) Радардан оқы: ақ шар v₁ =</span><span><input id="blA"> м/с</span>
+        <span>3) Радардан оқы: қызыл шар v₂ =</span><span><input id="blB"> м/с</span>
+        <span>4) Қызыл шардың массасы: m₂ =</span><span><input id="blC"> г</span>
+        <span>5) ХБЖ-де: m₂ =</span><span><input id="blK"> кг</span>
+        <span>6) Шар ойынға жарай ма?</span><span data-blc="ok"><button class="btn" data-v="1">Иә</button> <button class="btn" data-v="0">Жоқ</button></span>
+        <span>7) Соққы күшін өзгертіп қайта соқ. Шардың массасы өзгере ме?</span><span data-blc="ch"><button class="btn" data-v="1">Иә</button> <button class="btn" data-v="0">Жоқ</button></span>
+        <span></span><span><button class="btn main" id="blChk">Тексеру</button></span>
       </div>
-      <div class="tip">Ойлан: қызыл шар ақ шардан ауыр болса, соққыдан кейін ақ шар қалай қозғалар еді?</div>
+      <div id="blRes" style="font-size:16px"></div>
+      <div class="rule" id="blEnd" style="display:none"></div>
     </div>
   </div>
 </section>
 
 <!-- 15б -->
-<section class="slide" data-wide="1" data-title="ФС: мұз айдынындағы соқтығыс" data-hint="m₁ · Δv₁ = m₂ · Δv₂  ·  массасы кіші ойыншының жылдамдығы көбірек өзгереді">
+<section class="slide" data-wide="1" data-phone="hk" data-title="ФС: мұз айдынындағы соқтығыс" data-hint="v = s / t  ·  m₁ / m₂ = v₂ / v₁  ·  1 м/с = 3,6 км/сағ">
   <h2 class="st"><small>Функционалдық сауаттылық · 3D зертхана</small>Хоккейшілер соқтығысты!</h2>
   <div class="row">
     <div class="col"><canvas id="hk3d" class="c3d" width="640" height="430"></canvas>
       <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><button class="btn main" id="hkGo">▶ Ойнату</button><button class="btn" id="hkRe">↺ Қайта</button><button class="btn" id="hkSlow">🐢 Баяу: қосулы</button></div>
-      <div class="hud"><span class="h">Төреші радары</span><span class="h">масса</span><span class="h">соқтығысқа дейін</span><span class="h">кейін</span>
-        <span style="color:#ff9a8a">Айбек</span><span>90 кг</span><b id="hkA0">—</b><b id="hkA1">—</b>
-        <span style="color:#9fd3ff">Бекзат</span><span>60 кг</span><b id="hkB0">—</b><b id="hkB1" class="q">—</b></div></div>
+      <div class="ctl"><div class="lab"><span>Айбектің екпіні: баяу ← → жылдам</span><span class="val" id="hkUv"></span></div><input type="range" id="hkU" min="1" max="9" step="1" value="3"></div>
+      <div class="hud" style="grid-template-columns:auto auto auto"><span class="h">Төреші радары</span><span class="h">масса</span><span class="h">жылдамдығы қаншаға өзгерді</span>
+        <span style="color:#ff9a8a">Айбек</span><span>90 кг</span><b id="hkA1">—</b>
+        <span style="color:#9fd3ff">Бекзат</span><span>60 кг</span><b id="hkB1" class="q">—</b>
+        <span>⏱ Секундомер</span><span>s = 6 м</span><b id="hkT">—</b></div></div>
     <div class="col grow">
-      <div class="card" style="font-size:17px;line-height:1.5"><h3>Жағдаят</h3>Жаттығуда <b>Айбек</b> (90 кг) шайбаға қарап жылдам сырғанап келе жатып, тұрған <b>Бекзатқа</b> (60 кг) байқаусызда соқтығысып қалды. Радар Бекзаттың соқтығыстан кейінгі жылдамдығын <b>өлшей алмады</b>. Дәрігер жарақат қаупін бағалау үшін соны білуі керек.</div>
-      <div class="rule">Өзара әрекеттесу: <span class="f">m₁ · Δv₁ = m₂ · Δv₂</span></div>
-      <div class="card fsq">
-        <span>1) Айбектің жылдамдығы қаншаға өзгерді? Δv₁ =</span><span><input id="hkA"> м/с</span>
-        <span>2) Бекзаттың жылдамдығы қаншаға өзгерді? Δv₂ =</span><span><input id="hkB"> м/с</span>
-        <span>3) Соқтығыстан кейін Бекзаттың жылдамдығы: v =</span><span><input id="hkC"> м/с</span>
-        <span></span><span><button class="btn main" id="hkChk">Тексеру</button> <span id="hkRes"></span></span>
+      <div class="card" style="font-size:16.5px;line-height:1.45"><h3>Жағдаят</h3>Жаттығуда <b>Айбек</b> (90 кг) шайбаға қарап сырғанап келе жатып, тұрған <b>Бекзатқа</b> (60 кг) соқтығысып қалды. Соқтығысқа дейін ол <b>6 м</b> жол жүрді, секундомер уақытын өлшеді. Радар Бекзаттың жылдамдығын <b>өлшей алмады</b>. Дәрігер ережесі: <b>18 км/сағ-тан жылдам ұшқан ойыншы тексеруден өтеді</b>. Айбектің екпінін таңда да, ойнат.</div>
+      <div class="rule" style="padding:6px 12px">Өзара әрекеттесу: <span class="f"><span class="frac"><span>m₁</span><span>m₂</span></span> = <span class="frac"><span>v₂</span><span>v₁</span></span></span> &nbsp; мұндағы v₁, v₂ – соққыдан жылдамдықтың қаншаға өзгергені.</div>
+      <div class="card fsq blq">
+        <span>1) Айбектің соқтығысқа дейінгі орташа жылдамдығы: v = s / t =</span><span><input id="hkO"> м/с</span>
+        <span>2) Радардан оқы: Айбек v₁ =</span><span><input id="hkA"> м/с</span>
+        <span>3) Формуладан тап: Бекзат v₂ =</span><span><input id="hkC"> м/с</span>
+        <span>4) Айналдыр (1 м/с = 3,6 км/сағ): v₂ =</span><span><input id="hkK"> км/сағ</span>
+        <span>5) Бекзат дәрігер тексеруінен өте ме?</span><span data-hkc="doc"><button class="btn" data-v="1">Иә</button> <button class="btn" data-v="0">Жоқ</button></span>
+        <span>6) Кімге қауіптірек?</span><span data-hkc="who"><button class="btn" data-v="0">Айбекке</button> <button class="btn" data-v="1">Бекзатқа</button></span>
+        <span>7) Екпінді арттырып қайта ойнат. Бекзаттың жылдамдығы қалай өзгереді?</span><span data-hkc="up"><button class="btn" data-v="1">Артады</button> <button class="btn" data-v="0">Өзгермейді</button> <button class="btn" data-v="2">Азаяды</button></span>
+        <span></span><span><button class="btn main" id="hkChk">Тексеру</button></span>
       </div>
-      <div class="card" style="font-size:17px"><b>4) Кімге қауіптірек?</b> <button class="btn" data-hq="0">Айбекке</button> <button class="btn" data-hq="1">Бекзатқа</button> <span id="hkQ"></span></div>
+      <div id="hkRes" style="font-size:16px"></div>
+      <div class="rule" id="hkEnd" style="display:none"></div>
     </div>
   </div>
 </section>
 
 <!-- 16 -->
-<section class="slide" data-title="Жеке жұмыс" data-hint="A – 3 балл, B – 2 балл, C – 2 балл. Барлығы 7 балл">
+<section class="slide" data-phone="jk" data-title="Жеке жұмыс" data-hint="A – 3 балл, B – 2 балл, C – 2 балл. Барлығы 7 балл">
   <h2 class="st"><small>Деңгейлік тапсырмалар · 7 балл</small>Жеке жұмыс</h2>
   <div class="duo"><div class="pa">
   <div class="who">Оқушы: <select id="tkWho"></select><button class="btn" id="tkPrev">◀</button><button class="btn" id="tkNext">▶</button><span class="score" id="tkScore"></span></div>
@@ -567,19 +682,22 @@ textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8p
 </section>
 
 <!-- 18 -->
-<section class="slide" data-title="Рефлексия" data-hint="Бүгін мен ... үйрендім. Маған ең дәл таразы – ..., себебі ...">
-  <h2 class="st"><small>Рефлексия · «Шығу билеті»</small>Сабақтан не алдық?</h2>
-  <div class="duo"><div class="pa">
-  <div class="card" style="font-size:19px;line-height:1.7"><b>Стикерге жаз:</b><br>1) Бүгін мен … үйрендім.<br>2) Маған ең дәл таразы – …, себебі …<br>3) Маған әлі түсініксіз – …</div>
-  </div><div class="pb">
-  <div class="lights">
-    <div class="lt"><div class="c" style="background:#2e7d4f" data-l="0">0</div><div class="tx">Түсіндім, өзім өлшей аламын</div><button class="btn mn" data-m="0">−1</button></div>
-    <div class="lt"><div class="c" style="background:#e0a92e" data-l="1">0</div><div class="tx">Түсіндім, бірақ сұрағым бар</div><button class="btn mn" data-m="1">−1</button></div>
-    <div class="lt"><div class="c" style="background:#b8442f" data-l="2">0</div><div class="tx">Көмек керек</div><button class="btn mn" data-m="2">−1</button></div>
+<section class="slide" data-wide="1" data-title="Рефлексия" data-hint="Әр оқушы экранға шығып, өз түсін бір рет басады">
+  <h2 class="st"><small>Рефлексия</small>Сабақтан не алдық?</h2>
+  <p class="lead">Экранға шық та, өзіңе сәйкес түсті <b>бір рет</b> бас.</p>
+  <div class="rfl">
+    <div class="rfbtns" id="rfBtns">
+      <button class="rfb" data-l="0" style="background:#2e7d4f"><i>✔</i><span>Түсіндім, өзім өлшей аламын</span></button>
+      <button class="rfb y" data-l="1" style="background:#e0a92e"><i>?</i><span>Түсіндім, бірақ сұрағым бар</span></button>
+      <button class="rfb" data-l="2" style="background:#b8442f"><i>!</i><span>Көмек керек</span></button>
+    </div>
+    <div class="rfs">
+      <div class="rfhead"><h3>Статистика</h3><span class="rftot">Басқандар: <b id="rfTot">0</b></span></div>
+      <div id="rfRows"></div>
+      <div class="rfsum" id="rfSum"></div>
+      <div class="rfctl"><button class="btn" id="rfUndo">↶ Соңғы басуды қайтару</button><button class="btn" id="lClr">↺ Нөлдеу</button></div>
+    </div>
   </div>
-  <div class="bar" id="lBar"><i style="background:#2e7d4f"></i><i style="background:#e0a92e"></i><i style="background:#b8442f"></i></div>
-  <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--muted)"><span>Стикерді жапсырған сайын шеңберді бір рет бас.</span><button class="btn" id="lClr" style="font-size:13px;padding:3px 10px">↺ Нөлдеу</button></div>
-</div></div>
 </section>
 
 <!-- 19 -->
@@ -594,10 +712,7 @@ textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8p
   <div class="fbox" style="font-size:21px">[m] = 1 кг &nbsp;·&nbsp; 1 т = 1000 кг &nbsp;·&nbsp; 1 г = 0,001 кг &nbsp;·&nbsp; 1 мг = 0,000001 кг</div>
   </div><div class="pb">
   <div class="card"><h3>Үй тапсырмасы</h3>
-    <ol style="margin:0;padding-left:22px;font-size:18px;line-height:1.65">
-      <li>Оқулықтағы «Масса. Массаны өлшеу» тақырыбын оқу.</li>
-      <li><b>Функционалдық тапсырма:</b> үйдегі ас үй таразысымен 3 азық-түліктің массасын өлшеп, қаптамадағы массамен салыстыр. Кесте: <i>Өнім · Қаптамада · Таразыда · Айырма</i>. Айырма неге шықты?</li>
-    </ol></div>
+    <div style="font-size:22px;line-height:1.5">Оқулық, <b>64-бет</b>: <b>«Шығармашылық шеберхана»</b>.</div></div>
   <canvas class="lab" id="cEnd" width="840" height="140"></canvas>
 </div></div>
 </section>
@@ -626,17 +741,32 @@ textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8p
     <button class="btn" id="prev">◀ Артқа</button><div class="dots" id="dots"></div><button class="btn main" id="next">Келесі ▶</button>
     <span class="cnt" id="cnt"></span><button class="btn" id="snd">🔊</button><button class="btn" id="fs">⛶ Толық экран</button>
   </div>
+  <div class="phov" id="phOv" style="display:none"><div class="phbox">
+    <div><div class="qrb" data-qr></div><div class="jnurl" data-url></div><div data-net style="font-size:14px"></div></div>
+    <div style="display:flex;flex-direction:column;gap:9px;min-height:0">
+      <div style="display:flex;align-items:center;gap:10px"><h2 class="st" style="font-size:28px;flex:1">Телефондар</h2><button class="btn main big2" id="phClose">✕ Жабу</button></div>
+      <div id="phNow" style="font-size:21px;line-height:1.35;background:#fff4d9;border:1px solid #e6cf8f;border-radius:8px;padding:8px 13px"></div>
+      <button class="btn main big2" data-phstart>▶ Бастау</button>
+      <div class="phtb" style="flex:1"><table class="t" id="phMonT"></table></div>
+    </div>
+  </div></div>
   <div class="toast" id="toast"></div>
 </div>
 
 <script src="three.min.js"></script>
+<script src="qrcode.min.js"></script>
+<script src="mqtt.min.js"></script>
+<script src="net.js"></script>
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
+/* ?r=БӨЛМЕ бар болса, бұл – оқушының телефоны: сақтау кілттері де бөлек */
+const QP=new URLSearchParams(location.search), OQROOM=(QP.get('r')||'').toUpperCase().replace(/[^A-Z0-9]/g,''), PUPIL=!!QP.get('r'), OQTAG=QP.get('u')||'', SKEY=PUPIL?'oq_'+OQROOM+OQTAG+'_':'';
+window.oqPaused=PUPIL;
 const nf=(v,d=4)=>{ if(!isFinite(v)) return '—'; let s=String(+v.toFixed(d)); if(s.includes('e')) return s; return s.replace('.',','); };
 const g1=v=>(Math.round(v*10)/10).toFixed(1).replace('.',',');
 let toastT; function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2600); }
-const store={ get(k,d){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }, set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} } };
+const store={ get(k,d){ try{ const v=localStorage.getItem(SKEY+k); return v?JSON.parse(v):d; }catch(e){ return d; } }, set(k,v){ try{ localStorage.setItem(SKEY+k,JSON.stringify(v)); }catch(e){} } };
 function parseNum(s){ s=String(s).trim().replace(/\s/g,'').replace(/,/g,'.').replace(/[×x*]/g,'·').replace(/−/g,'-');
   if(s==='') return NaN;
   let m=/^(-?[\d.]+)·10\^?\(?(-?\d+)\)?$/.exec(s); if(m) return Number(m[1])*Math.pow(10,+m[2]);
@@ -654,9 +784,12 @@ const SND=(()=>{ let ac=null,on=store.get('ms_snd',true);
     ok(){ tone(660,.14); tone(990,.25,.15,.11); }, bad(){ tone(190,.3,.08,0,'square'); }, page(){ tone(520,.07,.04); },
     clink(){ tone(2100,.08,.06); tone(2900,.06,.03,.02); }, beep(){ tone(1046,.12,.12); },
     spin(){ tone(700+Math.random()*500,.05,.05); },
-    bell(){ [784,988,1175,1568].forEach((f,i)=>tone(f,.35,.14,i*.16)); } };
+    bell(){ [784,988,1175,1568].forEach((f,i)=>tone(f,.35,.14,i*.16)); },
+    /* сабақ уақыты бітті: дыбыс өшірулі тұрса да естіледі */
+    alarm(){ init(); const was=on; on=true; for(let k=0;k<4;k++) [784,988,1175,1568].forEach((f,i)=>tone(f,.4,.3,k*1.1+i*.16)); on=was; } };
 })();
 document.addEventListener('pointerdown',()=>SND.init(),{capture:true});
+document.addEventListener('keydown',()=>SND.init(),{capture:true});   // беттерді пернемен ауыстырса да дыбыс ашылады
 
 /* ---------- топтар және ұпай ---------- */
 const GR=[{n:'Қызыл',c:'#c8352b'},{n:'Жасыл',c:'#2e7d4f'},{n:'Көк',c:'#1f5fa8'}];
@@ -876,15 +1009,7 @@ $('asOpts').addEventListener('click',e=>{ const b=e.target.closest('button'); if
   else { b.classList.add('no'); M.innerHTML='<span class="bad">✘ Қарап көрейік…</span> Кілтті станцияға лақтырса, ғарышкер <b>кері жаққа</b> – станциядан алысқа итеріледі! <b>↺ Басынан</b> басып, қайта таңдаңыз.'; } });
 
 /* 4. Проблема */
-LABS.cProb={t:0,frame(ctx,w,h,dt){ this.t+=dt; const t=this.t;
-  ctx.fillStyle='#e8f0f4'; ctx.fillRect(0,0,420,h); ctx.fillStyle='#f4ead6'; ctx.fillRect(420,0,420,h);
-  label(ctx,'ДҮКЕН',210,30,'#2d5f8f',18,'center',true); label(ctx,'БАЗАР',630,30,'#8a5a1e',18,'center',true);
-  ctx.fillStyle='#7a8a96'; ctx.fillRect(20,250,380,h-250); ctx.fillStyle='#a77446'; ctx.fillRect(440,250,380,h-250);
-  drawEScale(ctx,210,250,1,'1,000 кг',(x,y)=>{ for(let i=0;i<5;i++) OBJ.apple(ctx,x-48+i*24,y-(i%2)*14,.9); });
-  const ang=.05*Math.sin(t*1.6)*Math.exp(-(t%6)*.3);
-  drawLever(ctx,630,250,.5,ang,(x,y)=>{ for(let i=0;i<3;i++) OBJ.apple(ctx,x-22+i*22,y-(i===1?16:0),.75); },[1000]);
-  ctx.strokeStyle='#b8442f'; ctx.lineWidth=3; ctx.setLineDash([6,5]); ctx.beginPath(); ctx.moveTo(420,60); ctx.lineTo(420,h-10); ctx.stroke(); ctx.setLineDash([]);
-  ctx.fillStyle='#b8442f'; ctx.beginPath(); ctx.arc(420,150,26,0,7); ctx.fill(); label(ctx,'?',420,160,'#fff',30,'center',true); }};
+
 
 /* 6. Инерттілік */
 const IN={x:[0,0],v:[0,0]};
@@ -936,10 +1061,10 @@ function panHint(ctx,cv,cx,by,ang){ if(!WD.on||WD.cv!==cv) return; const py=by-1
 // box – кір тастар батырмалары тұрған контейнер; cvId – таразы canvas-ы; used() – салынған кір тастар тізімі; upd() – жаңарту
 function lvDrag(box,cvId,used,upd){ let g=null,x0=0,y0=0,i=-1,src=null,moved=false;
   const overPan=(e)=>{ const r=$(cvId).getBoundingClientRect(); return e.clientX>r.left+r.width*.55&&e.clientX<r.right&&e.clientY>r.top&&e.clientY<r.bottom; };
-  const ghost=(txt,mg,e)=>{ g=document.createElement('div'); g.className='wb'+(mg?' mg':''); g.textContent=txt; const k=$('stage').getBoundingClientRect().width/1600;
+  const ghost=(txt,mg,e)=>{ g=document.createElement('div'); g.className='wb'+(mg?' mg':''); g.textContent=txt; const k=PUPIL?1:$('stage').getBoundingClientRect().width/1600;
     Object.assign(g.style,{position:'fixed',left:0,top:0,zIndex:999,pointerEvents:'none',transform:`translate(${e.clientX}px,${e.clientY}px) translate(-50%,-50%) scale(${k*1.15})`,boxShadow:'0 8px 18px rgba(0,0,0,.35)'}); document.body.appendChild(g); };
   const move=e=>{ if(!src) return; if(!moved&&Math.hypot(e.clientX-x0,e.clientY-y0)>8){ moved=true; WD.on=true; WD.cv=cvId; ghost(LVSET[i]>=1?LVSET[i]+' г':Math.round(LVSET[i]*1000)+' мг',LVSET[i]<1,e); }
-    if(g){ const k=$('stage').getBoundingClientRect().width/1600; g.style.transform=`translate(${e.clientX}px,${e.clientY}px) translate(-50%,-50%) scale(${k*1.15})`; WD.over=overPan(e); } };
+    if(g){ const k=PUPIL?1:$('stage').getBoundingClientRect().width/1600; g.style.transform=`translate(${e.clientX}px,${e.clientY}px) translate(-50%,-50%) scale(${k*1.15})`; WD.over=overPan(e); } };
   const up=e=>{ if(!src) return; const fromPan=src==='pan';
     if(moved){ const on=overPan(e); const u=used(); if(fromPan){ if(!on){ u.splice(u.indexOf(i),1); SND.clink(); } } else if(on&&!u.includes(i)){ u.push(i); SND.clink(); }
       upd(); WD.supp=performance.now(); }
@@ -1017,13 +1142,7 @@ $('gtRow').addEventListener('click',e=>{ const b=e.target.closest('[data-gtc]');
   store.set('ms_gt',GTS); gtShow(i); });
 gtBuild();
 
-/* 11. Заң */
-LABS.cLaw={t:0,frame(ctx,w,h,dt){ this.t+=dt; ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); table_(ctx,w,h,170);
-  drawEScale(ctx,200,170,1.1,'2,000 кг',(x,y)=>{ ctx.fillStyle='#b5463c'; rr(ctx,x-50,y-34,100,34,12); ctx.fill(); ctx.fillStyle='#e7a39a'; rr(ctx,x-30,y-28,30,10,5); ctx.fill(); });
-  ctx.fillStyle='#2d5f8f'; ctx.beginPath(); ctx.arc(380,95,18,0,7); ctx.fill(); label(ctx,'✓',380,102,'#fff',18,'center',true); label(ctx,'поверка',380,132,'#2d5f8f',12,'center',true);
-  const blink=(Math.sin(this.t*4)+1)/2; ctx.globalAlpha=.4+.6*blink; ctx.fillStyle='#b8442f'; ctx.fillRect(160,178,80,12); ctx.globalAlpha=1; label(ctx,'магнит 50 г ?',200,200,'#b8442f',12,'center',true);
-  label(ctx,'Таразы: 2,000 кг',580,60,'#1d2430',21,'center',true); label(ctx,'Етің шын массасы: ? кг',580,100,'#b8442f',21,'center',true);
-  label(ctx,'Тұтынушы төлеген массасын толық алуы керек',580,140,'#6a6658',15,'center'); }};
+
 
 /* 12. Практикалық жұмыс: әр топқа бөлек виртуалды станция */
 const PTG=[
@@ -1043,7 +1162,7 @@ const PTM={left:[180,180,180],run:false,last:0};
 const peTot=()=>(PE.apple?152.7:0)+(PE.glass?GLASS+PE.ws:0)+PE.coins*COIN;
 const plSum=()=>Math.round(PL.used.reduce((a,i)=>a+LVSET[i],0)*10)/10;
 function ptTabs(){ $('ptTabs').innerHTML=PTG.map((g,i)=>{ const n=Object.keys(PTP[i]).length;
-  return `<button class="ptab${i===ptG?' on':''}" data-g="${i}" style="border-color:${GR[i].c};${i===ptG?'background:'+GR[i].c:'color:'+GR[i].c}">${GR[i].n} топ<small>${g.t} · ${n}/4 ұпай${n===4?' ✔':''}</small></button>`; }).join(''); }
+  return `<button class="ptab${i===ptG?' on':''}" data-g="${i}" style="border-color:${GR[i].c};${i===ptG?'background:'+GR[i].c:'color:'+GR[i].c}">${GR[i].n} топ<small>${g.t}${PUPIL?'':` · ${n}/4 ұпай${n===4?' ✔':''}`}</small></button>`; }).join(''); }
 $('ptTabs').addEventListener('click',e=>{ const b=e.target.closest('[data-g]'); if(!b) return; PTM.run=false; ptG=+b.dataset.g; ptBuild(); SND.page(); });
 function ptBuild(){ const G=PTG[ptG], c=GR[ptG].c; ptTabs();
   $('ptTH').innerHTML=`<span style="color:${c}">${GR[ptG].n} топ · ${G.t}</span>`; $('ptTask').innerHTML=G.task;
@@ -1089,7 +1208,7 @@ $('ptChk').onclick=()=>{ const G=PTG[ptG], d=PTD[ptG], P=PTP[ptG]; let got=0, ba
     if(ok){ if(!P['b'+i]){ P['b'+i]=1; got++; } } else bad++; });
   const va=parseNum(d.acc??''); if(isFinite(va)){ if(near(va,G.acc)){ if(!P.acc){ P.acc=1; got++; } } else bad++; }
   store.set('ms_ptp',PTP); if(got){ addGS(ptG,got); SND.ok(); } else if(bad) SND.bad();
-  const n=Object.keys(P).length; ptBuild();
+  const n=Object.keys(P).length; ptBuild(); rsBuild();
   $('ptRes').innerHTML=(got?`<span class="good">✔ +${got} ұпай</span> `:'')+(bad?`<span class="bad">✘ ${bad} жауап қате – тексеріп, түзет</span> `:'')+`<b>${n}/4</b>`+(n===4?' <span class="good">Станция орындалды! Келесі топ шықсын.</span>':''); };
 LABS.cPt={frame(ctx,w,h,dt){ const G=PTG[ptG]; ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h);
   if(G.dev==='lever'){ const m=G.bodies[PL.o][2], s=plSum(), target=lvTilt(m-s);
@@ -1163,10 +1282,11 @@ $('dOk').onclick=()=>{ $('dOver').style.display='none'; };
 setInterval(()=>{ if(D.on) $('dClock').textContent=nf((performance.now()-D.t0)/1000,1)+' с'; },100);
 dDeal(); dRender(0); dRender(1);
 
-/* 15. ФС: 3D кантар */
-const FSOBJ=[['🍎 Алма',.15,'apple'],['🏋 Гир',.2,'weight'],['📘 Кітап',.35,'book'],['📱 Телефон',.18,'phone'],['❓ Белгісіз',0,'stone']];
-const FS={o:0,m:.15,x:0,v:0,zoom:false,yaw:-.35,pitch:.05,auto:true,ready:false};
-FSOBJ.forEach((o,i)=>{ const b=document.createElement('button'); b.className='btn'+(i===0?' on':''); b.textContent=o[0]; b.onclick=()=>{ FS.o=i; FS.m=o[1]||Math.round(10+Math.random()*35)/100; fsHang(); $('fsRes').textContent=''; ['fsF','fsM'].forEach(id=>$(id).value='');
+/* 15. ФС: базардағы сауда, 3D динамометр */
+/* [атауы, көрсеткіш Н, сурет]. Серіппе: әр 2 Н-ға 1 см ұзарады, сондықтан ұзару = F : 2 */
+const FSOBJ=[['📘 Кітап',6,'book'],['🍈 Қауын',18,'melon'],['🥔 Бір қап картоп',30,'sack'],['🍉 Үлкен қарбыз',44,'water']];
+const FS={o:0,f:6,x:0,v:0,zoom:false,yaw:-.35,pitch:.05,auto:true,ready:false};
+FSOBJ.forEach((o,i)=>{ const b=document.createElement('button'); b.className='btn'+(i===0?' on':''); b.textContent=o[0]; b.onclick=()=>{ FS.o=i; FS.f=o[1]; fsHang();
   [...$('fsObjs').children].forEach((x,j)=>x.classList.toggle('on',j===i)); }; $('fsObjs').appendChild(b); });
 const G3={};
 function fs3dInit(){ if(FS.ready) return; if(!window.THREE){ FS.ready='no'; const c=$('fs3d').getContext('2d'); if(c){ c.fillStyle='#333'; c.font='16px Segoe UI'; c.fillText('three.min.js табылмады (осы папкада болуы керек)',14,40); } return; }
@@ -1175,52 +1295,51 @@ function fs3dInit(){ if(FS.ready) return; if(!window.THREE){ FS.ready='no'; cons
   const S=new T.Scene(); const C=new T.PerspectiveCamera(36,470/560,.1,50);
   S.add(new T.HemisphereLight(0xffffff,0x8a7a66,.85)); const dl=new T.DirectionalLight(0xffffff,.7); dl.position.set(3,5,4); S.add(dl);
   const wood=new T.MeshStandardMaterial({color:0x9a6b40,roughness:.8}), metal=new T.MeshStandardMaterial({color:0x8c939b,metalness:.6,roughness:.35});
-  const base=new T.Mesh(new T.BoxGeometry(2.2,.12,1.2),wood); base.position.y=-2.55; S.add(base);
-  const rod=new T.Mesh(new T.CylinderGeometry(.045,.045,5,16),metal); rod.position.set(-.9,0,0); S.add(rod);
-  const arm=new T.Mesh(new T.CylinderGeometry(.04,.04,1.1,16),metal); arm.rotation.z=Math.PI/2; arm.position.set(-.38,2.4,0); S.add(arm);
-  // шкала: 0–5 Н, бөлік құны 0,1 Н
-  const tc=document.createElement('canvas'); tc.width=256; tc.height=1024; const g=tc.getContext('2d');
-  g.fillStyle='#fffdf4'; g.fillRect(0,0,256,1024); const y0=90, y5=930, py=(y5-y0)/5;
-  for(let k=0;k<=50;k++){ const y=y0+k*py/10, big=k%10===0, mid=k%5===0; g.fillStyle='#1d2430'; g.fillRect(150,y-(big?2.5:1.5),big?80:mid?55:35,big?5:3); if(big){ g.font='700 54px Segoe UI'; g.textAlign='right'; g.fillText(String(k/10),138,y+19); } }
-  g.font='700 46px Segoe UI'; g.textAlign='center'; g.fillText('Н',128,1000); g.font='600 30px Segoe UI'; g.fillText('ДИНАМОМЕТР',128,50);
+  const base=new T.Mesh(new T.BoxGeometry(3.2,.12,1.4),wood); base.position.y=-3.05; S.add(base);
+  const rod=new T.Mesh(new T.CylinderGeometry(.045,.045,5.5,16),metal); rod.position.set(-1.35,-.3,0); S.add(rod);
+  const arm=new T.Mesh(new T.CylinderGeometry(.04,.04,1.4,16),metal); arm.rotation.z=Math.PI/2; arm.position.set(-.65,2.4,0); S.add(arm);
+  // сол жақта шкала: 0–50 Н, бөлік құны 2 Н; оң жақта сызғыш: 1 см, әр 2 Н-ға 1 см
+  const tc=document.createElement('canvas'); tc.width=384; tc.height=1024; const g=tc.getContext('2d');
+  g.fillStyle='#fffdf4'; g.fillRect(0,0,384,1024); const y0=90, y5=930, py=(y5-y0)/50; g.fillStyle='#1d2430';
+  for(let f=0;f<=50;f+=2){ const y=y0+f*py, big=f%10===0; g.fillRect(170,y-(big?2.5:1.5),big?64:38,big?5:3); if(big){ g.font='700 50px Segoe UI'; g.textAlign='right'; g.fillText(String(f),162,y+18); } }
+  for(let c=0;c<=25;c++){ const y=y0+c*2*py, big=c%5===0; g.fillRect(big?322:344,y-(big?2:1.2),big?62:40,big?4:2.4); if(big){ g.font='700 38px Segoe UI'; g.textAlign='right'; g.fillText(String(c),316,y+13); } }
+  g.font='700 42px Segoe UI'; g.textAlign='center'; g.fillText('Н',170,1000); g.fillText('см',340,1000); g.font='600 30px Segoe UI'; g.fillText('ДИНАМОМЕТР',192,50);
   const tex=new T.CanvasTexture(tc); tex.anisotropy=4;
-  const plateH=3.0, plate=new T.Mesh(new T.BoxGeometry(.75,plateH,.08),[metal,metal,metal,metal,new T.MeshStandardMaterial({map:tex,roughness:.6}),metal]);
+  const plateH=3.0, plate=new T.Mesh(new T.BoxGeometry(1.125,plateH,.08),[metal,metal,metal,metal,new T.MeshStandardMaterial({map:tex,roughness:.6}),metal]);
   plate.position.set(0,.85,0); S.add(plate);
   const ring=new T.Mesh(new T.TorusGeometry(.12,.025,10,24),metal); ring.position.set(0,2.47,0); S.add(ring);
-  G3.ys=plate.position.y+plateH/2-plateH*90/1024; G3.ye=plate.position.y+plateH/2-plateH*930/1024; G3.pyN=(G3.ys-G3.ye)/5;
+  G3.ys=plate.position.y+plateH/2-plateH*90/1024; G3.ye=plate.position.y+plateH/2-plateH*930/1024; G3.pyN=(G3.ys-G3.ye)/50;
   G3.yBot=plate.position.y-plateH/2;
   G3.T=T; G3.S=S; G3.C=C; G3.R=R; G3.metal=metal; G3.springTop=plate.position.y+plateH/2-.05;
-  G3.pointer=new T.Mesh(new T.BoxGeometry(.5,.035,.05),new T.MeshStandardMaterial({color:0xc8352b})); S.add(G3.pointer);
+  G3.pointer=new T.Mesh(new T.BoxGeometry(1.05,.03,.05),new T.MeshStandardMaterial({color:0xc8352b})); S.add(G3.pointer);
   G3.stem=new T.Mesh(new T.CylinderGeometry(.018,.018,1,8),metal); S.add(G3.stem);
   G3.hook=new T.Mesh(new T.TorusGeometry(.09,.018,8,20,Math.PI*1.4),metal); S.add(G3.hook);
   G3.str=new T.Mesh(new T.CylinderGeometry(.008,.008,1,6),new T.MeshStandardMaterial({color:0x444444})); S.add(G3.str);
   fsHang(); }
 function fsMakeObj(kind){ const T=G3.T; const grp=new T.Group();
-  if(kind==='apple'){ const m=new T.Mesh(new T.SphereGeometry(.2,24,18),new T.MeshStandardMaterial({color:0xc8352b,roughness:.45})); m.scale.y=.9; m.position.y=-.2; grp.add(m);
-    const st=new T.Mesh(new T.CylinderGeometry(.012,.012,.08,6),new T.MeshStandardMaterial({color:0x5a3a1a})); grp.add(st); }
-  else if(kind==='weight'){ const mat=new T.MeshStandardMaterial({color:0xc9a64a,metalness:.7,roughness:.3}); const m=new T.Mesh(new T.CylinderGeometry(.15,.15,.32,28),mat); m.position.y=-.22; grp.add(m);
-    const k=new T.Mesh(new T.CylinderGeometry(.05,.05,.06,16),mat); k.position.y=-.03; grp.add(k); }
-  else if(kind==='book'){ const m=new T.Mesh(new T.BoxGeometry(.6,.45,.12),[0,1,2,3,4,5].map(i=>new T.MeshStandardMaterial({color:i<2?0xf4f0e2:0x2d5f8f}))); m.position.y=-.26; grp.add(m); }
-  else if(kind==='phone'){ const m=new T.Mesh(new T.BoxGeometry(.3,.58,.04),new T.MeshStandardMaterial({color:0x222831,roughness:.3})); m.position.y=-.31; grp.add(m);
-    const sc=new T.Mesh(new T.PlaneGeometry(.26,.5),new T.MeshStandardMaterial({color:0x3a6ea5,emissive:0x112233})); sc.position.set(0,-.31,.021); grp.add(sc); }
-  else { const m=new T.Mesh(new T.DodecahedronGeometry(.2,0),new T.MeshStandardMaterial({color:0x7d7a73,roughness:.9,flatShading:true})); m.position.y=-.2; grp.add(m); }
+  if(kind==='book'){ const m=new T.Mesh(new T.BoxGeometry(.6,.45,.12),[0,1,2,3,4,5].map(i=>new T.MeshStandardMaterial({color:i<2?0xf4f0e2:0x2d5f8f}))); m.position.y=-.26; grp.add(m); }
+  else if(kind==='melon'){ const m=new T.Mesh(new T.SphereGeometry(.27,28,20),new T.MeshStandardMaterial({color:0xe3c75a,roughness:.6})); m.scale.y=1.25; m.position.y=-.34; grp.add(m); }
+  else if(kind==='sack'){ const m=new T.Mesh(new T.CylinderGeometry(.3,.38,.72,20),new T.MeshStandardMaterial({color:0xa98a5c,roughness:.95})); m.position.y=-.47; grp.add(m);
+    const t=new T.Mesh(new T.CylinderGeometry(.05,.3,.11,20),new T.MeshStandardMaterial({color:0x8c7148,roughness:.95})); t.position.y=-.06; grp.add(t); }
+  else { const c=document.createElement('canvas'); c.width=512; c.height=256; const g=c.getContext('2d'); g.fillStyle='#3f9a48'; g.fillRect(0,0,512,256); g.fillStyle='#17562a'; for(let i=0;i<10;i++){ const x=i*51.2; g.beginPath(); g.moveTo(x,0); for(let y=0;y<=256;y+=16) g.lineTo(x+Math.sin(y/22+i)*7,y); for(let y=256;y>=0;y-=16) g.lineTo(x+22+Math.sin(y/22+i)*7,y); g.closePath(); g.fill(); }
+    const m=new T.Mesh(new T.SphereGeometry(.46,32,24),new T.MeshStandardMaterial({map:new T.CanvasTexture(c),roughness:.45})); m.position.y=-.46; grp.add(m); }
   return grp; }
 function fsHang(){ if(FS.ready!==true) return; if(G3.obj) G3.S.remove(G3.obj); G3.obj=fsMakeObj(FSOBJ[FS.o][2]); G3.S.add(G3.obj); FS.v+=2; SND.clink(); }
 function fs3dFrame(dt){ if(!FS.ready) fs3dInit(); if(FS.ready!==true) return;
-  const F=FS.m*10; for(let k=0;k<4;k++){ const d=dt/4; FS.v+=(-(FS.x-F)*45-FS.v*2.6)*d; FS.x+=FS.v*d; }
+  const F=FS.f; for(let k=0;k<4;k++){ const d=dt/4; FS.v+=(-(FS.x-F)*45-FS.v*2.6)*d; FS.x+=FS.v*d; }
   const T=G3.T, yP=G3.ys-FS.x*G3.pyN;
   G3.pointer.position.set(0,yP,.07);
   if(G3.spring){ G3.S.remove(G3.spring); G3.spring.geometry.dispose(); }
   const top=G3.springTop, len=Math.max(.15,top-yP), turns=16, N=turns*20, pts=[];
-  for(let i=0;i<=N;i++){ const a=i/20*Math.PI*2; pts.push(new T.Vector3(-.2+Math.cos(a)*.07,top-len*i/N,.1+Math.sin(a)*.07)); }
+  for(let i=0;i<=N;i++){ const a=i/20*Math.PI*2; pts.push(new T.Vector3(-.42+Math.cos(a)*.07,top-len*i/N,.1+Math.sin(a)*.07)); }
   G3.spring=new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(pts),N,.012,6,false),G3.metal); G3.S.add(G3.spring);
-  const stemBot=G3.yBot-.18-FS.x*.02;
-  G3.stem.scale.y=Math.max(.01,yP-stemBot); G3.stem.position.set(-.2,(yP+stemBot)/2,.1);
-  G3.hook.position.set(-.2,stemBot-.08,.1); G3.hook.rotation.z=Math.PI*.8;
-  G3.str.scale.y=.12; G3.str.position.set(-.2,stemBot-.23,.1);
-  G3.obj.position.set(-.2,stemBot-.29,.1);
+  const stemBot=G3.yBot-.18-FS.x*.012;
+  G3.stem.scale.y=Math.max(.01,yP-stemBot); G3.stem.position.set(-.42,(yP+stemBot)/2,.1);
+  G3.hook.position.set(-.42,stemBot-.08,.1); G3.hook.rotation.z=Math.PI*.8;
+  G3.str.scale.y=.12; G3.str.position.set(-.42,stemBot-.23,.1);
+  G3.obj.position.set(-.42,stemBot-.29,.1);
   if(FS.auto) FS.yaw=-.35+Math.sin(performance.now()/4000)*.25;
-  const tgt=FS.zoom?new T.Vector3(0,yP,0):new T.Vector3(.05,.15,0), dist=FS.zoom?1.7:7.6;
+  const tgt=FS.zoom?new T.Vector3(0,yP,0):new T.Vector3(-.15,-.25,0), dist=FS.zoom?2.1:8.8;
   G3.C.position.set(tgt.x+Math.sin(FS.yaw)*dist*Math.cos(FS.pitch),tgt.y+Math.sin(FS.pitch)*dist,tgt.z+Math.cos(FS.yaw)*dist*Math.cos(FS.pitch)); G3.C.lookAt(tgt);
   G3.R.render(G3.S,G3.C); }
 (()=>{ const cv=$('fs3d'); let drag=null; cv.addEventListener('pointerdown',e=>{ drag={x:e.clientX,y:e.clientY}; FS.auto=false; cv.setPointerCapture(e.pointerId); cv.style.cursor='grabbing'; });
@@ -1228,12 +1347,14 @@ function fs3dFrame(dt){ if(!FS.ready) fs3dInit(); if(FS.ready!==true) return;
   const up=()=>{ drag=null; cv.style.cursor='grab'; }; cv.addEventListener('pointerup',up); cv.addEventListener('pointercancel',up); })();
 $('fsZoom').onclick=()=>{ FS.zoom=!FS.zoom; FS.auto=false; FS.yaw=0; FS.pitch=0; $('fsZoom').textContent=FS.zoom?'🔭 Алыстату':'🔍 Шкаланы жақындату'; };
 $('fsRot').onclick=()=>{ FS.auto=true; FS.zoom=false; FS.pitch=.05; $('fsZoom').textContent='🔍 Шкаланы жақындату'; };
-$('fsChk').onclick=()=>{ const c=parseNum($('fsC').value), F=parseNum($('fsF').value), m=parseNum($('fsM').value), Ft=Math.round(FS.m*100)/10;
-  const a=near(c,.1), b=Math.abs(F-Ft)<.051, d=Math.abs(m-Ft/10)<.0051;
-  $('fsRes').innerHTML=[a?'<span class="good">c ✔</span>':'<span class="bad">c ✘</span>',b?'<span class="good">F ✔</span>':'<span class="bad">F ✘</span>',d?`<span class="good">m = ${nf(Ft/10,3)} кг ✔</span>`:'<span class="bad">m ✘ (m = F : 10)</span>'].join(' ');
-  if(a&&b&&d) SND.ok(); else SND.bad(); };
-$('fsQChk').onclick=()=>{ const a=near(parseNum($('fsQ1').value),1.2), b=near(parseNum($('fsQ2').value),.3);
-  $('fsQRes').innerHTML=(a?'<span class="good"> 1,2 кг ✔</span>':'<span class="bad"> m ✘</span>')+(b?'<span class="good"> 0,3 кг кем ✔</span>':'<span class="bad"> айырма ✘</span>'); if(a&&b) SND.ok(); else SND.bad(); };
+$('fsTab').innerHTML='<tr><th>Зат</th><th>Көрсеткіш F, Н</th><th>Ұзаруы, см</th></tr>'+FSOBJ.map((o,i)=>`<tr><td class="l">${o[0]}</td><td><input id="fsF${i}"></td><td><input id="fsL${i}"></td></tr>`).join('');
+$('fsChk').onclick=()=>{ const N=(id,v,tol)=>Math.abs(parseNum($(id).value)-v)<=tol;
+  /* шкаладан оқу: өлшеу қателігі шегінде (±1 Н, ±0,5 см) дұрыс саналады */
+  const r=[['c',N('fsC',2,.001)],['ΔF',N('fsE',1,.001)],...FSOBJ.map((o,i)=>[o[0].replace(/^\S+\s/,''),N('fsF'+i,o[1],1)&&N('fsL'+i,o[1]/2,.5)])];
+  $('fsRes').innerHTML=r.map(([n,ok])=>`<span class="${ok?'good':'bad'}">${n} ${ok?'✔':'✘'}</span>`).join(' ');
+  const all=r.every(x=>x[1]), end=$('fsEnd'); end.style.display=all?'':'none';
+  if(all) end.innerHTML='<b>Қорытынды:</b> зат ауыр болған сайын серіппе көбірек созылады: әр <b>2 Н</b> сайын <b>1 см</b>-ге ұзарады. Қарбызға есеп: F = (44 ± 1) Н, серіппенің ұзаруы 22 см.';
+  if(all) SND.ok(); else SND.bad(); };
 
 /* 15а–15б. ФС: соқтығыс (3D) */
 const SC3D={};
@@ -1250,12 +1371,13 @@ function c3Cam(o,st,tgt,dist){ o.C.position.set(tgt.x+Math.sin(st.yaw)*Math.cos(
 const v1=x=>nf(x,1)+' м/с';
 function c3NoThree(cv){ const c=cv.getContext('2d'); if(c){ c.fillStyle='#fff'; c.font='16px Segoe UI'; c.fillText('three.min.js табылмады (осы папкада болуы керек)',14,40); } }
 
-/* бильярд: ақ шар 240 г, 2 м/с; серпімді соққы */
-const BLV=[160,80,240];
-const BL={ready:false,vi:0,ph:'ready',t:0,slow:true,yaw:.5,pitch:.62,auto:true,hit:false,W:{x:-.85,v:0},R:{x:.25,v:0}};
+/* бильярд: ақ шар 240 г, серпімді соққы. BL.u – ақ шардың соққыға дейінгі жылдамдығы (жүгірткіден), қызыл шарға дейін дәл 1 м */
+const BLV=[{m:120},{m:80},{m:160},{m:240}];
+const BL={ready:false,vi:0,u:3,ph:'ready',t:0,slow:true,yaw:.5,pitch:.62,auto:true,hit:false,W:{x:-.85,v:0},R:{x:.24,v:0}};
+const v2d=x=>nf(x,2)+' м/с';
 const BLR=.045, BLX=1.27-BLR;
-function blOut(){ const m1=240,m2=BLV[BL.vi]; return [(m1-m2)/(m1+m2)*2,2*m1/(m1+m2)*2]; }
-function blReset(){ Object.assign(BL,{ph:'ready',t:0,hit:false,W:{x:-.85,v:0},R:{x:.25,v:0}}); ['blW0','blW1','blR0','blR1'].forEach(i=>$(i).textContent='—'); $('blGo').disabled=false; }
+function blOut(){ const m1=240,{m:m2}=BLV[BL.vi],u=BL.u; return [(m1-m2)/(m1+m2)*u,2*m1/(m1+m2)*u]; }
+function blReset(){ Object.assign(BL,{ph:'ready',t:0,hit:false,W:{x:-.85,v:0},R:{x:.24,v:0}}); ['blW1','blR1','blT'].forEach(i=>$(i).textContent='—'); $('blGo').disabled=false; }
 function blInit(){ if(BL.ready) return; if(!window.THREE){ BL.ready='no'; c3NoThree($('bl3d')); return; } BL.ready=true;
   const o=c3Base($('bl3d'),0x1d2a26), T=o.T; BL.o=o;
   const cloth=new T.Mesh(new T.BoxGeometry(2.54,.04,1.27),new T.MeshStandardMaterial({color:0x1f7a4d,roughness:.95})); cloth.position.y=-.02; o.S.add(cloth);
@@ -1273,30 +1395,102 @@ function blInit(){ if(BL.ready) return; if(!window.THREE){ BL.ready='no'; c3NoTh
   BL.cueM=new T.Mesh(new T.CylinderGeometry(.008,.014,1.3,12),new T.MeshStandardMaterial({color:0xd8b276,roughness:.5})); BL.cueM.rotation.z=Math.PI/2+.06; o.S.add(BL.cueM);
   c3Orbit($('bl3d'),BL); blReset(); }
 SC3D.bl3d=function(dt){ if(!BL.ready) blInit(); if(BL.ready!==true) return; const o=BL.o, k=BL.slow?.3:1, d=dt*k;
-  if(BL.ph==='strike'){ BL.t+=d; if(BL.t>.18){ BL.ph='run'; BL.W.v=2; $('blW0').textContent=v1(2); $('blR0').textContent=v1(0); SND.clink(); } }
+  if(BL.ph==='strike'){ BL.t+=d; if(BL.t>.18){ BL.ph='run'; BL.W.v=BL.u; SND.clink(); } }
   if(BL.ph==='run'){ for(const b of [BL.W,BL.R]){ b.x+=b.v*d; if(BL.hit&&b.v){ const s=Math.sign(b.v); b.v-=s*.18*d; if(Math.sign(b.v)!==s) b.v=0; }
       if(b.x>BLX){ b.x=BLX; b.v=-.6*b.v; } if(b.x<-BLX){ b.x=-BLX; b.v=-.6*b.v; } }
-    if(!BL.hit&&BL.R.x-BL.W.x<=2*BLR){ BL.hit=true; const [a,b]=blOut(); BL.W.v=a; BL.R.v=b; $('blW1').textContent=v1(a); $('blR1').textContent=v1(b); SND.clink(); }
-    else if(BL.hit&&Math.abs(BL.R.x-BL.W.x)<=2*BLR&&(BL.R.v-BL.W.v)*(BL.R.x-BL.W.x)<0){ const m1=240,m2=BLV[BL.vi],u1=BL.W.v,u2=BL.R.v;   // қайта соқтығысу
+    if(!BL.hit&&BL.R.x-BL.W.x<=2*BLR){ BL.hit=true; const [a,b]=blOut(); BL.W.v=a; BL.R.v=b; $('blW1').textContent=v2d(BL.u-a); $('blR1').textContent=v2d(b); $('blT').textContent='t = '+nf(1/BL.u,2)+' с'; SND.clink(); }
+    else if(BL.hit&&Math.abs(BL.R.x-BL.W.x)<=2*BLR&&(BL.R.v-BL.W.v)*(BL.R.x-BL.W.x)<0){ const m1=240,m2=BLV[BL.vi].m,u1=BL.W.v,u2=BL.R.v;   // қайта соқтығысу
       BL.W.v=((m1-m2)*u1+2*m2*u2)/(m1+m2); BL.R.v=((m2-m1)*u2+2*m1*u1)/(m1+m2); }
     if(BL.hit&&!BL.W.v&&!BL.R.v) BL.ph='done'; }
   BL.wm.position.set(BL.W.x,BLR,0); BL.rm.position.set(BL.R.x,BLR,0); BL.wm.rotation.z=-BL.W.x/BLR; BL.rm.rotation.z=-BL.R.x/BLR;
   BL.wl.position.set(BL.W.x,BLR*2+.08,0); BL.rl.position.set(BL.R.x,BLR*2+.08,0);
   const back=BL.ph==='ready'?.12:BL.ph==='strike'?.12-BL.t/.18*.12:0; BL.cueM.visible=BL.ph!=='run'||BL.W.x<-.6; BL.cueM.position.set(BL.W.x-BLR-.66-back,BLR+.04,0);
   if(BL.auto) BL.yaw=.5+Math.sin(performance.now()/5000)*.25;
-  c3Cam(o,BL,new o.T.Vector3(0,0,0),2.35); o.R.render(o.S,o.C); };
+  c3Cam(o,BL,new o.T.Vector3(0,0,0),3.1); o.R.render(o.S,o.C); };
 $('blGo').onclick=()=>{ if(BL.ph!=='ready') return; BL.ph='strike'; BL.t=0; $('blGo').disabled=true; };
 $('blRe').onclick=blReset;
 $('blSlow').onclick=()=>{ BL.slow=!BL.slow; $('blSlow').textContent=BL.slow?'🐢 Баяу: қосулы':'⏩ Қалыпты жылдамдық'; };
-$('blVar').onclick=()=>{ BL.vi=(BL.vi+1)%BLV.length; blReset(); ['blA','blB','blC'].forEach(i=>$(i).value=''); $('blRes').textContent=''; toast('Жаңа қызыл шар қойылды – массасы белгісіз'); };
-$('blChk').onclick=()=>{ const [a,b]=blOut(), m2=BLV[BL.vi]; if(!BL.hit){ toast('Алдымен шарды соғып, радарды қара!'); return; }
-  const r=[near(parseNum($('blA').value),2-a),near(parseNum($('blB').value),b),near(parseNum($('blC').value),m2)];
-  $('blRes').innerHTML=r.map((ok,i)=>ok?`<span class="good">${i+1} ✔</span>`:`<span class="bad">${i+1} ✘</span>`).join(' ')+(r[2]?` <span class="good">m₂ = 240 · ${nf(2-a,1)} : ${nf(b,1)} = ${m2} г</span>`:'');
-  if(r.every(x=>x)) SND.ok(); else SND.bad(); };
+$('blU').oninput=()=>{ BL.u=.5+.5*+$('blU').value; $('blUv').textContent=$('blU').value+' / 9'; blReset(); $('blRes').textContent=''; $('blEnd').style.display='none'; };
+$('blUv').textContent='5 / 9';
+const BLC={ok:null,ch:null};
+document.querySelectorAll('[data-blc]').forEach(box=>box.addEventListener('click',e=>{ const b=e.target.closest('[data-v]'); if(!b) return; BLC[box.dataset.blc]=+b.dataset.v; [...box.querySelectorAll('[data-v]')].forEach(x=>x.classList.toggle('on',x===b)); }));
+$('blVar').onclick=()=>{ BL.vi=(BL.vi+1)%BLV.length; blReset(); ['blO','blA','blB','blC','blK'].forEach(i=>$(i).value=''); BLC.ok=null; document.querySelectorAll('[data-blc="ok"] [data-v]').forEach(x=>x.classList.remove('on')); $('blRes').textContent=''; $('blEnd').style.display='none'; toast('Жаңа қызыл шар қойылды – массасы белгісіз'); };
+$('blChk').onclick=()=>{ if(!BL.hit){ toast('Алдымен шарды соғып, радарды қара!'); return; } const [a,b]=blOut(), m2=BLV[BL.vi].m, u=BL.u, d=u-a, N=(id,v,tol)=>Math.abs(parseNum($(id).value)-v)<=tol;
+  /* секундомер мен радар екі таңбаға дейін дөңгелектенеді, сондықтан аздаған айырма рұқсат */
+  const r=[N('blO',u,.1),N('blA',d,.011),N('blB',b,.011),N('blC',m2,5),N('blK',m2/1000,.005),BLC.ok===(m2>=200?1:0),BLC.ch===0];
+  $('blRes').innerHTML=r.map((ok,i)=>ok?`<span class="good">${i+1} ✔</span>`:`<span class="bad">${i+1} ✘</span>`).join(' ');
+  const all=r.every(x=>x), e=$('blEnd'); e.style.display=all?'':'none';
+  if(all) e.innerHTML=`<b>Шешім:</b> m₂ = 240 · ${nf(d,2)} : ${nf(b,2)} = <b>${m2} г</b>. ${m2>=200?'Шар ойынға жарайды.':'Шар 200 г-нан жеңіл, ойынға жіберілмейді.'} Соққыны күшейтсе, жылдамдықтар өзгереді, ал олардың қатынасы мен шардың массасы <b>өзгермейді</b>.`;
+  if(all) SND.ok(); else SND.bad(); };
 
-/* хоккей: Айбек 90 кг, 4 м/с → 1,2 м/с; Бекзат 60 кг, 0 → 4,2 м/с */
-const HK={ready:false,ph:'ready',slow:true,yaw:.9,pitch:.42,auto:true,hit:false,ft:0,A:{x:-6,v:0},B:{x:0,v:0},t:0};
-function hkReset(){ Object.assign(HK,{ph:'ready',hit:false,ft:0,t:0,A:{x:-6,v:0},B:{x:0,v:0}}); ['hkA0','hkA1','hkB0','hkB1'].forEach(i=>$(i).textContent='—'); $('hkGo').disabled=false; }
+/* хоккей: Айбек 90 кг, u м/с → u/2 м/с (өзгеруі v₁ = u/2); Бекзат 60 кг, 0 → v₂ = 90 · v₁ / 60. Соқтығысқа дейін дәл 6 м */
+/* 3ә. Инерттілік: каток */
+const IK={ready:false,ph:'ready',slow:true,yaw:.35,pitch:.38,auto:true,hit:false,t:0,mb:40,A:{x:-4,v:0},B:{x:4,v:0},sol:false};
+/* Ерлан ағайдың жылдамдығы 5 м/с-қа өзгереді; экранда қашықтық 0,5 есе кіші, әйтпесе бала катоктан бірден шығып кетеді */
+const IK_V1=5, IK_VIS=.5, ikV2=()=>80*IK_V1/IK.mb;
+const ikFly=v=>.16*v;   // баланың ауада болатын уақыты
+function ikReset(){ Object.assign(IK,{ph:'ready',hit:false,t:0,A:{x:-4,v:0},B:{x:4,v:0}}); $('ikA1').textContent='—'; $('ikB1').textContent='—'; $('ikGo').disabled=false;
+  $('ikMB').textContent=IK.mb+' кг'; if(IK.bl) IK.bl.material.map=c3Label(IK.o.T,'Әли '+IK.mb+' кг','#1f5fa8').material.map;
+  if(IK.b){ const sc=.55+IK.mb/200; IK.b.scale.set(sc,sc,sc); }
+  document.querySelectorAll('[data-ikm]').forEach(b=>b.classList.toggle('main',+b.dataset.ikm===IK.mb));
+  $('ikRes').textContent=''; $('ikV').value=''; }
+function ikPerson(T,col,hat){ const g=new T.Group(), jac=new T.MeshStandardMaterial({color:col,roughness:.7}), dark=new T.MeshStandardMaterial({color:0x262b36,roughness:.8}), skin=new T.MeshStandardMaterial({color:0xe3b892}), hm=new T.MeshStandardMaterial({color:hat});
+  const legs=[]; for(const z of [-.13,.13]){ const p=new T.Group(); const l=new T.Mesh(new T.CylinderGeometry(.08,.07,.8,10),dark); l.position.y=-.4; p.add(l);
+    const sk=new T.Mesh(new T.BoxGeometry(.3,.1,.1),new T.MeshStandardMaterial({color:0xf2f2f2})); sk.position.set(.04,-.82,0); p.add(sk);
+    const bl=new T.Mesh(new T.BoxGeometry(.38,.02,.02),new T.MeshStandardMaterial({color:0xcfd6dc,metalness:.8,roughness:.2})); bl.position.set(.04,-.88,0); p.add(bl);
+    p.position.set(0,.9,z); g.add(p); legs.push(p); }
+  const body=new T.Mesh(new T.BoxGeometry(.44,.72,.54),jac); body.position.y=1.26; g.add(body);
+  const scarf=new T.Mesh(new T.BoxGeometry(.46,.1,.56),hm); scarf.position.y=1.6; g.add(scarf);
+  const head=new T.Mesh(new T.SphereGeometry(.16,16,12),skin); head.position.y=1.8; g.add(head);
+  const cap=new T.Mesh(new T.SphereGeometry(.17,16,12,0,Math.PI*2,0,Math.PI/2),hm); cap.position.y=1.84; g.add(cap);
+  const pom=new T.Mesh(new T.SphereGeometry(.06,10,8),new T.MeshStandardMaterial({color:0xffffff})); pom.position.y=2.02; g.add(pom);
+  const arms=[]; for(const z of [-.34,.34]){ const a=new T.Mesh(new T.CylinderGeometry(.06,.06,.62,8),jac); a.position.set(.1,1.25,z); a.rotation.z=.9; g.add(a); arms.push(a); }
+  g.userData.legs=legs; g.userData.arms=arms; return g; }
+function ikInit(){ if(IK.ready) return; if(!window.THREE){ IK.ready='no'; c3NoThree($('ik3d')); return; } IK.ready=true;
+  const o=c3Base($('ik3d'),0xbfd6e6), T=o.T; IK.o=o;
+  const tc=document.createElement('canvas'); tc.width=1024; tc.height=512; const g=tc.getContext('2d'); g.fillStyle='#e6f1f8'; g.fillRect(0,0,1024,512);
+  for(let i=0;i<420;i++){ g.strokeStyle='rgba(140,170,195,.22)'; g.lineWidth=1+Math.random()*1.5; g.beginPath(); const x=Math.random()*1024,y=Math.random()*512; g.arc(x,y,20+Math.random()*120,Math.random()*6,Math.random()*6); g.stroke(); }
+  const ice=new T.Mesh(new T.CircleGeometry(11,64),new T.MeshStandardMaterial({map:new T.CanvasTexture(tc),roughness:.2,metalness:.1})); ice.rotation.x=-Math.PI/2; ice.scale.set(1.4,1,1); o.S.add(ice);
+  const snow=new T.Mesh(new T.PlaneGeometry(80,60),new T.MeshStandardMaterial({color:0xfbfdff,roughness:1})); snow.rotation.x=-Math.PI/2; snow.position.y=-.01; o.S.add(snow);
+  const bank=new T.Mesh(new T.TorusGeometry(11,.35,8,64),new T.MeshStandardMaterial({color:0xffffff,roughness:1})); bank.rotation.x=Math.PI/2; bank.scale.set(1.4,1,1); o.S.add(bank);
+  const tr=new T.MeshStandardMaterial({color:0x2f6b45,roughness:.9}), st=new T.MeshStandardMaterial({color:0x6b4a2b});
+  for(let i=0;i<16;i++){ const an=i/16*Math.PI*2, x=Math.cos(an)*19, z=Math.sin(an)*13-2; if(z>6) continue; const tg=new T.Group();
+    const c1=new T.Mesh(new T.ConeGeometry(1,2.4,10),tr); c1.position.y=2.2; const c2=new T.Mesh(new T.ConeGeometry(.7,1.8,10),tr); c2.position.y=3.3; const tk=new T.Mesh(new T.CylinderGeometry(.15,.15,1,8),st); tk.position.y=.5; tg.add(c1,c2,tk); tg.position.set(x,0,z); o.S.add(tg); }
+  const lamp=new T.MeshStandardMaterial({color:0x444444}); [[-9,-8],[9,-8]].forEach(([x,z])=>{ const p=new T.Mesh(new T.CylinderGeometry(.06,.06,4,8),lamp); p.position.set(x,2,z); o.S.add(p); const b=new T.Mesh(new T.SphereGeometry(.25,12,10),new T.MeshStandardMaterial({color:0xfff2b0,emissive:0xffd66b,emissiveIntensity:.6})); b.position.set(x,4.1,z); o.S.add(b); });
+  IK.a=ikPerson(T,0xc8352b,0x8a2a20); IK.b=ikPerson(T,0x1f5fa8,0xf0b429); IK.a.scale.set(1.15,1.15,1.15); o.S.add(IK.a,IK.b);
+  IK.al=c3Label(T,'Ерлан ағай 80 кг','#c8352b'); IK.bl=c3Label(T,'Әли 40 кг','#1f5fa8'); [IK.al,IK.bl].forEach(l=>{ l.scale.set(1.8,.45,1); o.S.add(l); });
+  c3Orbit($('ik3d'),IK); if(IK.ph==='ready') ikReset(); else { const sc=.55+IK.mb/200; IK.b.scale.set(sc,sc,sc); IK.bl.material.map=c3Label(T,'Әли '+IK.mb+' кг','#1f5fa8').material.map; } }
+function ikFormula(){ $('ikF').innerHTML='Өзара әрекеттесу: <span class="f" style="white-space:nowrap"><span class="frac"><span>m₁</span><span>m₂</span></span> = <span class="frac"><span>v₂</span><span>v₁</span></span></span><br><b>Массасы кіші дененің жылдамдығы көп өзгереді</b>'; }
+SC3D.ik3d=function(dt){ if(!IK.ready) ikInit(); if(IK.ready!==true) return; const o=IK.o, d=dt*(IK.slow?.35:1), v2=ikV2();
+  if(IK.ph==='run'){ IK.t+=d; IK.A.x+=IK.A.v*d; IK.B.x+=IK.B.v*d;
+    if(!IK.hit&&IK.B.x-IK.A.x<=.75){ IK.hit=true; IK.ht=IK.t; IK.A.v=-IK_V1*IK_VIS; IK.B.v=v2*IK_VIS; $('ikA1').textContent=v1(IK_V1); $('ikB1').textContent='? (өлшенбеді)'; SND.bad(); }
+    if(IK.hit&&IK.t-IK.ht>2.6){ IK.ph='done'; ikFormula(); toast('Формула ашылды → Әлидің жылдамдығын есепте!'); } }
+  if(IK.ph==='done'){ IK.A.v*=Math.pow(.25,d); IK.B.v*=Math.pow(.25,d); IK.A.x+=IK.A.v*d; IK.B.x+=IK.B.v*d; }
+  const sw=(p,on)=>p.userData.legs.forEach((l,i)=>l.rotation.z=Math.sin(IK.t*7+(i?Math.PI:0))*.3*on);
+  const wob=IK.hit?Math.exp(-(IK.t-IK.ht)*1.5)*Math.sin((IK.t-IK.ht)*14):0;
+  IK.a.position.set(IK.A.x,0,0); IK.a.rotation.set(0,0,IK.hit?.12*wob:0); sw(IK.a,IK.ph==='run'&&!IK.hit?1:0);
+  const tau=IK.hit?IK.t-IK.ht:0, fly=ikFly(v2), inAir=IK.hit&&tau<fly, by=inAir?.7*v2*tau-4.375*tau*tau:0;   // ұшу доғасы
+  IK.b.position.set(IK.B.x,by,0); IK.b.rotation.set(0,Math.PI,inAir?2*Math.PI*tau/fly:(IK.hit?-.35*wob:0)); sw(IK.b,IK.ph==='run'&&!IK.hit?1:0);
+  const arm=IK.hit?.3:.9; IK.a.userData.arms.forEach(a=>a.rotation.z=arm); IK.b.userData.arms.forEach(a=>a.rotation.z=inAir?1.7:arm);
+  IK.al.position.set(IK.A.x,2.75,0); IK.bl.position.set(IK.B.x,by+IK.b.scale.y*2.3+.25,0);
+  if(IK.auto) IK.yaw=.35+Math.sin(performance.now()/5000)*.25;
+  const fx=(IK.A.x+IK.B.x)/2, dist=11+Math.max(0,IK.B.x-IK.A.x-6)*.9; c3Cam(o,IK,new o.T.Vector3(fx,1,0),dist); o.R.render(o.S,o.C); };
+$('ikGo').onclick=()=>{ if(IK.ph!=='ready') return; IK.ph='run'; IK.A.v=1.5; IK.B.v=-1.5*80/IK.mb; $('ikGo').disabled=true; };
+$('ikRe').onclick=ikReset;
+$('ikSlow').onclick=()=>{ IK.slow=!IK.slow; $('ikSlow').textContent=IK.slow?'🐢 Баяу: қосулы':'⏩ Қалыпты жылдамдық'; };
+document.querySelectorAll('[data-ikm]').forEach(b=>b.onclick=()=>{ IK.mb=+b.dataset.ikm; ikReset(); });
+function ikConclude(){ const v2=ikV2(); $('ikCon').style.display='';
+  $('ikCon').innerHTML=`<h3>Қорытынды: инерттілік</h3>Ағай (80 кг) баяуырақ, ал Әли (${IK.mb} кг) <b>${nf(v2/IK_V1,2)} есе жылдам</b> кері ұшты. Массасы үлкен дене өз жылдамдығын өзгертуге көбірек «қарсыласады». Дененің бұл қасиеті – <b>инерттілік</b>.<br><b>Масса – дененің инерттілігінің өлшемі.</b> Ғарышкер де осылай: кілт жеңіл → жылдам, ғарышкер ауыр → баяу.`; }
+$('ikChk').onclick=()=>{ if(IK.ph!=='done'){ toast('Алдымен анимацияны соңына дейін көр!'); return; }
+  const v2=ikV2(), ok=Math.abs(parseNum($('ikV').value)-v2)<=.051;
+  $('ikRes').innerHTML=ok?'<span class="good">✔ Дұрыс!</span>':'<span class="bad">✘ Формуладан v₂-ні өрнектеп көр</span>';
+  if(ok){ $('ikB1').textContent=v1(v2); ikConclude(); SND.ok(); } else SND.bad(); };
+$('ikSol').onclick=()=>{ if(IK.ph!=='done'){ toast('Алдымен анимацияны соңына дейін көр!'); return; } const v2=ikV2();
+  $('ikRes').innerHTML=`<div class="ikst">Берілгені: m₁ = 80 кг, m₂ = ${IK.mb} кг, v₁ = 5 м/с<br>v₂ = <span class="frac"><span>m₁ · v₁</span><span>m₂</span></span> = <span class="frac"><span>80 · 5</span><span>${IK.mb}</span></span> = <b>${nf(v2,2)} м/с</b></div>`;
+  $('ikB1').textContent=v1(v2); ikConclude(); };
+
+const HK={ready:false,u:4,ph:'ready',slow:true,yaw:.9,pitch:.42,auto:true,hit:false,ft:0,A:{x:-6.62,v:0},B:{x:0,v:0},t:0};
+function hkReset(){ Object.assign(HK,{ph:'ready',hit:false,ft:0,t:0,A:{x:-6.62,v:0},B:{x:0,v:0}}); ['hkA1','hkB1','hkT'].forEach(i=>$(i).textContent='—'); $('hkGo').disabled=false; }
 function hkPlayer(T,col){ const g=new T.Group(), jer=new T.MeshStandardMaterial({color:col,roughness:.7}), dark=new T.MeshStandardMaterial({color:0x1d2430,roughness:.7}), skin=new T.MeshStandardMaterial({color:0xe0b48a});
   const legs=[]; for(const z of [-.13,.13]){ const p=new T.Group(); const l=new T.Mesh(new T.CylinderGeometry(.08,.07,.8,10),dark); l.position.y=-.4; p.add(l);
     const sk=new T.Mesh(new T.BoxGeometry(.32,.06,.07),new T.MeshStandardMaterial({color:0x111111})); sk.position.set(.05,-.82,0); p.add(sk);
@@ -1326,7 +1520,7 @@ function hkInit(){ if(HK.ready) return; if(!window.THREE){ HK.ready='no'; c3NoTh
   c3Orbit($('hk3d'),HK); hkReset(); }
 SC3D.hk3d=function(dt){ if(!HK.ready) hkInit(); if(HK.ready!==true) return; const o=HK.o, d=dt*(HK.slow?.35:1);
   if(HK.ph==='run'){ HK.t+=d; HK.A.x+=HK.A.v*d; HK.B.x+=HK.B.v*d;
-    if(!HK.hit&&HK.B.x-HK.A.x<=.62){ HK.hit=true; HK.A.v=1.2; HK.B.v=4.2; $('hkA1').textContent=v1(1.2); $('hkB1').textContent='? (өлшенбеді)'; SND.bad(); }
+    if(!HK.hit&&HK.B.x-HK.A.x<=.62){ HK.hit=true; HK.A.v=HK.u/2; HK.B.v=.75*HK.u; $('hkA1').textContent=v2d(HK.u/2); $('hkT').textContent='t = '+nf(6/HK.u,2)+' с'; $('hkB1').textContent='? (өлшенбеді)'; SND.bad(); }
     if(HK.hit){ HK.ft=Math.min(1,HK.ft+d*2); HK.A.v=Math.max(0,HK.A.v-.5*d); HK.B.v=Math.max(0,HK.B.v-1*d); if(HK.B.x>13){ HK.B.x=13; HK.B.v=0; } if(!HK.A.v&&!HK.B.v) HK.ph='done'; } }
   const sw=(p,v)=>p.userData.legs.forEach((l,i)=>l.rotation.z=Math.sin(HK.t*9+(i?Math.PI:0))*.35*Math.min(1,v/2));
   HK.a.position.set(HK.A.x,0,0); sw(HK.a,HK.ph==='run'&&!HK.hit?4:HK.A.v);
@@ -1334,16 +1528,23 @@ SC3D.hk3d=function(dt){ if(!HK.ready) hkInit(); if(HK.ready!==true) return; cons
   HK.puck.position.x=HK.ph==='run'?HK.A.x+1.4:-4.6;
   HK.al.position.set(HK.A.x,2.35,0); HK.bl.position.set(HK.B.x,2.35-HK.ft*1.2,0);
   if(HK.auto) HK.yaw=.9+Math.sin(performance.now()/5000)*.25;
-  const fx=Math.max(-2,Math.min(6,(HK.A.x+HK.B.x)/2)); c3Cam(o,HK,new o.T.Vector3(fx,.9,0),10.5); o.R.render(o.S,o.C); };
-$('hkGo').onclick=()=>{ if(HK.ph!=='ready') return; HK.ph='run'; HK.A.v=4; $('hkA0').textContent=v1(4); $('hkB0').textContent=v1(0); $('hkGo').disabled=true; };
+  const fx=Math.max(-2,Math.min(6,(HK.A.x+HK.B.x)/2)); c3Cam(o,HK,new o.T.Vector3(fx,.9,0),10.5+Math.max(0,HK.B.x-HK.A.x-8)*.6); o.R.render(o.S,o.C); };
+$('hkGo').onclick=()=>{ if(HK.ph!=='ready') return; HK.ph='run'; HK.A.v=HK.u; $('hkGo').disabled=true; };
 $('hkRe').onclick=hkReset;
 $('hkSlow').onclick=()=>{ HK.slow=!HK.slow; $('hkSlow').textContent=HK.slow?'🐢 Баяу: қосулы':'⏩ Қалыпты жылдамдық'; };
-$('hkChk').onclick=()=>{ if(!HK.hit){ toast('Алдымен видеоны ойнатып, радарды қара!'); return; }
-  const r=[near(parseNum($('hkA').value),2.8),near(parseNum($('hkB').value),4.2),near(parseNum($('hkC').value),4.2)];
-  $('hkRes').innerHTML=r.map((ok,i)=>ok?`<span class="good">${i+1} ✔</span>`:`<span class="bad">${i+1} ✘</span>`).join(' ')+(r[1]?' <span class="good">Δv₂ = 90 · 2,8 : 60 = 4,2 м/с</span>':'');
-  if(r[2]) $('hkB1').textContent=v1(4.2); if(r.every(x=>x)) SND.ok(); else SND.bad(); };
-document.querySelectorAll('[data-hq]').forEach(b=>b.onclick=()=>{ const ok=b.dataset.hq==='1';
-  $('hkQ').innerHTML=ok?'<span class="good">✔ Дұрыс! Бекзаттың массасы кіші → жылдамдығы күрт өзгерді (0 → 4,2 м/с). Сондықтан хоккейде шлем мен қорғаныш киім міндетті.</span>':'<span class="bad">✘ Ойлан: кімнің жылдамдығы көбірек өзгерді?</span>'; ok?SND.ok():SND.bad(); });
+$('hkU').oninput=()=>{ HK.u=1+ +$('hkU').value; $('hkUv').textContent=$('hkU').value+' / 9'; hkReset(); $('hkRes').textContent=''; $('hkEnd').style.display='none'; };
+$('hkUv').textContent='3 / 9';
+const HKC={doc:null,who:null,up:null};
+document.querySelectorAll('[data-hkc]').forEach(box=>box.addEventListener('click',e=>{ const b=e.target.closest('[data-v]'); if(!b) return; HKC[box.dataset.hkc]=+b.dataset.v; [...box.querySelectorAll('[data-v]')].forEach(x=>x.classList.toggle('on',x===b)); }));
+$('hkChk').onclick=()=>{ if(!HK.hit){ toast('Алдымен видеоны ойнатып, радарды қара!'); return; } const u=HK.u, a=u/2, b=.75*u, kmh=b*3.6, N=(id,v,tol)=>Math.abs(parseNum($(id).value)-v)<=tol;
+  /* секундомер екі таңбаға дейін дөңгелектенеді, сондықтан аздаған айырма рұқсат */
+  const r=[N('hkO',u,.1),N('hkA',a,.011),N('hkC',b,.011),N('hkK',kmh,.11),HKC.doc===(kmh>18?1:0),HKC.who===1,HKC.up===1];
+  $('hkRes').innerHTML=r.map((ok,i)=>ok?`<span class="good">${i+1} ✔</span>`:`<span class="bad">${i+1} ✘</span>`).join(' ');
+  if(r[2]) $('hkB1').textContent=v2d(b);
+  const all=r.every(x=>x), e=$('hkEnd'); e.style.display=all?'':'none';
+  if(all) e.innerHTML=`<b>Шешім:</b> v₂ = 90 · ${nf(a,2)} : 60 = <b>${nf(b,2)} м/с</b> = ${nf(kmh,2)} км/сағ. ${kmh>18?'Бұл 18 км/сағ-тан жылдам: Бекзат дәрігер тексеруінен өтеді.':'Бұл 18 км/сағ-тан баяу: тексеру міндетті емес.'} Массасы кіші болғандықтан, Бекзаттың жылдамдығы көбірек өзгерді, ал екпін артқан сайын соққы қауіпті бола түседі. Сондықтан хоккейде шлем мен қорғаныш киім міндетті.`;
+  if(all) SND.ok(); else SND.bad(); };
+
 
 /* 16–17. Жеке жұмыс және бағалау */
 const TQ={A1:[.25,1],A2:[3500,1],A3:[.0004,1],B1:[135.5,2],C1:[250,1],C2:[250,1]};
@@ -1378,12 +1579,20 @@ $('grClr').onclick=()=>{ if(!confirm('Барлық оқушының нәтиже
 tkFill(); grBuild();
 LABS.cTaskB={frame(ctx,w,h,dt){ ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); table_(ctx,w,h,140); drawLever(ctx,w/2,140,.62,0,(x,y)=>OBJ.stone(ctx,x,y,.9),[100,20,10,5,.5]); }};
 
-/* 18. Бағдаршам */
-let LT=store.get('ms_lt',[0,0,0]);
-function ltShow(){ document.querySelectorAll('.lt .c').forEach((c,i)=>c.textContent=LT[i]); const n=LT[0]+LT[1]+LT[2]; [...$('lBar').children].forEach((b,i)=>b.style.width=(n?LT[i]/n*100:0)+'%'); store.set('ms_lt',LT); }
-document.querySelectorAll('.lt .c').forEach(c=>c.onclick=()=>{ LT[+c.dataset.l]++; SND.clink(); ltShow(); });
-document.querySelectorAll('.lt .mn').forEach(b=>b.onclick=()=>{ const i=+b.dataset.m; LT[i]=Math.max(0,LT[i]-1); ltShow(); });
-$('lClr').onclick=()=>{ LT=[0,0,0]; ltShow(); }; ltShow();
+/* 18. Рефлексия: оқушылар басады, жанында статистика */
+const RFL=[['Түсіндім, өзім өлшей аламын','#2e7d4f'],['Түсіндім, бірақ сұрағым бар','#e0a92e'],['Көмек керек','#b8442f']];
+let LT=store.get('ms_lt',[0,0,0]), LTLOG=store.get('ms_lt_log',[]), rfT=0;
+$('rfRows').innerHTML=RFL.map((r,i)=>`<div class="rfrow" style="margin-bottom:12px"><div class="l"><span>${r[0]}</span><b id="rfV${i}"></b></div><div class="rftrack"><i id="rfB${i}" style="background:${r[1]}"></i></div></div>`).join('');
+function ltShow(){ const n=LT[0]+LT[1]+LT[2]; $('rfTot').textContent=n;
+  LT.forEach((v,i)=>{ const pc=n?Math.round(v/n*100):0; $('rfV'+i).textContent=v+' оқушы · '+pc+'%'; $('rfB'+i).style.width=pc+'%'; });
+  const top=Math.max(...LT), lead=LT.indexOf(top), tie=LT.filter(v=>v===top).length>1;
+  $('rfSum').innerHTML=!n?'Әзірге ешкім баспады.':tie?'Жауаптар тең бөлінді.':`Ең көбі: <b>${RFL[lead][0]}</b>.`+(LT[2]?` Көмек керек оқушы: <b>${LT[2]}</b>.`:'');
+  $('rfUndo').disabled=!LTLOG.length; store.set('ms_lt',LT); store.set('ms_lt_log',LTLOG); }
+$('rfBtns').addEventListener('click',e=>{ const b=e.target.closest('.rfb'); if(!b) return; const now=Date.now(); if(now-rfT<500) return; rfT=now;   // қос басудан қорғау
+  const i=+b.dataset.l; LT[i]++; LTLOG.push(i); SND.clink(); b.classList.add('hit'); setTimeout(()=>b.classList.remove('hit'),160); ltShow(); toast('Рақмет! Келесі оқушы шықсын.'); });
+$('rfUndo').onclick=()=>{ if(!LTLOG.length) return; LT[LTLOG.pop()]--; ltShow(); };
+$('lClr').onclick=()=>{ if(LT[0]+LT[1]+LT[2]&&!confirm('Рефлексия нәтижесі өшеді. Жалғастырамыз ба?')) return; LT=[0,0,0]; LTLOG=[]; ltShow(); };
+ltShow();
 
 /* 19. Соңы */
 LABS.cEnd={t:0,frame(ctx,w,h,dt){ this.t+=dt; ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); table_(ctx,w,h,122);
@@ -1413,7 +1622,7 @@ const board=(()=>{ const cv=$('ink'), ctx=cv.getContext('2d'); let ink=store.get
 /* ---------- слайдты сыйғызу (тақта ашық/жабық) ---------- */
 const slides=[...document.querySelectorAll('.slide')]; let cur=0;
 slides.forEach(s=>{ if(s.classList.contains('nofit')) return; const sc=document.createElement('div'); sc.className='sc'; while(s.firstChild) sc.appendChild(s.firstChild); s.appendChild(sc); });
-function fitSlide(s){ if(!s||s.classList.contains('nofit')) return; const sc=s.querySelector('.sc'), L=$('slides');
+function fitSlide(s){ if(PUPIL||!s||s.classList.contains('nofit')) return; const sc=s.querySelector('.sc'), L=$('slides');
   const AW=L.clientWidth-48, AH=L.clientHeight-26; if(AW<=0) return; let best={k:0,w:900};
   sc.style.transform='none';
   for(let w=880; w<=Math.max(880,Math.min(1500,AW)); w+=40){ sc.style.width=w+'px'; const h=sc.offsetHeight; const k=Math.min(AW/w,AH/h,1.75); if(k>best.k+.004) best={k,w}; }
@@ -1438,24 +1647,47 @@ function go(i){ i=Math.max(0,Math.min(slides.length-1,i)); if(i!==cur) SND.page(
   [...$('dots').children].forEach((d,j)=>d.classList.toggle('on',j===cur)); $('cnt').textContent=(cur+1)+' / '+slides.length;
   $('prev').disabled=cur===0; $('next').disabled=cur===slides.length-1; store.set('ms_slide',cur); fitSlide(s); requestAnimationFrame(()=>{ board.resize(); fitSlide(s); }); }
 $('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
-document.addEventListener('keydown',e=>{ const typing=/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName);
+document.addEventListener('keydown',e=>{ if(PUPIL) return; const typing=/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName);
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!typing){ board.undo(); e.preventDefault(); return; } if(typing) return;
   if(['ArrowRight','PageDown'].includes(e.key)){ go(cur+1); e.preventDefault(); } else if(['ArrowLeft','PageUp'].includes(e.key)){ go(cur-1); e.preventDefault(); }
   else if('fFаА'.includes(e.key)) toggleFS(); else if('tTеЕ'.includes(e.key)) setBoard(!NB); });
 function toggleFS(){ try{ if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }catch(e){} }
 $('fs').onclick=toggleFS; $('snd').onclick=()=>{ $('snd').textContent=SND.toggle()?'🔊':'🔇'; }; $('snd').textContent=SND.on?'🔊':'🔇';
-function fit(){ const s=Math.min(innerWidth/1600,innerHeight/900); $('stage').style.transform=`translate(${(innerWidth-1600*s)/2}px,${(innerHeight-900*s)/2}px) scale(${s})`; board.resize(); }
+function fit(){ if(PUPIL) return; const s=Math.min(innerWidth/1600,innerHeight/900); $('stage').style.transform=`translate(${(innerWidth-1600*s)/2}px,${(innerHeight-900*s)/2}px) scale(${s})`; board.resize(); }
 addEventListener('resize',fit); $('slides').classList.add('notrans'); $('stage').classList.toggle('noboard',NB); fit(); setTimeout(()=>$('slides').classList.remove('notrans'),200);
 $('slides').addEventListener('transitionend',e=>{ if(e.target===$('slides')){ fitSlide(slides[cur]); board.resize(); } });
 const hashN=/^#(\d+)$/.exec(location.hash); go(hashN?(+hashN[1]-1):Math.min(store.get('ms_slide',0),slides.length-1));
-addEventListener('hashchange',()=>{ const m=/^#(\d+)$/.exec(location.hash); if(m) go(+m[1]-1); });
+addEventListener('hashchange',()=>{ if(PUPIL) return; const m=/^#(\d+)$/.exec(location.hash); if(m) go(+m[1]-1); });
 if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>fitSlide(slides[cur]));
 let prevT=performance.now();
 (function loop(now){ const dt=Math.min(.05,Math.max(0,(now-prevT)/1000)); prevT=now;
+  if(window.oqPaused){ requestAnimationFrame(loop); return; }
   slides[cur].querySelectorAll('canvas.lab').forEach(cv=>{ const L=LABS[cv.id]; if(L) L.frame(cv.getContext('2d'),cv.width,cv.height,dt); });
   if(slides[cur].contains($('fs3d'))) fs3dFrame(dt);
   for(const id in SC3D) if(slides[cur].contains($(id))) SC3D[id](dt);
   requestAnimationFrame(loop); })(prevT);
+/* ---------- сабақ таймері: 45 минут, слайд ашылғанда өзі қосылады ---------- */
+const LESS=(()=>{ const T=45*60*1000, GRACE=10*60*1000; let S=null, rang=false;   // S: {end} жүріп тұр немесе {left,at} тоқтатылған
+  const left=()=>S.left!=null?S.left:S.end-Date.now();
+  const save=()=>store.set('ms_less',S);
+  function start(){ S={end:Date.now()+T}; rang=false; save(); paint(); }
+  function paint(){ const e=$('lessT'), ms=Math.max(0,left()), sec=Math.ceil(ms/1000); e.textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
+    e.classList.toggle('warn',sec<=300&&sec>60); e.classList.toggle('low',sec<=60&&sec>0); e.classList.toggle('end',sec<=0); e.classList.toggle('paused',S.left!=null); }
+  function tick(){ if(S.left==null&&left()<=0&&!rang){ rang=true; SND.alarm(); toast('⏰ 45 минут бітті!'); } paint(); }
+  function init(){ const o=store.get('ms_less',null), now=Date.now();
+    /* бет кездейсоқ жаңартылса, уақыт жалғасады; ескі сабақтан қалған болса, қайта басталады */
+    if(o&&o.left!=null&&now-o.at<2*60*60*1000) S=o; else if(o&&o.end&&now<o.end+GRACE){ S=o; rang=now>=o.end; } else return start();
+    paint(); }
+  $('lessT').onclick=()=>{ if(left()<=0) return; if(S.left!=null) S={end:Date.now()+S.left}; else S={left:left(),at:Date.now()}; save(); paint(); };
+  $('lessR').onclick=()=>{ if(left()>0&&T-left()>60000&&!confirm('Сабақ уақыты 45:00-ден қайта басталады. Жалғастырамыз ба?')) return; start(); };
+  if(!PUPIL){ init(); setInterval(tick,500); }
+  return {get state(){return S;},tick,start};
+})();
+window.__less=LESS;
+window.__ms={get cur(){return cur;}};
 </script>
+<script src="phone_panel.js"></script>
+<script src="oqushy.js"></script>
+<script>if(PUPIL) OQ.init(); else PH.init();</script>
 </body>
 </html>
