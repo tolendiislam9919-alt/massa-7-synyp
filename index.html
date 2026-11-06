@@ -261,8 +261,18 @@ html.oq .fsq.blq>span:nth-child(even){margin-bottom:9px}
 /* ---------- телефонмен қосылу (мұғалім экраны) ---------- */
 .lesst{margin-left:auto;display:flex;align-items:center;gap:4px;flex:none}
 .lesst button{border:none;cursor:pointer;color:#fff;background:rgba(255,255,255,.14);border-radius:6px}
-#lessT{font:700 24px Consolas,monospace;padding:2px 9px;min-width:92px;letter-spacing:1px}
-#lessR{font-size:16px;padding:5px 8px}
+#lessT{font:700 17px Consolas,monospace;padding:4px 6px;letter-spacing:.5px}
+#lessR{font-size:14px;padding:4px 6px}
+.lessl{font-size:12px;opacity:.8;margin-left:8px}
+.top .lesson,.top .lesson+.sep{display:none}
+#stgT{display:flex;flex-direction:column;align-items:center;line-height:1.05;padding:2px 10px;min-width:118px;background:#fff;color:#1d2430}
+#stgT small{font:600 11px "Segoe UI";white-space:nowrap}
+#stgT b{font:800 25px Consolas,monospace;letter-spacing:1px}
+.stgb{font:700 15px "Segoe UI";padding:9px 7px}
+#stgT.warn{background:var(--yellow)}
+#stgT.low{background:var(--red);color:#fff}
+#stgT.end{background:var(--red);color:#fff;animation:lessend .8s steps(2,start) infinite}
+#stgT.paused{opacity:.6}
 #lessT.warn{background:var(--yellow);color:#1d2430}
 #lessT.low{background:var(--red)}
 #lessT.end{background:var(--red);animation:lessend .8s steps(2,start) infinite}
@@ -323,6 +333,10 @@ html.oq .pttmw{justify-content:center}
 html.oq #ptPhoneNote{display:block}
 .oqtop{position:fixed;left:0;right:0;top:0;height:46px;z-index:40;display:flex;align-items:center;gap:8px;padding:0 12px;background:var(--blue);color:#fff;font:600 15px "Segoe UI",sans-serif}
 .oqtop .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.oqtm{flex:none;font:800 17px Consolas,monospace;background:#fff;color:#1d2430;border-radius:6px;padding:3px 7px}
+.oqtm.low{background:var(--yellow)}
+.oqtm.end{background:var(--red);color:#fff;animation:lessend .8s steps(2,start) infinite}
+.oqtm[hidden]{display:none}
 .oqdot{width:10px;height:10px;border-radius:50%;background:#e0a92e;flex:none}.oqdot.on{background:#7fe08f}.oqdot.off{background:#e8604c}
 .oqgp{padding:1px 9px;border-radius:12px;font-size:13px;color:#fff;flex:none}
 .oqapp{position:fixed;inset:46px 0 0 0;z-index:35;background:var(--paper);overflow:auto;padding:14px}
@@ -337,7 +351,7 @@ html.oq #ptPhoneNote{display:block}
 <body>
 <div class="stage" id="stage">
   <div class="top"><span class="sign">кг</span><span class="lesson">Физика · 7-сынып</span><span class="sep"></span><span class="stitle" id="stitle"></span>
-    <div class="lesst"><button id="lessT" title="Тоқтату / жалғастыру">45:00</button><button id="lessR" title="Сабақ уақытын басынан бастау">↺</button></div><button class="phchip" id="phChip">📱 QR</button><div class="gchips" id="gchips"></div><button class="fsbtn" id="fs" title="Толық экран (F)">⛶ Толық экран</button></div>
+    <div class="lesst"><button id="stgT" title="Кезең таймері: тоқтату / жалғастыру"><small id="stgN">Кезең</small><b id="stgV">03:00</b></button><button class="stgb" id="stgP" title="Осы кезеңге 1 минут қосу">+1</button><button class="stgb" id="stgR" title="Осы кезеңді басынан бастау">↺</button><span class="lessl">Сабақ</span><button id="lessT" title="Тоқтату / жалғастыру">45:00</button><button id="lessR" title="Сабақ уақытын басынан бастау">↺</button></div><button class="phchip" id="phChip">📱 QR</button><div class="gchips" id="gchips"></div><button class="fsbtn" id="fs" title="Толық экран (F)">⛶ Толық экран</button></div>
   <div class="mainw">
     <div class="leftw" id="slides">
 
@@ -789,7 +803,9 @@ const SND=(()=>{ let ac=null,on=store.get('ms_snd',true);
     spin(){ tone(700+Math.random()*500,.05,.05); },
     bell(){ [784,988,1175,1568].forEach((f,i)=>tone(f,.35,.14,i*.16)); },
     /* сабақ уақыты бітті: дыбыс өшірулі тұрса да естіледі */
-    alarm(){ init(); const was=on; on=true; for(let k=0;k<4;k++) [784,988,1175,1568].forEach((f,i)=>tone(f,.4,.3,k*1.1+i*.16)); on=was; } };
+    alarm(){ init(); const was=on; on=true; for(let k=0;k<4;k++) [784,988,1175,1568].forEach((f,i)=>tone(f,.4,.3,k*1.1+i*.16)); on=was; },
+    /* кезең уақыты бітті: қысқа сигнал, дыбыс өшірулі тұрса да естіледі */
+    stage(){ init(); const was=on; on=true; for(let k=0;k<2;k++) [988,1319].forEach((f,i)=>tone(f,.3,.3,k*.7+i*.18)); on=was; } };
 })();
 document.addEventListener('pointerdown',()=>SND.init(),{capture:true});
 document.addEventListener('keydown',()=>SND.init(),{capture:true});   // беттерді пернемен ауыстырса да дыбыс ашылады
@@ -1636,7 +1652,7 @@ slides.forEach((s,i)=>{ const b=document.createElement('button'); b.className='d
 function go(i){ i=Math.max(0,Math.min(slides.length-1,i)); if(i!==cur) SND.page(); slides[cur].classList.remove('on'); cur=i; const s=slides[cur]; s.classList.add('on');
   $('stitle').textContent=s.dataset.title; $('bhint').textContent=s.dataset.hint||''; $('stage').classList.toggle('wide',!!s.dataset.wide);
   [...$('dots').children].forEach((d,j)=>d.classList.toggle('on',j===cur)); $('cnt').textContent=(cur+1)+' / '+slides.length;
-  $('prev').disabled=cur===0; $('next').disabled=cur===slides.length-1; store.set('ms_slide',cur); fitSlide(s); requestAnimationFrame(()=>{ board.resize(); fitSlide(s); }); }
+  $('prev').disabled=cur===0; $('next').disabled=cur===slides.length-1; store.set('ms_slide',cur); fitSlide(s); requestAnimationFrame(()=>{ board.resize(); fitSlide(s); }); if(window.STG) STG.enter(); }
 $('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
 document.addEventListener('keydown',e=>{ if(PUPIL) return; const typing=/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName);
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!typing){ board.undo(); e.preventDefault(); return; } if(typing) return;
@@ -1661,7 +1677,7 @@ let prevT=performance.now();
 const LESS=(()=>{ const T=45*60*1000, GRACE=10*60*1000; let S=null, rang=false;   // S: {end} жүріп тұр немесе {left,at} тоқтатылған
   const left=()=>S.left!=null?S.left:S.end-Date.now();
   const save=()=>store.set('ms_less',S);
-  function start(){ S={end:Date.now()+T}; rang=false; save(); paint(); }
+  function start(){ S={end:Date.now()+T}; rang=false; save(); store.set('ms_stg',null); if(window.STG) STG.reset(); paint(); }
   function paint(){ const e=$('lessT'), ms=Math.max(0,left()), sec=Math.ceil(ms/1000); e.textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
     e.classList.toggle('warn',sec<=300&&sec>60); e.classList.toggle('low',sec<=60&&sec>0); e.classList.toggle('end',sec<=0); e.classList.toggle('paused',S.left!=null); }
   function tick(){ if(S.left==null&&left()<=0&&!rang){ rang=true; SND.alarm(); toast('⏰ 45 минут бітті!'); } paint(); }
@@ -1675,6 +1691,38 @@ const LESS=(()=>{ const T=45*60*1000, GRACE=10*60*1000; let S=null, rang=false; 
   return {get state(){return S;},tick,start};
 })();
 window.__less=LESS;
+/* ---------- кезең таймері: бет ашылғанда өзі қосылады, уақыты біткенде сигнал береді ----------
+   Уақыттар ҚМЖ бойынша, қосындысы 45 минут. a–b: кезеңге кіретін беттер. Беттен кеткенде тоқтап, қайта оралғанда жалғасады. */
+const STAGES=[
+  {n:'Ұйымдастыру',m:3,a:1,b:4},{n:'Миға шабуыл',m:3,a:5,b:5},{n:'Ғарышкер',m:3,a:6,b:6},{n:'Каток',m:3,a:7,b:7},
+  {n:'Жаңа материал',m:5,a:8,b:11},{n:'Топтық тапсырма',m:3,a:12,b:12},
+  {n:'Практикалық №3',m:9,a:13,b:14,mark:240,mk:'Орындау уақыты бітті: қорғауға көшіңдер!'},
+  {n:'ХБЖ дуэлі',m:2,a:15,b:15},{n:'ФС: базар',m:3,a:16,b:16},{n:'ФС: бильярд',m:3,a:17,b:17},{n:'ФС: хоккей',m:2,a:18,b:18},
+  {n:'Жеке жұмыс',m:4,a:19,b:19},{n:'Қорытынды',m:2,a:20,b:22}];
+if(!PUPIL) window.STG=(()=>{ let ST=store.get('ms_stg',null)||{}, act=-1, last=Date.now(), savedAt=0;
+  const E=i=>ST[i]||(ST[i]={l:STAGES[i].m*60,run:true,done:false,mk:false});
+  const save=()=>{ store.set('ms_stg',ST); savedAt=Date.now(); };
+  const sync=()=>{ if(window.__ph) __ph.all(); };
+  const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+  function paint(){ if(act<0) return; const e=E(act), sec=Math.ceil(Math.max(0,e.l)), b=$('stgT'); $('stgN').textContent=STAGES[act].n; $('stgV').textContent=fmt(sec);
+    b.classList.toggle('warn',sec<=30&&sec>10); b.classList.toggle('low',sec<=10&&sec>0); b.classList.toggle('end',sec<=0); b.classList.toggle('paused',!e.run&&sec>0); }
+  function enter(){ const n=cur+1, i=STAGES.findIndex(s=>n>=s.a&&n<=s.b); if(i===act) return; act=i; last=Date.now(); E(i); save(); paint(); sync(); }
+  function tick(){ const now=Date.now(), dt=(now-last)/1000; last=now; if(act<0) return; const e=E(act), s=STAGES[act]; if(!e.run||e.done) return;
+    const was=Math.ceil(e.l); e.l=Math.max(0,e.l-dt); const sec=Math.ceil(e.l);
+    if(sec===was) return;
+    if(s.mark&&!e.mk&&sec<=s.mark){ e.mk=true; SND.stage(); toast('⏰ '+s.mk); sync(); }
+    if(sec<=0){ e.done=true; SND.stage(); toast('⏰ '+s.n+': уақыт бітті!'); save(); sync(); }
+    else if(sec<=5) SND.beep();
+    if(now-savedAt>2000) save(); paint(); }
+  $('stgT').onclick=()=>{ if(act<0) return; const e=E(act); if(e.done) return; e.run=!e.run; last=Date.now(); save(); paint(); sync(); };
+  $('stgP').onclick=()=>{ if(act<0) return; const e=E(act); e.l=Math.max(0,e.l)+60; e.done=false; e.run=true; last=Date.now(); save(); paint(); sync(); };
+  $('stgR').onclick=()=>{ if(act<0) return; delete ST[act]; E(act); last=Date.now(); save(); paint(); sync(); };
+  setInterval(tick,250); enter();
+  return {enter,tick,get act(){return act;},get ST(){return ST;},
+    reset(){ ST={}; const a=act; act=-1; if(a>=0) enter(); },
+    /* телефонға: ашық бет осы кезеңге кірсе ғана уақытты көрсетеді */
+    forPhone(key){ if(act<0||!key) return null; const p=document.querySelector(`.slide[data-phone="${key}"]`), n=slides.indexOf(p)+1, s=STAGES[act]; if(n<s.a||n>s.b) return null; const e=E(act); return {n:s.n,l:Math.ceil(Math.max(0,e.l)),run:e.run&&!e.done}; }};
+})();
 window.__ms={get cur(){return cur;}};
 </script>
 <script src="phone_panel.js"></script>

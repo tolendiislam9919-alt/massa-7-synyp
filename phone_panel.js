@@ -43,7 +43,7 @@ const PH=(()=>{
     if(JSON.stringify(s.prog[key])!==JSON.stringify(brief)){ s.prog[key]=brief; save(); paintChip(); paintMon(); }
     applyGrade(s,v); mergeGt(v.gt); }
 
-  function stFor(pid){ const s=D.st[pid], o={t:'st',pid,act:D.started?D.act:null,started:!!D.started,g:s?s.g:null}; if(D.act==='pt') o.pt={left:PTM.left[ptG],run:PTM.run}; return o; }
+  function stFor(pid){ const s=D.st[pid], o={t:'st',pid,act:D.started?D.act:null,started:!!D.started,g:s?s.g:null}; if(D.act==='pt') o.pt={left:PTM.left[ptG],run:PTM.run}; if(window.STG) o.tm=STG.forPhone(o.act); return o; }
   function paintStart(){ const n=ids().length; document.querySelectorAll('[data-phstart]').forEach(b=>{ b.style.display=D.started?'none':''; b.disabled=!!D.started||!n; b.textContent=n?`▶ Бастау (${n} оқушы)`:'▶ Бастау: оқушыларды күтудеміз'; }); }
   function markStarted(){ if(D.started) return; D.started=true; save(); paintStart(); paintChip(); all(); }
   function begin(){ if(D.started||!ids().length) return; SND.bell(); markStarted(); toast('▶ Сабақ басталды! Тапсырма бетінде QR-ды үлкейткенде, сол бет телефонға ашылады.'); monitor(false); if(slides[cur].id==='slJoin') go(cur+1); }
@@ -59,13 +59,13 @@ const PH=(()=>{
     if(m.t==='ping'){ if(m.n) reg(pid,m.n); if(m.p) Object.keys(m.p).forEach(k=>setProg(pid,k,m.p[k])); tell(pid); return; }
     if(m.t==='res'){ setProg(pid,m.pack,m.v); return; } }
   function kick(pid){ const s=D.st[pid]; if(!s) return; if(!confirm(s.n+' тізімнен алынсын ба?')) return; delete D.st[pid]; D.kick.push(pid); save(); if(net) net.send(pid,{t:'kicked',pid}); paintList(); }
-  function resetAll(){ if(!confirm('Жаңа сабақ: жаңа QR жасалады, топтар мен осы сыныптың нәтижелері тазарады. Жалғастырамыз ба?')) return; store.set('ms_ph',{date:today,room:newRoom(),st:{},kick:[],act:null}); store.set('ms_gd',null); store.set('ms_res',{}); store.set('ms_pt',[{},{},{}]); store.set('ms_ptp',[{},{},{}]); store.set('ms_gt_paid',{}); store.set('ms_gs',[0,0,0]); store.set('ms_lt',[0,0,0]); store.set('ms_lt_log',[]); store.set('ms_less',null); location.reload(); }
+  function resetAll(){ if(!confirm('Жаңа сабақ: жаңа QR жасалады, топтар мен осы сыныптың нәтижелері тазарады. Жалғастырамыз ба?')) return; store.set('ms_ph',{date:today,room:newRoom(),st:{},kick:[],act:null}); store.set('ms_gd',null); store.set('ms_res',{}); store.set('ms_pt',[{},{},{}]); store.set('ms_ptp',[{},{},{}]); store.set('ms_gt_paid',{}); store.set('ms_gs',[0,0,0]); store.set('ms_lt',[0,0,0]); store.set('ms_lt_log',[]); store.set('ms_less',null); store.set('ms_stg',null); location.reload(); }
 
   /* ---------- экрандағы тізім ---------- */
   function paintChip(){ const c=$('phChip'); if(!c) return; const n=ids().length, k=keyHere(); let t='📱 QR · '+n, hot=false;
-    if(k&&!(D.started&&D.act===k)){ t='📱 QR-ды үлкейт: бет телефонға ашылады · '+n; hot=true; }
+    if(k&&!(D.started&&D.act===k)){ t='📱 QR-ды үлкейт · '+n; hot=true; }
     else if(D.started&&D.act==='pt') t+=' · '+titleOf('pt');
-    else if(D.started&&D.act){ const dn=ids().filter(p=>{ const v=D.st[p].prog[D.act]; return v&&(v.g||v.b||v.sc); }).length; t+=` · ${titleOf(D.act)}: ${dn}/${n}`; }
+    else if(D.started&&D.act){ const dn=ids().filter(p=>{ const v=D.st[p].prog[D.act]; return v&&(v.g||v.b||v.sc); }).length; t+=` · жауап: ${dn}/${n}`; }
     else if(!D.started&&n) t+=' · «Бастау» күтілуде';
     c.textContent=t; c.classList.toggle('hot',hot); }
   function paintList(){ paintChip(); const g=$('phNames'); if(g){ $('phCount').textContent=ids().length; $('slJoin').classList.toggle('many',ids().length>12); g.innerHTML=ids().map(p=>{ const s=D.st[p]; return `<span class="nmc" style="background:${GR[s.g].c}" data-k="${p}" title="Алып тастау">${esc(s.n)}</span>`; }).join('')||'<span style="color:var(--muted);font-size:20px">Әзірге ешкім қосылған жоқ…</span>'; } paintStart(); paintMon(); }
@@ -93,6 +93,6 @@ const PH=(()=>{
     setInterval(()=>{ if(overlayOn()) paintMon(); },2000);
     const og=go; go=function(i){ og(i); paintChip(); };
     paintList(); paintQR(); }
-  return {init,get D(){return D;},monitor,begin};
+  return {init,get D(){return D;},monitor,begin,all};
 })();
 window.__ph=PH;

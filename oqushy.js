@@ -36,10 +36,17 @@ const OQ=(()=>{
   function report(){ if(!shown) return; const v=collect(shown); if(!v) return; const was=JSON.stringify(PROG[shown]), now=JSON.stringify(v); if(was===now) return; PROG[shown]=v; store.set('prog',PROG); if(net) net.send({t:'res',pack:shown,v}); }
   let rt=0; const later=()=>{ clearTimeout(rt); rt=setTimeout(report,250); };
 
+  /* ---------- мұғалімнің кезең таймері: жоғарғы жолақта, біткенде діріл ---------- */
+  let TM=null, tmRang='';
+  const tmLeft=()=>TM?Math.max(0,TM.run?TM.l-(Date.now()-TM.at)/1000:TM.l):0;
+  function setTm(t){ if(!t){ TM=null; paintTm(); return; } const same=TM&&TM.n===t.n&&TM.run===t.run; if(!same||Math.abs(tmLeft()-t.l)>2) TM={n:t.n,l:t.l,run:t.run,at:Date.now()}; paintTm(); }
+  function paintTm(){ const e=top&&top.querySelector('.oqtm'); if(!e) return; if(!TM||!shown){ e.hidden=true; return; } const s=Math.ceil(tmLeft()); e.hidden=false; e.textContent='⏱ '+String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); e.className='oqtm'+(s<=0?' end':s<=30?' low':'');
+    if(s<=0&&tmRang!==TM.n){ tmRang=TM.n; buzz([300,150,300]); } else if(s>0&&tmRang===TM.n) tmRang=''; }
+
   function render(){ setTop(); if(kicked) return; if(joined&&ST.act){ showPage(ST.act); return; } const sig=joined+'|'+ST.g+'|'+!!ST.started; if(screen!=='wait'||waitSig!==sig){ waitSig=sig; vWait(); } }
   function onMsg(m){ if(m.pid&&m.pid!==PID) return; lastSeen=Date.now();
     if(m.t==='kicked'){ kicked=true; joined=false; screen=''; cover(true); app.innerHTML=`<div class="box" style="text-align:center;padding-top:40px"><h1>Мұғалім тізімнен алып тастады</h1><button class="go" id="oqRe">Қайта кіру</button></div>`; $('oqRe').onclick=()=>{ kicked=false; net.send({t:'hello',name:NAME,force:true}); vWait(); }; return; }
-    if(m.t==='st'){ joined=true; const was=ST.started, gWas=ST.g; ST=Object.assign(ST,m); if(m.pt){ PTM.left=[m.pt.left,m.pt.left,m.pt.left]; PTM.run=m.pt.run; PTM.last=performance.now(); ptTm(); } if(ST.started&&!was) buzz(120); if(gWas!==ST.g&&shown) setup(shown); render(); } }
+    if(m.t==='st'){ joined=true; const was=ST.started, gWas=ST.g; ST=Object.assign(ST,m); setTm(m.tm||null); if(m.pt){ PTM.left=[m.pt.left,m.pt.left,m.pt.left]; PTM.run=m.pt.run; PTM.last=performance.now(); ptTm(); } if(ST.started&&!was) buzz(120); if(gWas!==ST.g&&shown) setup(shown); render(); } }
 
   function start(){ top.hidden=false; setTop(); vWait(); if(net){ net.send({t:'hello',name:NAME}); return; }
     net=NET.openPad({room:OQROOM,pid:PID,onMsg,onStatus:s=>{ top.querySelector('.oqdot').className='oqdot '+(s==='on'?'on':s==='off'?'off':''); if(s==='on'){ lastSeen=Date.now(); if(net) net.send({t:'hello',name:NAME}); } }});
@@ -48,7 +55,7 @@ const OQ=(()=>{
     document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&net&&net.online) net.send({t:'ping',n:NAME,p:PROG}); }); }
 
   function init(){ document.title='Физика: сабаққа қосылу';
-    top=document.createElement('div'); top.className='oqtop'; top.innerHTML='<span class="oqdot"></span><span class="nm"></span><span class="oqgp" hidden></span>'; document.body.appendChild(top);
+    top=document.createElement('div'); top.className='oqtop'; top.innerHTML='<span class="oqdot"></span><span class="nm"></span><span class="oqtm" hidden></span><span class="oqgp" hidden></span>'; document.body.appendChild(top); setInterval(paintTm,500);
     app=document.createElement('div'); app.className='oqapp'; document.body.appendChild(app);
     const box=$('slides');
     new MutationObserver(later).observe(box,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class']});
